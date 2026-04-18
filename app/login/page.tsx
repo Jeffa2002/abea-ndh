@@ -1,10 +1,8 @@
 'use client'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 export default function LoginPage() {
-  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -14,19 +12,28 @@ export default function LoginPage() {
     e.preventDefault()
     setLoading(true)
     setError('')
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    })
-    const data = await res.json()
-    setLoading(false)
-    if (!res.ok) { setError(data.error || 'Login failed'); return }
-
-    const role = data.user.role
-    if (role === 'ADMIN') router.push('/admin')
-    else if (role === 'GOVT_VIEWER') router.push('/govt')
-    else router.push('/dashboard')
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+        credentials: 'include',
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error || 'Login failed')
+        setLoading(false)
+        return
+      }
+      // Hard redirect so browser picks up the cookie before navigating
+      const role = data.user.role
+      if (role === 'ADMIN') window.location.href = '/admin'
+      else if (role === 'GOVT_VIEWER') window.location.href = '/govt'
+      else window.location.href = '/dashboard'
+    } catch (err) {
+      setError('Network error — please try again')
+      setLoading(false)
+    }
   }
 
   return (
@@ -39,7 +46,9 @@ export default function LoginPage() {
           <h1 className="text-2xl font-bold mb-2" style={{ color: '#1E3A5F' }}>Sign In</h1>
           <p className="text-gray-500 mb-8 text-sm">Access your organisation&apos;s data hub</p>
 
-          {error && <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">{error}</div>}
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">{error}</div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
@@ -49,8 +58,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 text-gray-900"
-                style={{ '--tw-ring-color': '#00A99D' } as any}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none text-gray-900"
                 placeholder="you@organisation.com.au"
               />
             </div>
@@ -61,7 +69,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 text-gray-900"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none text-gray-900"
                 placeholder="••••••••"
               />
             </div>
@@ -69,7 +77,7 @@ export default function LoginPage() {
               type="submit"
               disabled={loading}
               className="w-full py-3 rounded-xl font-bold text-white text-sm disabled:opacity-60"
-              style={{ backgroundColor: '#1E3A5F' }}
+              style={{ backgroundColor: loading ? '#4A6A8F' : '#1E3A5F' }}
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>

@@ -1,6 +1,5 @@
 'use client'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 const PILLARS = ['VENUE', 'ORGANISER', 'SUPPLIER', 'BUREAU']
@@ -8,10 +7,10 @@ const TIERS = ['SME', 'Mid', 'Large']
 const REGIONS = ['ACT', 'NSW', 'NT', 'QLD', 'SA', 'TAS', 'VIC', 'WA']
 
 export default function RegisterPage() {
-  const router = useRouter()
   const [form, setForm] = useState({ orgName: '', pillar: '', region: '', tier: '', email: '', password: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
 
   function update(k: string, v: string) { setForm(f => ({ ...f, [k]: v })) }
 
@@ -27,7 +26,36 @@ export default function RegisterPage() {
     const data = await res.json()
     setLoading(false)
     if (!res.ok) { setError(data.error || 'Registration failed'); return }
-    router.push('/login?registered=1')
+    setSubmitted(true)
+  }
+
+  if (submitted) {
+    return (
+      <div className="min-h-screen" style={{ backgroundColor: '#F8FAFC' }}>
+        <nav style={{ backgroundColor: '#1E3A5F' }} className="px-6 py-4">
+          <Link href="/" className="text-white font-bold text-lg">← ABEA National Data Hub</Link>
+        </nav>
+        <div className="flex items-center justify-center px-4 py-12">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 w-full max-w-lg text-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#E8F8F7' }}>
+              <span className="text-3xl">⏳</span>
+            </div>
+            <h1 className="text-2xl font-bold mb-3" style={{ color: '#1E3A5F' }}>Registration Submitted!</h1>
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              Your registration for <strong>{form.orgName}</strong> is now pending review by the ABEA team.
+            </p>
+            <div className="p-4 rounded-xl mb-6 text-sm" style={{ backgroundColor: '#E8F8F7', color: '#00A99D' }}>
+              <strong>What happens next?</strong><br />
+              You&apos;ll receive an email at <strong>{form.email}</strong> once your account has been approved. This usually takes 1–2 business days.
+            </div>
+            <div className="space-y-3 text-sm text-gray-500">
+              <p>Questions? Contact us at <a href="mailto:support@abea.org.au" className="font-semibold" style={{ color: '#00A99D' }}>support@abea.org.au</a></p>
+              <p><Link href="/login" className="font-semibold" style={{ color: '#1E3A5F' }}>← Back to Login</Link></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (

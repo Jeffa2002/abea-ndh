@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { verifyToken, COOKIE_NAME } from '@/lib/auth'
+import { jwtVerify } from 'jose'
 
+const COOKIE_NAME = 'abea_token'
 const PROTECTED = ['/dashboard', '/admin', '/govt', '/api/data', '/api/admin']
 
-export function proxy(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
   const isProtected = PROTECTED.some(p => pathname.startsWith(p))
   if (!isProtected) return NextResponse.next()
@@ -16,22 +17,24 @@ export function proxy(req: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  const payload = verifyToken(token)
-  if (!payload) {
+  try {
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET!)
+    const { payload } = await jwtVerify(token, secret)
+
+    // Role-based access
+    if (pathname.startsWith('/admin') && payload.role !== 'ADMIN') {
+      return NextResponse.redirect(new URL('/dashboard', req.url))
+    }
+    if (pathname.startsWith('/govt') && payload.role !== 'ADMIN' && payload.role !== 'GOVT_VIEWER') {
+      return NextResponse.redirect(new URL('/dashboard', req.url))
+    }
+
+    return NextResponse.next()
+  } catch {
     const url = req.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
   }
-
-  // Role-based access
-  if (pathname.startsWith('/admin') && payload.role !== 'ADMIN') {
-    return NextResponse.redirect(new URL('/dashboard', req.url))
-  }
-  if (pathname.startsWith('/govt') && !['ADMIN', 'GOVT_VIEWER'].includes(payload.role)) {
-    return NextResponse.redirect(new URL('/dashboard', req.url))
-  }
-
-  return NextResponse.next()
 }
 
 export const config = {

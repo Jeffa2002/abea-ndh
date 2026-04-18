@@ -21,13 +21,17 @@ model Organisation {
 }
 
 model User {
-  id           String        @id @default(uuid())
-  email        String        @unique
-  passwordHash String
-  role         UserRole
-  orgId        String?
-  org          Organisation? @relation(fields: [orgId], references: [id])
-  createdAt    DateTime      @default(now())
+  id             String        @id @default(uuid())
+  email          String        @unique
+  passwordHash   String
+  role           UserRole
+  orgId          String?
+  org            Organisation? @relation(fields: [orgId], references: [id])
+  createdAt      DateTime      @default(now())
+  approvalStatus String        @default("PENDING")
+  approvalNote   String?
+  approvedAt     DateTime?
+  approvedById   String?
 }
 
 model DataSubmission {

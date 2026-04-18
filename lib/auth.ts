@@ -1,7 +1,6 @@
-import jwt from 'jsonwebtoken'
+import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 
-const JWT_SECRET = process.env.JWT_SECRET!
 const COOKIE_NAME = 'abea_token'
 
 export interface JWTPayload {
@@ -12,13 +11,22 @@ export interface JWTPayload {
   pillar?: string
 }
 
-export function signToken(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' })
+function getSecret() {
+  return new TextEncoder().encode(process.env.JWT_SECRET!)
 }
 
-export function verifyToken(token: string): JWTPayload | null {
+export async function signToken(payload: JWTPayload): Promise<string> {
+  return new SignJWT({ ...payload })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setExpirationTime('7d')
+    .setIssuedAt()
+    .sign(getSecret())
+}
+
+export async function verifyToken(token: string): Promise<JWTPayload | null> {
   try {
-    return jwt.verify(token, JWT_SECRET) as JWTPayload
+    const { payload } = await jwtVerify(token, getSecret())
+    return payload as unknown as JWTPayload
   } catch {
     return null
   }
