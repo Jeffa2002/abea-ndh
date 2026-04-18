@@ -214,7 +214,7 @@ export default function Home() {
                 { label: 'Home', href: '/' },
                 { label: 'Register', href: '/register' },
                 { label: 'Sign In', href: '/login' },
-                { label: 'About', href: '#' },
+                { label: 'About', href: '/about' },
               ].map(link => (
                 <li key={link.label}>
                   <Link href={link.href} className="text-white/60 hover:text-white transition-colors">
