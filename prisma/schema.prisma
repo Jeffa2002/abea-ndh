@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organisation {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  pillar      Pillar
+  tier        String?
+  region      String?
+  isApproved  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  users       User[]
+  submissions DataSubmission[]
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  passwordHash String
+  role         UserRole
+  orgId        String?
+  org          Organisation? @relation(fields: [orgId], references: [id])
+  createdAt    DateTime      @default(now())
+}
+
+model DataSubmission {
+  id          String           @id @default(uuid())
+  orgId       String
+  org         Organisation     @relation(fields: [orgId], references: [id])
+  pillar      Pillar
+  period      String
+  status      SubmissionStatus @default(DRAFT)
+  rawData     Json
+  mappedData  Json?
+  createdAt   DateTime         @default(now())
+  processedAt DateTime?
+  metrics     MetricValue[]
+}
+
+model MetricDefinition {
+  id          String       @id @default(uuid())
+  pillar      Pillar
+  code        String       @unique
+  label       String
+  unit        String
+  description String?
+  isCore      Boolean      @default(true)
+  values      MetricValue[]
+}
+
+model MetricValue {
+  id           String           @id @default(uuid())
+  submissionId String
+  submission   DataSubmission   @relation(fields: [submissionId], references: [id])
+  metricId     String
+  metric       MetricDefinition @relation(fields: [metricId], references: [id])
+  value        Float
+  period       String
+  createdAt    DateTime         @default(now())
+}
+
+model BenchmarkSnapshot {
+  id          String   @id @default(uuid())
+  pillar      Pillar
+  metricCode  String
+  period      String
+  avgValue    Float
+  medianValue Float?
+  p25Value    Float?
+  p75Value    Float?
+  sampleSize  Int
+  region      String?
+  tier        String?
+  createdAt   DateTime @default(now())
+}
+
+enum Pillar {
+  VENUE
+  ORGANISER
+  SUPPLIER
+  BUREAU
+}
+
+enum UserRole {
+  ADMIN
+  MEMBER
+  GOVT_VIEWER
+}
+
+enum SubmissionStatus {
+  DRAFT
+  SUBMITTED
+  PROCESSING
+  PROCESSED
+  ERROR
+}

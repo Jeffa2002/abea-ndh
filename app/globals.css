@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+:root {
+  --navy: #1E3A5F;
+  --teal: #00A99D;
+  --bg: #F8FAFC;
+}
+
+body {
+  background-color: var(--bg);
+  color: #1a202c;
+}
