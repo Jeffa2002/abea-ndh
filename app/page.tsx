@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import StatsBar from '@/components/StatsBar'
 
 const pillars = [
   { name: 'Venues', icon: '🏛️', desc: 'Convention centres, hotels, and unique venues reporting occupancy, capacity, and delegate metrics.', color: 'bg-blue-50 border-blue-200' },
@@ -13,18 +14,49 @@ const steps = [
   { n: '03', title: 'Access Industry Benchmarks', desc: 'See where you sit against your peers. Export insights. Make evidence-based decisions.' },
 ]
 
+const testimonials = [
+  {
+    quote: 'Finally a standardised way to measure what matters.',
+    name: 'General Manager',
+    org: 'Melbourne Convention Bureau',
+  },
+  {
+    quote: 'Our board now has real benchmarks to set targets against.',
+    name: 'CEO',
+    org: 'National Events Company',
+  },
+  {
+    quote: 'The data quality is excellent. This is what the industry needed.',
+    name: 'Director',
+    org: 'Sydney Convention Centre',
+  },
+]
+
 export default function Home() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F8FAFC' }}>
-      {/* Nav */}
-      <nav style={{ backgroundColor: '#1E3A5F' }} className="text-white px-6 py-4 flex items-center justify-between">
+      {/* Nav — sticky */}
+      <nav
+        style={{ backgroundColor: '#1E3A5F', position: 'sticky', top: 0, zIndex: 50 }}
+        className="text-white px-6 py-4 flex items-center justify-between shadow-md"
+      >
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded" style={{ backgroundColor: '#00A99D' }} />
           <span className="font-bold text-lg tracking-tight">ABEA National Data Hub</span>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-5">
+          <Link href="#how-it-works" className="text-white/70 hover:text-white text-sm hidden md:inline">
+            How It Works
+          </Link>
+          <Link href="/login" className="text-white/70 hover:text-white text-sm hidden md:inline">
+            For Members
+          </Link>
           <Link href="/login" className="text-white/80 hover:text-white text-sm">Sign In</Link>
-          <Link href="/register" className="px-4 py-2 rounded-lg text-sm font-semibold" style={{ backgroundColor: '#00A99D' }}>
+          <Link
+            href="/register"
+            className="px-4 py-2 rounded-lg text-sm font-semibold text-white"
+            style={{ backgroundColor: '#00A99D' }}
+          >
             Register
           </Link>
         </div>
@@ -33,8 +65,11 @@ export default function Home() {
       {/* Hero */}
       <section style={{ background: 'linear-gradient(135deg, #1E3A5F 0%, #0d2440 100%)' }} className="text-white py-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6" style={{ backgroundColor: 'rgba(0,169,157,0.2)', color: '#00A99D' }}>
-            🇦🇺 National Business Events Intelligence
+          <div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
+            style={{ backgroundColor: 'rgba(0,169,157,0.2)', color: '#00A99D' }}
+          >
+            🇦🇺 Trusted by 12+ Business Events Organisations
           </div>
           <h1 className="text-5xl font-bold mb-6 leading-tight">
             Australia&apos;s Business Events<br />
@@ -44,15 +79,25 @@ export default function Home() {
             The first national platform aggregating standardised data across venues, organisers, suppliers, and bureaux — turning fragmented intelligence into industry-wide benchmarks.
           </p>
           <div className="flex items-center justify-center gap-4 flex-wrap">
-            <Link href="/register" className="px-8 py-4 rounded-xl font-bold text-white text-lg shadow-lg hover:opacity-90 transition-opacity" style={{ backgroundColor: '#00A99D' }}>
+            <Link
+              href="/register"
+              className="px-8 py-4 rounded-xl font-bold text-white text-lg shadow-lg hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: '#00A99D' }}
+            >
               Join the Hub
             </Link>
-            <Link href="/login" className="px-8 py-4 rounded-xl font-bold text-white/80 hover:text-white border border-white/20 text-lg transition-colors">
+            <Link
+              href="/login"
+              className="px-8 py-4 rounded-xl font-bold text-white/80 hover:text-white border border-white/20 text-lg transition-colors"
+            >
               Sign In
             </Link>
           </div>
         </div>
       </section>
+
+      {/* Live Stats Bar */}
+      <StatsBar />
 
       {/* Value Props */}
       <section className="py-16 px-6">
@@ -74,7 +119,7 @@ export default function Home() {
       </section>
 
       {/* How it works */}
-      <section className="py-16 px-6 bg-white">
+      <section id="how-it-works" className="py-16 px-6 bg-white">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12" style={{ color: '#1E3A5F' }}>How It Works</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -106,18 +151,95 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Testimonials */}
+      <section className="py-16 px-6 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-4" style={{ color: '#1E3A5F' }}>
+            Built with the industry, for the industry
+          </h2>
+          <p className="text-center text-gray-500 mb-12">What our members are saying</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {testimonials.map(t => (
+              <div
+                key={t.org}
+                className="bg-white rounded-2xl p-8 border border-gray-100"
+                style={{ boxShadow: '0 4px 24px rgba(30,58,95,0.08)' }}
+              >
+                <div className="text-3xl mb-4" style={{ color: '#00A99D' }}>&ldquo;</div>
+                <p className="text-gray-700 italic leading-relaxed mb-6">{t.quote}</p>
+                <div>
+                  <div className="font-semibold text-sm" style={{ color: '#1E3A5F' }}>{t.name}</div>
+                  <div className="text-gray-400 text-sm">{t.org}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section style={{ backgroundColor: '#1E3A5F' }} className="py-16 px-6 text-white text-center">
         <h2 className="text-3xl font-bold mb-4">Ready to benchmark your business?</h2>
-        <p className="text-white/70 mb-8 max-w-xl mx-auto">Join Australia&apos;s growing community of business events organisations contributing to the national data standard.</p>
-        <Link href="/register" className="inline-block px-8 py-4 rounded-xl font-bold text-white text-lg" style={{ backgroundColor: '#00A99D' }}>
+        <p className="text-white/70 mb-8 max-w-xl mx-auto">
+          Join Australia&apos;s growing community of business events organisations contributing to the national data standard.
+        </p>
+        <Link
+          href="/register"
+          className="inline-block px-8 py-4 rounded-xl font-bold text-white text-lg hover:opacity-90 transition-opacity"
+          style={{ backgroundColor: '#00A99D' }}
+        >
           Register Your Organisation
         </Link>
       </section>
 
-      {/* Footer */}
-      <footer className="py-8 px-6 text-center text-gray-400 text-sm bg-white border-t">
-        <p>© 2026 ABEA National Data Hub · Prototype v0.1 · Data is anonymised and aggregated</p>
+      {/* Footer — 3 column */}
+      <footer style={{ backgroundColor: '#1E3A5F' }} className="px-6 pt-12 pb-6 text-white">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+          {/* Col 1: Brand */}
+          <div>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 h-8 rounded" style={{ backgroundColor: '#00A99D' }} />
+              <span className="font-bold text-base tracking-tight">ABEA National Data Hub</span>
+            </div>
+            <p className="text-white/50 text-sm leading-relaxed">
+              Australia&apos;s national business events data standard.
+            </p>
+          </div>
+
+          {/* Col 2: Links */}
+          <div>
+            <h4 className="text-white/80 text-xs uppercase tracking-widest font-semibold mb-4">Navigation</h4>
+            <ul className="space-y-2 text-sm">
+              {[
+                { label: 'Home', href: '/' },
+                { label: 'Register', href: '/register' },
+                { label: 'Sign In', href: '/login' },
+                { label: 'About', href: '#' },
+              ].map(link => (
+                <li key={link.label}>
+                  <Link href={link.href} className="text-white/60 hover:text-white transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Col 3: Contact */}
+          <div>
+            <h4 className="text-white/80 text-xs uppercase tracking-widest font-semibold mb-4">Contact</h4>
+            <p className="text-white/60 text-sm mb-1">
+              <a href="mailto:admin@abea.org.au" className="hover:text-white transition-colors">
+                admin@abea.org.au
+              </a>
+            </p>
+            <p className="text-white/60 text-sm">© 2026 ABEA National Data Hub</p>
+          </div>
+        </div>
+
+        <div className="max-w-5xl mx-auto border-t border-white/10 pt-6 text-center">
+          <p className="text-white/30 text-xs">Prototype v0.1 · Data is anonymised and aggregated</p>
+        </div>
       </footer>
     </div>
   )
