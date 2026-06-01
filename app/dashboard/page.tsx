@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 
 const PILLAR_COLORS: Record<string, string> = {
-  VENUE: '#3B82F6', ORGANISER: '#00A99D', SUPPLIER: '#8B5CF6', BUREAU: '#F97316'
+  VENUE: '#1C4DA1', ORGANISER: '#F99F38', SUPPLIER: '#8E4F9E', BUREAU: '#F99F38'
 }
 
 function formatValue(value: number, unit: string) {
@@ -27,8 +27,8 @@ function dataQualityLabel(score: number): string {
 }
 
 function dataQualityLabelColor(score: number): string {
-  if (score > 80) return '#00A99D'
-  if (score > 50) return '#F97316'
+  if (score > 80) return '#F99F38'
+  if (score > 50) return '#F99F38'
   return '#EF4444'
 }
 
@@ -81,12 +81,12 @@ export default async function DashboardPage() {
   const qualityLabel = dataQualityLabel(dataQuality)
   const qualityColor = dataQualityLabelColor(dataQuality)
 
-  const color = PILLAR_COLORS[org.pillar] || '#1E3A5F'
+  const color = PILLAR_COLORS[org.pillar] || '#052460'
 
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold" style={{ color: '#1E3A5F' }}>Welcome back, {org.name}</h1>
+        <h1 className="text-2xl font-bold" style={{ color: '#052460' }}>Welcome back, {org.name}</h1>
         <div className="flex items-center gap-3 mt-2">
           <span className="px-3 py-1 rounded-full text-xs font-bold text-white" style={{ backgroundColor: color }}>{org.pillar}</span>
           <span className="text-gray-500 text-sm">{org.region} · {org.tier}</span>
@@ -105,24 +105,24 @@ export default async function DashboardPage() {
           <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden mb-1">
             <div
               className="h-full rounded-full transition-all duration-500"
-              style={{ backgroundColor: '#00A99D', width: `${dataQuality}%` }}
+              style={{ backgroundColor: '#F99F38', width: `${dataQuality}%` }}
             />
           </div>
           <div className="text-xs font-semibold" style={{ color: qualityColor }}>{qualityLabel}</div>
         </div>
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="text-sm text-gray-500 mb-1">Total Submissions</div>
-          <div className="text-4xl font-black" style={{ color: '#1E3A5F' }}>{submissions.length}</div>
+          <div className="text-4xl font-black" style={{ color: '#052460' }}>{submissions.length}</div>
           <div className="text-xs text-gray-400 mt-1">All time</div>
         </div>
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="text-sm text-gray-500 mb-1">Latest Period</div>
-          <div className="text-2xl font-black" style={{ color: '#1E3A5F' }}>{latestProcessed?.period || '—'}</div>
+          <div className="text-2xl font-black" style={{ color: '#052460' }}>{latestProcessed?.period || '—'}</div>
           <div className="text-xs text-gray-400 mt-1">{latestProcessed ? 'Processed' : 'No data yet'}</div>
         </div>
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="text-sm text-gray-500 mb-1">Benchmarks Available</div>
-          <div className="text-4xl font-black" style={{ color: '#1E3A5F' }}>{benchmarks.length}</div>
+          <div className="text-4xl font-black" style={{ color: '#052460' }}>{benchmarks.length}</div>
           <div className="text-xs text-gray-400 mt-1">Industry metrics</div>
         </div>
       </div>
@@ -133,15 +133,15 @@ export default async function DashboardPage() {
           <a
             key={action.href}
             href={action.href}
-            className="group flex items-center bg-white rounded-2xl px-6 py-4 shadow-sm border border-gray-100 hover:border-teal-300 hover:shadow-md transition-all duration-150"
-            style={{ borderLeftWidth: '4px', borderLeftColor: '#00A99D' }}
+            className="group flex items-center bg-white rounded-2xl px-6 py-4 shadow-sm border border-gray-100 hover:border-orange-300 hover:shadow-md transition-all duration-150"
+            style={{ borderLeftWidth: '4px', borderLeftColor: '#F99F38' }}
           >
             <div className="text-2xl mr-4 flex-shrink-0">{action.icon}</div>
             <div className="flex-1 min-w-0">
-              <div className="font-bold text-sm" style={{ color: '#1E3A5F' }}>{action.title}</div>
+              <div className="font-bold text-sm" style={{ color: '#052460' }}>{action.title}</div>
               <div className="text-xs text-gray-400 mt-0.5">{action.desc}</div>
             </div>
-            <div className="ml-3 flex-shrink-0 text-gray-300 group-hover:text-teal-400 transition-colors">
+            <div className="ml-3 flex-shrink-0 text-gray-300 group-hover:text-orange-400 transition-colors">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
@@ -153,7 +153,7 @@ export default async function DashboardPage() {
       {/* Metric comparison cards */}
       {myMetrics.length > 0 && (
         <div>
-          <h2 className="text-lg font-bold mb-4" style={{ color: '#1E3A5F' }}>Your Metrics vs Industry Benchmarks ({latestProcessed?.period})</h2>
+          <h2 className="text-lg font-bold mb-4" style={{ color: '#052460' }}>Your Metrics vs Industry Benchmarks ({latestProcessed?.period})</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {myMetrics.map(mv => {
               const bm = benchmarkByCode[mv.metric.code]
@@ -184,12 +184,12 @@ export default async function DashboardPage() {
       {/* Improved empty state — onboarding guide */}
       {myMetrics.length === 0 && (
         <div className="bg-white rounded-2xl p-10 shadow-sm border border-gray-100">
-          <h2 className="text-lg font-bold mb-1" style={{ color: '#1E3A5F' }}>Get started with your data</h2>
+          <h2 className="text-lg font-bold mb-1" style={{ color: '#052460' }}>Get started with your data</h2>
           <p className="text-sm text-gray-500 mb-8">Follow these steps to unlock your benchmarks.</p>
           <div className="space-y-4 max-w-lg">
             {/* Step 1 — done */}
             <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: '#00A99D' }}>
+              <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: '#F99F38' }}>
                 ✓
               </div>
               <div>
@@ -201,7 +201,7 @@ export default async function DashboardPage() {
             <div className="ml-4 w-px h-4 bg-gray-200" />
             {/* Step 2 — CTA */}
             <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: '#00A99D' }}>
+              <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: '#F99F38' }}>
                 2
               </div>
               <div className="flex-1">
@@ -210,7 +210,7 @@ export default async function DashboardPage() {
                 <a
                   href="/dashboard/submit"
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-white text-sm transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: '#00A99D' }}
+                  style={{ backgroundColor: '#F99F38' }}
                 >
                   📤 Submit Data Now
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="none">

@@ -23,7 +23,7 @@ export default async function GovtPage() {
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold" style={{ color: '#1E3A5F' }}>Industry Overview — 2024-FY</h1>
+        <h1 className="text-2xl font-bold" style={{ color: '#052460' }}>Industry Overview — 2024-FY</h1>
         <p className="text-gray-500 text-sm mt-1">
           National cross-pillar benchmarks · Government view · Data anonymised and aggregated
         </p>

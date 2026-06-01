@@ -58,7 +58,7 @@ export default function MembersPage() {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-2" style={{ color: '#1E3A5F' }}>Member Management</h1>
+      <h1 className="text-2xl font-bold mb-2" style={{ color: '#052460' }}>Member Management</h1>
       <p className="text-gray-500 text-sm mb-8">Review and approve member registrations</p>
 
       {loading ? (

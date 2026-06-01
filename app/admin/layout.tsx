@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { getSession } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
@@ -18,11 +19,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="min-h-screen flex" style={{ backgroundColor: '#F8FAFC' }}>
-      <aside className="w-64 min-h-screen flex flex-col" style={{ backgroundColor: '#0d1f33' }}>
+      <aside className="w-64 min-h-screen flex flex-col" style={{ backgroundColor: '#031B4B' }}>
         <div className="p-6 border-b border-white/10">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded" style={{ backgroundColor: '#00A99D' }} />
-            <span className="text-white font-bold text-sm leading-tight">ABEA Admin<br/><span className="text-white/50 font-normal">Control Panel</span></span>
+          <Link href="/" className="block">
+            <Image src="/brand/abea-logo-foot.png" alt="Australian Business Events Association" width={236} height={49} className="abea-logo h-12 w-auto max-w-[190px]" />
+            <span className="mt-3 block text-white/60 text-xs font-semibold uppercase tracking-wide">Admin Control Panel</span>
           </Link>
         </div>
         <nav className="flex-1 p-4">

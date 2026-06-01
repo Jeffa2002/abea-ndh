@@ -71,7 +71,7 @@ export default function SubmitPage() {
 
   return (
     <div className="p-8 max-w-3xl">
-      <h1 className="text-2xl font-bold mb-2" style={{ color: '#1E3A5F' }}>Submit Data</h1>
+      <h1 className="text-2xl font-bold mb-2" style={{ color: '#052460' }}>Submit Data</h1>
       <p className="text-gray-500 text-sm mb-8">Submit your organisation&apos;s metrics for a specific period</p>
 
       {error && <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">{error}</div>}
@@ -83,7 +83,7 @@ export default function SubmitPage() {
           {PERIODS.map(p => (
             <button key={p} type="button" onClick={() => setPeriod(p)}
               className="px-4 py-2 rounded-lg text-sm font-medium border transition-colors"
-              style={period === p ? { backgroundColor: '#1E3A5F', color: 'white', borderColor: '#1E3A5F' } : { backgroundColor: 'white', color: '#374151', borderColor: '#E5E7EB' }}>
+              style={period === p ? { backgroundColor: '#052460', color: 'white', borderColor: '#052460' } : { backgroundColor: 'white', color: '#374151', borderColor: '#E5E7EB' }}>
               {p}
             </button>
           ))}
@@ -94,12 +94,12 @@ export default function SubmitPage() {
       <div className="flex gap-4 mb-6">
         <button onClick={() => setUploadMode(false)}
           className="px-4 py-2 rounded-lg text-sm font-medium border transition-colors"
-          style={!uploadMode ? { backgroundColor: '#00A99D', color: 'white', borderColor: '#00A99D' } : { backgroundColor: 'white', color: '#374151', borderColor: '#E5E7EB' }}>
+          style={!uploadMode ? { backgroundColor: '#F99F38', color: 'white', borderColor: '#F99F38' } : { backgroundColor: 'white', color: '#374151', borderColor: '#E5E7EB' }}>
           📝 Manual Entry
         </button>
         <button onClick={() => setUploadMode(true)}
           className="px-4 py-2 rounded-lg text-sm font-medium border transition-colors"
-          style={uploadMode ? { backgroundColor: '#00A99D', color: 'white', borderColor: '#00A99D' } : { backgroundColor: 'white', color: '#374151', borderColor: '#E5E7EB' }}>
+          style={uploadMode ? { backgroundColor: '#F99F38', color: 'white', borderColor: '#F99F38' } : { backgroundColor: 'white', color: '#374151', borderColor: '#E5E7EB' }}>
           📁 CSV Upload
         </button>
       </div>
@@ -107,7 +107,7 @@ export default function SubmitPage() {
       {!uploadMode ? (
         <form onSubmit={handleSubmit}>
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-            <div className="p-4 border-b" style={{ backgroundColor: '#1E3A5F' }}>
+            <div className="p-4 border-b" style={{ backgroundColor: '#052460' }}>
               <h3 className="font-semibold text-white text-sm">Your Pillar Metrics — {period}</h3>
             </div>
             {metrics.map((m, i) => (
@@ -128,7 +128,7 @@ export default function SubmitPage() {
           </div>
           <button type="submit" disabled={loading}
             className="px-8 py-3 rounded-xl font-bold text-white disabled:opacity-60"
-            style={{ backgroundColor: '#1E3A5F' }}>
+            style={{ backgroundColor: '#052460' }}>
             {loading ? 'Submitting...' : 'Submit Data'}
           </button>
         </form>
@@ -141,7 +141,7 @@ export default function SubmitPage() {
                 href="/abea-template.csv"
                 download
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: '#00A99D' }}
+                style={{ backgroundColor: '#F99F38' }}
               >
                 📥 Download CSV Template
               </a>
@@ -154,11 +154,11 @@ export default function SubmitPage() {
             </div>
             <input type="file" accept=".csv" onChange={e => setCsvFile(e.target.files?.[0] || null)}
               className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:font-semibold file:text-white"
-              style={{ '--file-bg': '#1E3A5F' } as any} />
+              style={{ '--file-bg': '#052460' } as any} />
           </div>
           <button type="submit" disabled={loading || !csvFile}
             className="px-8 py-3 rounded-xl font-bold text-white disabled:opacity-60"
-            style={{ backgroundColor: '#1E3A5F' }}>
+            style={{ backgroundColor: '#052460' }}>
             {loading ? 'Uploading...' : 'Upload CSV'}
           </button>
         </form>

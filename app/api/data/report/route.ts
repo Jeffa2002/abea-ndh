@@ -92,8 +92,8 @@ export async function GET() {
     day: 'numeric', month: 'long', year: 'numeric',
   })
 
-  const NAVY = '#1E3A5F'
-  const TEAL = '#00A99D'
+  const NAVY = '#052460'
+  const TEAL = '#F99F38'
   const AMBER = '#F59E0B'
   const GREEN = '#10B981'
   const RED = '#EF4444'
@@ -249,7 +249,7 @@ export async function GET() {
       alignItems: 'center',
       marginBottom: 24,
       paddingBottom: 12,
-      borderBottom: '2 solid #1E3A5F',
+      borderBottom: '2 solid #052460',
     },
     pageHeaderTitle: {
       fontSize: 16,

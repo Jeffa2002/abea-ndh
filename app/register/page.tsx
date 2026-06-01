@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const PILLARS = ['VENUE', 'ORGANISER', 'SUPPLIER', 'BUREAU']
 const TIERS = ['SME', 'Mid', 'Large']
@@ -32,25 +33,28 @@ export default function RegisterPage() {
   if (submitted) {
     return (
       <div className="min-h-screen" style={{ backgroundColor: '#F8FAFC' }}>
-        <nav style={{ backgroundColor: '#1E3A5F' }} className="px-6 py-4">
-          <Link href="/" className="text-white font-bold text-lg">← ABEA National Data Hub</Link>
+        <nav style={{ backgroundColor: '#052460' }} className="px-6 py-4">
+          <Link href="/" className="inline-flex items-center gap-4">
+            <Image src="/brand/abea-logo-foot.png" alt="Australian Business Events Association" width={236} height={49} className="abea-logo h-12 w-auto max-w-[210px]" priority />
+            <span className="hidden sm:inline text-white/70 text-sm font-semibold border-l border-white/20 pl-4">National Data Hub</span>
+          </Link>
         </nav>
         <div className="flex items-center justify-center px-4 py-12">
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 w-full max-w-lg text-center">
             <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#E8F8F7' }}>
               <span className="text-3xl">⏳</span>
             </div>
-            <h1 className="text-2xl font-bold mb-3" style={{ color: '#1E3A5F' }}>Registration Submitted!</h1>
+            <h1 className="text-2xl font-bold mb-3" style={{ color: '#052460' }}>Registration Submitted!</h1>
             <p className="text-gray-600 mb-4 leading-relaxed">
               Your registration for <strong>{form.orgName}</strong> is now pending review by the ABEA team.
             </p>
-            <div className="p-4 rounded-xl mb-6 text-sm" style={{ backgroundColor: '#E8F8F7', color: '#00A99D' }}>
+            <div className="p-4 rounded-xl mb-6 text-sm" style={{ backgroundColor: '#E8F8F7', color: '#F99F38' }}>
               <strong>What happens next?</strong><br />
               You&apos;ll receive an email at <strong>{form.email}</strong> once your account has been approved. This usually takes 1–2 business days.
             </div>
             <div className="space-y-3 text-sm text-gray-500">
-              <p>Questions? Contact us at <a href="mailto:support@abea.org.au" className="font-semibold" style={{ color: '#00A99D' }}>support@abea.org.au</a></p>
-              <p><Link href="/login" className="font-semibold" style={{ color: '#1E3A5F' }}>← Back to Login</Link></p>
+              <p>Questions? Contact us at <a href="mailto:support@abea.org.au" className="font-semibold" style={{ color: '#F99F38' }}>support@abea.org.au</a></p>
+              <p><Link href="/login" className="font-semibold" style={{ color: '#052460' }}>← Back to Login</Link></p>
             </div>
           </div>
         </div>
@@ -60,12 +64,15 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F8FAFC' }}>
-      <nav style={{ backgroundColor: '#1E3A5F' }} className="px-6 py-4">
-        <Link href="/" className="text-white font-bold text-lg">← ABEA National Data Hub</Link>
+      <nav style={{ backgroundColor: '#052460' }} className="px-6 py-4">
+        <Link href="/" className="inline-flex items-center gap-4">
+          <Image src="/brand/abea-logo-foot.png" alt="Australian Business Events Association" width={236} height={49} className="abea-logo h-12 w-auto max-w-[210px]" priority />
+          <span className="hidden sm:inline text-white/70 text-sm font-semibold border-l border-white/20 pl-4">National Data Hub</span>
+        </Link>
       </nav>
       <div className="flex items-center justify-center px-4 py-12">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 w-full max-w-lg">
-          <h1 className="text-2xl font-bold mb-2" style={{ color: '#1E3A5F' }}>Register Your Organisation</h1>
+          <h1 className="text-2xl font-bold mb-2" style={{ color: '#052460' }}>Register Your Organisation</h1>
           <p className="text-gray-500 mb-8 text-sm">Join the national business events data community</p>
 
           {error && <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">{error}</div>}
@@ -120,12 +127,12 @@ export default function RegisterPage() {
             </div>
             <button type="submit" disabled={loading}
               className="w-full py-3 rounded-xl font-bold text-white disabled:opacity-60"
-              style={{ backgroundColor: '#1E3A5F' }}>
+              style={{ backgroundColor: '#052460' }}>
               {loading ? 'Registering...' : 'Register Organisation'}
             </button>
           </form>
           <p className="mt-6 text-center text-sm text-gray-500">
-            Already registered? <Link href="/login" className="font-semibold" style={{ color: '#00A99D' }}>Sign in</Link>
+            Already registered? <Link href="/login" className="font-semibold" style={{ color: '#F99F38' }}>Sign in</Link>
           </p>
         </div>
       </div>

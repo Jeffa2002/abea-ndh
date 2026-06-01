@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
-import { Geist } from 'next/font/google'
+import { Noto_Sans } from 'next/font/google'
 import './globals.css'
 
-const geist = Geist({ subsets: ['latin'] })
+const notoSans = Noto_Sans({ subsets: ['latin'], weight: ['400', '600', '700', '800'] })
 
 export const metadata: Metadata = {
   title: 'ABEA National Data Hub',
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={geist.className}>{children}</body>
+      <body className={notoSans.className}>{children}</body>
     </html>
   )
 }

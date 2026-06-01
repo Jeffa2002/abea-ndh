@@ -1,12 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --navy: #1E3A5F;
-  --teal: #00A99D;
+  --navy: #052460;
+  --orange: #F99F38;
+  --blue: #1C4DA1;
+  --purple: #8E4F9E;
   --bg: #F8FAFC;
 }
 
 body {
   background-color: var(--bg);
   color: #1a202c;
+}
+
+.abea-logo {
+  display: block;
+  object-fit: contain;
 }

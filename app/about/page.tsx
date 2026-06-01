@@ -1,5 +1,6 @@
 // @ts-nocheck
 import Link from 'next/link'
+import Image from 'next/image'
 
 const pillars = [
   {
@@ -11,7 +12,7 @@ const pillars = [
   {
     name: 'Organisers',
     icon: '📋',
-    color: 'bg-teal-50 border-teal-200',
+    color: 'bg-orange-50 border-orange-200',
     desc: 'Event management companies and PCOs reporting delegate volumes, event budgets, repeat client rates, and international delegate percentages. Organisers can benchmark client retention and growth against national peers.',
   },
   {
@@ -40,12 +41,12 @@ export default function AboutPage() {
     <div className="min-h-screen" style={{ backgroundColor: '#F8FAFC' }}>
       {/* Nav */}
       <nav
-        style={{ backgroundColor: '#1E3A5F', position: 'sticky', top: 0, zIndex: 50 }}
+        style={{ backgroundColor: '#052460', position: 'sticky', top: 0, zIndex: 50 }}
         className="text-white px-6 py-4 flex items-center justify-between shadow-md"
       >
-        <Link href="/" className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded" style={{ backgroundColor: '#00A99D' }} />
-          <span className="font-bold text-lg tracking-tight">ABEA National Data Hub</span>
+        <Link href="/" className="flex items-center gap-4">
+          <Image src="/brand/abea-logo-foot.png" alt="Australian Business Events Association" width={236} height={49} className="abea-logo h-12 w-auto max-w-[210px]" priority />
+          <span className="hidden sm:inline text-white/70 text-sm font-semibold border-l border-white/20 pl-4">National Data Hub</span>
         </Link>
         <div className="flex items-center gap-5">
           <Link href="/about" className="text-white text-sm hidden md:inline font-medium">About</Link>
@@ -53,7 +54,7 @@ export default function AboutPage() {
           <Link
             href="/register"
             className="px-4 py-2 rounded-lg text-sm font-semibold text-white"
-            style={{ backgroundColor: '#00A99D' }}
+            style={{ backgroundColor: '#F99F38' }}
           >
             Register
           </Link>
@@ -61,16 +62,16 @@ export default function AboutPage() {
       </nav>
 
       {/* Hero */}
-      <section style={{ background: 'linear-gradient(135deg, #1E3A5F 0%, #0d2440 100%)' }} className="text-white py-20 px-6">
+      <section style={{ background: 'linear-gradient(135deg, #052460 0%, #031B4B 100%)' }} className="text-white py-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <div
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
-            style={{ backgroundColor: 'rgba(0,169,157,0.2)', color: '#00A99D' }}
+            style={{ backgroundColor: 'rgba(249,159,56,0.18)', color: '#F99F38' }}
           >
             🇦🇺 Australia&apos;s First National Business Events Data Platform
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-            About the <span style={{ color: '#00A99D' }}>ABEA National Data Hub</span>
+            About the <span style={{ color: '#F99F38' }}>ABEA National Data Hub</span>
           </h1>
           <p className="text-xl text-white/70 max-w-2xl mx-auto">
             Built by the industry, for the industry — turning fragmented data into a national standard that drives better decisions for every corner of business events.
@@ -82,7 +83,7 @@ export default function AboutPage() {
       <section className="py-16 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl p-10 shadow-sm border border-gray-100">
-            <h2 className="text-3xl font-bold mb-6" style={{ color: '#1E3A5F' }}>What is the ABEA National Data Hub?</h2>
+            <h2 className="text-3xl font-bold mb-6" style={{ color: '#052460' }}>What is the ABEA National Data Hub?</h2>
             <p className="text-gray-700 leading-relaxed text-lg mb-4">
               The ABEA National Data Hub is <strong>Australia&apos;s first national, standardised data platform</strong> for the business events industry. It brings together venues, organisers, suppliers, and bureaux under a common data framework — enabling meaningful benchmarks for the first time.
             </p>
@@ -97,7 +98,7 @@ export default function AboutPage() {
       <section className="py-8 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl p-10 shadow-sm border border-gray-100">
-            <h2 className="text-3xl font-bold mb-6" style={{ color: '#1E3A5F' }}>Why It Exists</h2>
+            <h2 className="text-3xl font-bold mb-6" style={{ color: '#052460' }}>Why It Exists</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               {[
                 { icon: '🧩', title: 'Fragmented Data', desc: 'Every organisation measured differently. No common definitions, no compatible formats, no ability to compare.' },
@@ -106,7 +107,7 @@ export default function AboutPage() {
               ].map(item => (
                 <div key={item.title} className="text-center p-6 rounded-xl" style={{ backgroundColor: '#F8FAFC' }}>
                   <div className="text-3xl mb-3">{item.icon}</div>
-                  <h3 className="font-bold text-base mb-2" style={{ color: '#1E3A5F' }}>{item.title}</h3>
+                  <h3 className="font-bold text-base mb-2" style={{ color: '#052460' }}>{item.title}</h3>
                   <p className="text-gray-600 text-sm leading-relaxed">{item.desc}</p>
                 </div>
               ))}
@@ -121,7 +122,7 @@ export default function AboutPage() {
       {/* Data Protection */}
       <section className="py-8 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="rounded-2xl p-10 border" style={{ backgroundColor: '#1E3A5F' }}>
+          <div className="rounded-2xl p-10 border" style={{ backgroundColor: '#052460' }}>
             <h2 className="text-3xl font-bold mb-2 text-white">How Your Data Is Protected</h2>
             <p className="text-white/60 mb-8">Your data is safe. Here&apos;s exactly how we handle it.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -141,13 +142,13 @@ export default function AboutPage() {
       <section className="py-8 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl p-10 shadow-sm border border-gray-100">
-            <h2 className="text-3xl font-bold mb-2" style={{ color: '#1E3A5F' }}>The Four Industry Pillars</h2>
+            <h2 className="text-3xl font-bold mb-2" style={{ color: '#052460' }}>The Four Industry Pillars</h2>
             <p className="text-gray-500 mb-8">The Hub covers the full business events ecosystem through four defined pillars.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {pillars.map(p => (
                 <div key={p.name} className={`rounded-xl p-6 border ${p.color}`}>
                   <div className="text-3xl mb-3">{p.icon}</div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: '#1E3A5F' }}>{p.name}</h3>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: '#052460' }}>{p.name}</h3>
                   <p className="text-gray-600 text-sm leading-relaxed">{p.desc}</p>
                 </div>
               ))}
@@ -160,13 +161,13 @@ export default function AboutPage() {
       <section className="py-8 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl p-10 shadow-sm border border-gray-100">
-            <h2 className="text-3xl font-bold mb-6" style={{ color: '#1E3A5F' }}>Who&apos;s Behind It</h2>
+            <h2 className="text-3xl font-bold mb-6" style={{ color: '#052460' }}>Who&apos;s Behind It</h2>
             <div className="flex items-start gap-6">
-              <div className="w-16 h-16 rounded-2xl flex-shrink-0 flex items-center justify-center text-2xl" style={{ backgroundColor: '#00A99D' }}>
+              <div className="w-16 h-16 rounded-2xl flex-shrink-0 flex items-center justify-center text-2xl" style={{ backgroundColor: '#F99F38' }}>
                 🤝
               </div>
               <div>
-                <h3 className="text-xl font-bold mb-3" style={{ color: '#1E3A5F' }}>ABEA — Australian Business Events Association</h3>
+                <h3 className="text-xl font-bold mb-3" style={{ color: '#052460' }}>ABEA — Australian Business Events Association</h3>
                 <p className="text-gray-700 leading-relaxed mb-4">
                   The National Data Hub is an initiative of the <strong>Australian Business Events Association (ABEA)</strong>, the peak body representing Australia&apos;s business events industry. ABEA developed the Hub in partnership with member organisations across all four pillars — ensuring the metric framework reflects what the industry actually needs to measure.
                 </p>
@@ -182,7 +183,7 @@ export default function AboutPage() {
       {/* CTA */}
       <section className="py-16 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="rounded-2xl p-12 text-center text-white" style={{ background: 'linear-gradient(135deg, #1E3A5F 0%, #0d2440 100%)' }}>
+          <div className="rounded-2xl p-12 text-center text-white" style={{ background: 'linear-gradient(135deg, #052460 0%, #031B4B 100%)' }}>
             <h2 className="text-3xl font-bold mb-4">Ready to join the Hub?</h2>
             <p className="text-white/70 mb-8 max-w-xl mx-auto text-lg">
               Register your organisation today and start contributing to — and benefiting from — Australia&apos;s national business events data standard.
@@ -191,7 +192,7 @@ export default function AboutPage() {
               <Link
                 href="/register"
                 className="px-8 py-4 rounded-xl font-bold text-white text-lg shadow-lg hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: '#00A99D' }}
+                style={{ backgroundColor: '#F99F38' }}
               >
                 Register Your Organisation
               </Link>
@@ -207,13 +208,10 @@ export default function AboutPage() {
       </section>
 
       {/* Footer */}
-      <footer style={{ backgroundColor: '#1E3A5F' }} className="px-6 pt-12 pb-6 text-white">
+      <footer style={{ backgroundColor: '#052460' }} className="px-6 pt-12 pb-6 text-white">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
           <div>
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-8 h-8 rounded" style={{ backgroundColor: '#00A99D' }} />
-              <span className="font-bold text-base tracking-tight">ABEA National Data Hub</span>
-            </div>
+            <Image src="/brand/abea-logo-foot.png" alt="Australian Business Events Association" width={273} height={56} className="abea-logo h-14 w-auto max-w-[230px] mb-4" />
             <p className="text-white/50 text-sm leading-relaxed">
               Australia&apos;s national business events data standard.
             </p>

@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 
 const PILLAR_COLORS: Record<string, string> = {
-  VENUE: '#3B82F6', ORGANISER: '#00A99D', SUPPLIER: '#8B5CF6', BUREAU: '#F97316'
+  VENUE: '#1C4DA1', ORGANISER: '#F99F38', SUPPLIER: '#8E4F9E', BUREAU: '#F99F38'
 }
 
 export default async function AdminPage() {
@@ -23,7 +23,7 @@ export default async function AdminPage() {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-2" style={{ color: '#1E3A5F' }}>Admin Overview</h1>
+      <h1 className="text-2xl font-bold mb-2" style={{ color: '#052460' }}>Admin Overview</h1>
       <p className="text-gray-500 text-sm mb-8">National Data Hub — control panel</p>
 
       {pendingApprovals > 0 && (
@@ -38,7 +38,7 @@ export default async function AdminPage() {
         {['VENUE', 'ORGANISER', 'SUPPLIER', 'BUREAU'].map(pillar => (
           <div key={pillar} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <div className="text-xs font-bold mb-2 px-2 py-1 rounded-full inline-block text-white" style={{ backgroundColor: PILLAR_COLORS[pillar] }}>{pillar}</div>
-            <div className="text-3xl font-black mt-2" style={{ color: '#1E3A5F' }}>{pillarMap[pillar] || 0}</div>
+            <div className="text-3xl font-black mt-2" style={{ color: '#052460' }}>{pillarMap[pillar] || 0}</div>
             <div className="text-xs text-gray-400">organisations</div>
           </div>
         ))}
@@ -48,15 +48,15 @@ export default async function AdminPage() {
       <div className="grid grid-cols-3 gap-4 mb-8">
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="text-sm text-gray-500 mb-1">Total Submissions</div>
-          <div className="text-3xl font-black" style={{ color: '#1E3A5F' }}>{totalSubmissions}</div>
+          <div className="text-3xl font-black" style={{ color: '#052460' }}>{totalSubmissions}</div>
         </div>
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="text-sm text-gray-500 mb-1">Benchmark Snapshots</div>
-          <div className="text-3xl font-black" style={{ color: '#00A99D' }}>{totalSnapshots}</div>
+          <div className="text-3xl font-black" style={{ color: '#F99F38' }}>{totalSnapshots}</div>
         </div>
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="text-sm text-gray-500 mb-1">Total Organisations</div>
-          <div className="text-3xl font-black" style={{ color: '#8B5CF6' }}>{totalOrgs}</div>
+          <div className="text-3xl font-black" style={{ color: '#8E4F9E' }}>{totalOrgs}</div>
         </div>
       </div>
 
@@ -64,7 +64,7 @@ export default async function AdminPage() {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-4 border-b flex items-center justify-between">
           <h2 className="font-bold text-gray-900">Recent Submissions</h2>
-          <Link href="/admin/submissions" className="text-sm font-semibold" style={{ color: '#00A99D' }}>View all →</Link>
+          <Link href="/admin/submissions" className="text-sm font-semibold" style={{ color: '#F99F38' }}>View all →</Link>
         </div>
         <table className="w-full">
           <thead>

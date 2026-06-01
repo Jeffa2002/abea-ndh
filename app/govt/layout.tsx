@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { getSession } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 
@@ -8,11 +9,11 @@ export default async function GovtLayout({ children }: { children: React.ReactNo
 
   return (
     <div className="min-h-screen flex" style={{ backgroundColor: '#F8FAFC' }}>
-      <aside className="w-64 min-h-screen flex flex-col" style={{ backgroundColor: '#1a3a2a' }}>
+      <aside className="w-64 min-h-screen flex flex-col" style={{ backgroundColor: '#052460' }}>
         <div className="p-6 border-b border-white/10">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded" style={{ backgroundColor: '#00A99D' }} />
-            <span className="text-white font-bold text-sm leading-tight">ABEA NDH<br/><span className="text-white/50 font-normal">Government View</span></span>
+          <Link href="/" className="block">
+            <Image src="/brand/abea-logo-foot.png" alt="Australian Business Events Association" width={236} height={49} className="abea-logo h-12 w-auto max-w-[190px]" />
+            <span className="mt-3 block text-white/60 text-xs font-semibold uppercase tracking-wide">Government View</span>
           </Link>
         </div>
         <nav className="flex-1 p-4">

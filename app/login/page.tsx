@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -38,12 +39,15 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#F8FAFC' }}>
-      <nav style={{ backgroundColor: '#1E3A5F' }} className="px-6 py-4">
-        <Link href="/" className="text-white font-bold text-lg">← ABEA National Data Hub</Link>
+      <nav style={{ backgroundColor: '#052460' }} className="px-6 py-4">
+        <Link href="/" className="inline-flex items-center gap-4">
+          <Image src="/brand/abea-logo-foot.png" alt="Australian Business Events Association" width={236} height={49} className="abea-logo h-12 w-auto max-w-[210px]" priority />
+          <span className="hidden sm:inline text-white/70 text-sm font-semibold border-l border-white/20 pl-4">National Data Hub</span>
+        </Link>
       </nav>
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 w-full max-w-md">
-          <h1 className="text-2xl font-bold mb-2" style={{ color: '#1E3A5F' }}>Sign In</h1>
+          <h1 className="text-2xl font-bold mb-2" style={{ color: '#052460' }}>Sign In</h1>
           <p className="text-gray-500 mb-8 text-sm">Access your organisation&apos;s data hub</p>
 
           {error && (
@@ -77,7 +81,7 @@ export default function LoginPage() {
               type="submit"
               disabled={loading}
               className="w-full py-3 rounded-xl font-bold text-white text-sm disabled:opacity-60"
-              style={{ backgroundColor: loading ? '#4A6A8F' : '#1E3A5F' }}
+              style={{ backgroundColor: loading ? '#1C4DA1' : '#052460' }}
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
@@ -85,7 +89,7 @@ export default function LoginPage() {
 
           <p className="mt-6 text-center text-sm text-gray-500">
             Don&apos;t have an account?{' '}
-            <Link href="/register" className="font-semibold" style={{ color: '#00A99D' }}>Register your organisation</Link>
+            <Link href="/register" className="font-semibold" style={{ color: '#F99F38' }}>Register your organisation</Link>
           </p>
 
           <div className="mt-8 p-4 bg-gray-50 rounded-xl text-xs text-gray-500">

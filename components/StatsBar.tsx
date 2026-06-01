@@ -30,7 +30,7 @@ export default function StatsBar() {
       <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
         {items.map(item => (
           <div key={item.label}>
-            <div className="text-5xl font-black mb-1" style={{ color: '#00A99D' }}>
+            <div className="text-5xl font-black mb-1" style={{ color: '#F99F38' }}>
               {item.value.toLocaleString()}
             </div>
             <div className="text-white/60 text-sm uppercase tracking-wider font-medium">

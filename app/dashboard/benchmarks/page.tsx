@@ -114,14 +114,14 @@ export default function BenchmarksPage() {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: '#1E3A5F' }}>Industry Benchmarks</h1>
+          <h1 className="text-2xl font-bold" style={{ color: '#052460' }}>Industry Benchmarks</h1>
           <p className="text-gray-500 text-sm mt-1">How you compare to your peers · Data anonymised and aggregated</p>
         </div>
         <button
           onClick={handleDownload}
           disabled={downloading}
           className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-semibold shadow-sm hover:opacity-90 transition-opacity disabled:opacity-60"
-          style={{ backgroundColor: '#00A99D' }}
+          style={{ backgroundColor: '#F99F38' }}
         >
           {downloading ? '⏳ Generating…' : '📄 Download PDF Report'}
         </button>
@@ -141,7 +141,7 @@ export default function BenchmarksPage() {
             className="px-4 py-2 rounded-full text-sm font-semibold transition-all"
             style={
               activePillar === p
-                ? { backgroundColor: '#1E3A5F', color: '#fff' }
+                ? { backgroundColor: '#052460', color: '#fff' }
                 : { backgroundColor: '#F3F4F6', color: '#6B7280' }
             }
           >
@@ -163,7 +163,7 @@ export default function BenchmarksPage() {
           <a
             href="/dashboard/submit"
             className="inline-block px-6 py-3 rounded-xl text-white text-sm font-semibold"
-            style={{ backgroundColor: '#1E3A5F' }}
+            style={{ backgroundColor: '#052460' }}
           >
             Submit Your Data →
           </a>
@@ -211,7 +211,7 @@ export default function BenchmarksPage() {
                   <h3 className="font-bold text-gray-900">{label}</h3>
                   <span
                     className="text-xs px-2 py-0.5 rounded-full text-white ml-2 shrink-0"
-                    style={{ backgroundColor: '#1E3A5F' }}
+                    style={{ backgroundColor: '#052460' }}
                   >
                     {b.pillar}
                   </span>
@@ -239,8 +239,8 @@ export default function BenchmarksPage() {
                       }}
                     />
                     <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
-                    <Bar dataKey="Your Org" fill="#1E3A5F" radius={[4, 4, 0, 0]} maxBarSize={40} />
-                    <Bar dataKey="Industry Avg" fill="#00A99D" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                    <Bar dataKey="Your Org" fill="#052460" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                    <Bar dataKey="Industry Avg" fill="#F99F38" radius={[4, 4, 0, 0]} maxBarSize={40} />
                     <Bar dataKey="Top Quartile" fill="#F59E0B" radius={[4, 4, 0, 0]} maxBarSize={40} />
                   </BarChart>
                 </ResponsiveContainer>

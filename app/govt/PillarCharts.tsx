@@ -7,10 +7,10 @@ import {
 } from 'recharts'
 
 const PILLAR_COLORS: Record<string, string> = {
-  VENUE: '#3B82F6',
-  ORGANISER: '#00A99D',
-  SUPPLIER: '#8B5CF6',
-  BUREAU: '#F97316',
+  VENUE: '#1C4DA1',
+  ORGANISER: '#F99F38',
+  SUPPLIER: '#8E4F9E',
+  BUREAU: '#F99F38',
 }
 
 function formatValue(value: number, code: string): string {
@@ -68,15 +68,15 @@ export function PillarCharts({ overview, totalOrgs, totalSubmissions, metricsTra
       {/* KPI strip */}
       <div className="grid grid-cols-3 gap-4 mb-8">
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
-          <div className="text-3xl font-black mb-1" style={{ color: '#1E3A5F' }}>{totalOrgs}</div>
+          <div className="text-3xl font-black mb-1" style={{ color: '#052460' }}>{totalOrgs}</div>
           <div className="text-xs text-gray-400">Participating Organisations</div>
         </div>
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
-          <div className="text-3xl font-black mb-1" style={{ color: '#00A99D' }}>{totalSubmissions}</div>
+          <div className="text-3xl font-black mb-1" style={{ color: '#F99F38' }}>{totalSubmissions}</div>
           <div className="text-xs text-gray-400">Processed Submissions</div>
         </div>
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
-          <div className="text-3xl font-black mb-1" style={{ color: '#8B5CF6' }}>{metricsTracked}</div>
+          <div className="text-3xl font-black mb-1" style={{ color: '#8E4F9E' }}>{metricsTracked}</div>
           <div className="text-xs text-gray-400">Metrics Tracked</div>
         </div>
       </div>
@@ -125,7 +125,7 @@ export function PillarCharts({ overview, totalOrgs, totalSubmissions, metricsTra
             >
               <span className="text-3xl">{ICONS[pillar]}</span>
               <div className="flex-1">
-                <h2 className="font-bold text-lg" style={{ color: '#1E3A5F' }}>
+                <h2 className="font-bold text-lg" style={{ color: '#052460' }}>
                   {pillar.charAt(0) + pillar.slice(1).toLowerCase()}s
                 </h2>
                 <p className="text-sm text-gray-500">

@@ -27,7 +27,7 @@ function ConfirmationContent() {
             </svg>
           </div>
 
-          <h1 className="text-3xl font-bold mb-2" style={{ color: '#1E3A5F' }}>Submission Received!</h1>
+          <h1 className="text-3xl font-bold mb-2" style={{ color: '#052460' }}>Submission Received!</h1>
           <p className="text-gray-500 mb-8">Your data has been securely submitted to the ABEA National Data Hub.</p>
 
           {/* Details */}
@@ -48,7 +48,7 @@ function ConfirmationContent() {
               <span className="text-sm text-gray-500 font-medium">Metrics Submitted</span>
               <span
                 className="text-sm font-bold px-3 py-1 rounded-full text-white"
-                style={{ backgroundColor: '#00A99D' }}
+                style={{ backgroundColor: '#F99F38' }}
               >
                 {metrics} metric{parseInt(metrics) !== 1 ? 's' : ''}
               </span>
@@ -57,7 +57,7 @@ function ConfirmationContent() {
 
           {/* What happens next */}
           <div className="rounded-xl p-6 mb-8 text-left border border-blue-100" style={{ backgroundColor: '#EFF6FF' }}>
-            <h3 className="font-bold text-sm mb-2" style={{ color: '#1E3A5F' }}>⏱ What happens next?</h3>
+            <h3 className="font-bold text-sm mb-2" style={{ color: '#052460' }}>⏱ What happens next?</h3>
             <p className="text-sm text-gray-600 leading-relaxed">
               Your data will be processed within 24 hours. Once processed, it contributes to industry benchmarks — visible to all participating organisations once the minimum threshold of 5 contributors is met.
             </p>
@@ -68,7 +68,7 @@ function ConfirmationContent() {
             <Link
               href="/dashboard/submissions"
               className="flex-1 px-6 py-3 rounded-xl font-semibold text-white text-center hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: '#1E3A5F' }}
+              style={{ backgroundColor: '#052460' }}
             >
               View My Submissions
             </Link>

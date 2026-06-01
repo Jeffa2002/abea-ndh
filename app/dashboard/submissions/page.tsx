@@ -82,9 +82,9 @@ export default function SubmissionsPage() {
   if (loading) {
     return (
       <div className="p-8">
-        <h1 className="text-2xl font-bold mb-2" style={{ color: '#1E3A5F' }}>My Submissions</h1>
+        <h1 className="text-2xl font-bold mb-2" style={{ color: '#052460' }}>My Submissions</h1>
         <div className="mt-12 flex justify-center">
-          <div className="w-8 h-8 rounded-full border-4 border-teal-200 border-t-teal-500 animate-spin" />
+          <div className="w-8 h-8 rounded-full border-4 border-orange-200 border-t-orange-500 animate-spin" />
         </div>
       </div>
     )
@@ -93,7 +93,7 @@ export default function SubmissionsPage() {
   if (error) {
     return (
       <div className="p-8">
-        <h1 className="text-2xl font-bold mb-2" style={{ color: '#1E3A5F' }}>My Submissions</h1>
+        <h1 className="text-2xl font-bold mb-2" style={{ color: '#052460' }}>My Submissions</h1>
         <div className="mt-8 bg-red-50 border border-red-200 rounded-2xl p-6 text-red-600 text-sm">{error}</div>
       </div>
     )
@@ -101,14 +101,14 @@ export default function SubmissionsPage() {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-2" style={{ color: '#1E3A5F' }}>My Submissions</h1>
+      <h1 className="text-2xl font-bold mb-2" style={{ color: '#052460' }}>My Submissions</h1>
       <p className="text-gray-500 text-sm mb-8">All data submissions from your organisation. Click a row to see submitted metric values.</p>
 
       {submissions.length === 0 ? (
         <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-gray-100">
           <div className="text-5xl mb-4">📭</div>
-          <h3 className="font-bold text-lg mb-2" style={{ color: '#1E3A5F' }}>No submissions yet</h3>
-          <a href="/dashboard/submit" className="inline-block mt-4 px-6 py-3 rounded-xl font-bold text-white text-sm" style={{ backgroundColor: '#00A99D' }}>
+          <h3 className="font-bold text-lg mb-2" style={{ color: '#052460' }}>No submissions yet</h3>
+          <a href="/dashboard/submit" className="inline-block mt-4 px-6 py-3 rounded-xl font-bold text-white text-sm" style={{ backgroundColor: '#F99F38' }}>
             Submit Your First Dataset
           </a>
         </div>
@@ -133,9 +133,9 @@ export default function SubmissionsPage() {
                     <tr
                       key={s.id}
                       onClick={() => toggleRow(s.id)}
-                      className={`border-b cursor-pointer select-none transition-colors ${i % 2 === 0 ? '' : 'bg-gray-50/50'} hover:bg-teal-50/40 ${isExpanded ? 'bg-teal-50/60' : ''}`}
+                      className={`border-b cursor-pointer select-none transition-colors ${i % 2 === 0 ? '' : 'bg-gray-50/50'} hover:bg-orange-50/40 ${isExpanded ? 'bg-orange-50/60' : ''}`}
                     >
-                      <td className="px-6 py-4 font-semibold text-sm" style={{ color: '#1E3A5F' }}>{s.period}</td>
+                      <td className="px-6 py-4 font-semibold text-sm" style={{ color: '#052460' }}>{s.period}</td>
                       <td className="px-6 py-4">
                         <span className={`px-3 py-1 rounded-full text-xs font-bold ${STATUS_STYLES[s.status] || ''}`}>{s.status}</span>
                       </td>
@@ -146,16 +146,16 @@ export default function SubmissionsPage() {
                         <svg
                           width="16" height="16" viewBox="0 0 16 16" fill="none"
                           className={`transition-transform duration-200 inline-block ${isExpanded ? 'rotate-90' : ''}`}
-                          style={{ color: isExpanded ? '#00A99D' : undefined }}
+                          style={{ color: isExpanded ? '#F99F38' : undefined }}
                         >
                           <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                       </td>
                     </tr>
                     {isExpanded && (
-                      <tr key={`${s.id}-expanded`} className="border-b bg-teal-50/30">
+                      <tr key={`${s.id}-expanded`} className="border-b bg-orange-50/30">
                         <td colSpan={6} className="px-8 py-5">
-                          <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-teal-700">Submitted metric values — {s.period}</div>
+                          <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-orange-700">Submitted metric values — {s.period}</div>
                           <ExpandedMetrics metrics={s.metrics} />
                         </td>
                       </tr>

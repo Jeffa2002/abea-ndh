@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 
 const PILLAR_COLORS: Record<string, string> = {
-  VENUE: '#3B82F6', ORGANISER: '#00A99D', SUPPLIER: '#8B5CF6', BUREAU: '#F97316'
+  VENUE: '#1C4DA1', ORGANISER: '#F99F38', SUPPLIER: '#8E4F9E', BUREAU: '#F99F38'
 }
 
 function fmt(v: number) {
@@ -44,12 +44,12 @@ export default function AdminBenchmarksPage() {
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: '#1E3A5F' }}>Benchmarks</h1>
+          <h1 className="text-2xl font-bold" style={{ color: '#052460' }}>Benchmarks</h1>
           <p className="text-gray-500 text-sm mt-1">Current benchmark snapshots across all pillars</p>
         </div>
         <button onClick={recalculate} disabled={calculating}
           className="px-6 py-3 rounded-xl font-bold text-white text-sm disabled:opacity-60"
-          style={{ backgroundColor: '#00A99D' }}>
+          style={{ backgroundColor: '#F99F38' }}>
           {calculating ? '⏳ Calculating...' : '🔄 Recalculate Benchmarks'}
         </button>
       </div>

@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma'
 
 const PILLAR_COLORS: Record<string, string> = {
-  VENUE: '#3B82F6', ORGANISER: '#00A99D', SUPPLIER: '#8B5CF6', BUREAU: '#F97316'
+  VENUE: '#1C4DA1', ORGANISER: '#F99F38', SUPPLIER: '#8E4F9E', BUREAU: '#F99F38'
 }
 const STATUS_STYLES: Record<string, string> = {
   DRAFT: 'bg-gray-100 text-gray-600', SUBMITTED: 'bg-blue-100 text-blue-700',
@@ -17,7 +17,7 @@ export default async function AdminSubmissionsPage() {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-2" style={{ color: '#1E3A5F' }}>All Submissions</h1>
+      <h1 className="text-2xl font-bold mb-2" style={{ color: '#052460' }}>All Submissions</h1>
       <p className="text-gray-500 text-sm mb-8">Showing last 100 submissions across all organisations</p>
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
