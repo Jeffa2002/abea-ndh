@@ -5,6 +5,18 @@ const PILLAR_COLORS: Record<string, string> = {
   VENUE: '#1C4DA1', ORGANISER: '#F99F38', SUPPLIER: '#8E4F9E', BUREAU: '#F99F38'
 }
 
+interface BenchmarkSnapshot {
+  id: string
+  pillar: string
+  metricCode: string
+  period: string
+  p25Value?: number | null
+  avgValue: number
+  medianValue?: number | null
+  p75Value?: number | null
+  sampleSize: number
+}
+
 function fmt(v: number) {
   if (v >= 1000000) return `${(v / 1000000).toFixed(1)}M`
   if (v >= 1000) return `${(v / 1000).toFixed(0)}K`
@@ -12,7 +24,7 @@ function fmt(v: number) {
 }
 
 export default function AdminBenchmarksPage() {
-  const [snapshots, setSnapshots] = useState<any[]>([])
+  const [snapshots, setSnapshots] = useState<BenchmarkSnapshot[]>([])
   const [loading, setLoading] = useState(true)
   const [calculating, setCalculating] = useState(false)
   const [calcResult, setCalcResult] = useState('')
@@ -34,7 +46,7 @@ export default function AdminBenchmarksPage() {
     load()
   }
 
-  const byPillar = snapshots.reduce((acc, s) => {
+  const byPillar = snapshots.reduce<Record<string, BenchmarkSnapshot[]>>((acc, s) => {
     if (!acc[s.pillar]) acc[s.pillar] = []
     acc[s.pillar].push(s)
     return acc
