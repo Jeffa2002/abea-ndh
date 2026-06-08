@@ -1,232 +1,235 @@
-// @ts-nocheck
 import Link from 'next/link'
 import Image from 'next/image'
 
 const pillars = [
   {
     name: 'Venues',
-    icon: '🏛️',
-    color: 'bg-blue-50 border-blue-200',
-    desc: 'Convention centres, hotels, and unique venues reporting occupancy rates, total capacity, events hosted, revenue per delegate, average event size, and lead times. Venues gain benchmarks to optimise space utilisation and pricing strategy.',
+    label: 'VEN',
+    accent: '#1C4DA1',
+    tint: 'rgba(28,77,161,0.08)',
+    desc: 'Convention centres, hotels, and unique venues reporting occupancy rates, capacity, events hosted, revenue per delegate, average event size, and lead times.',
   },
   {
     name: 'Organisers',
-    icon: '📋',
-    color: 'bg-orange-50 border-orange-200',
-    desc: 'Event management companies and PCOs reporting delegate volumes, event budgets, repeat client rates, and international delegate percentages. Organisers can benchmark client retention and growth against national peers.',
+    label: 'ORG',
+    accent: '#F99F38',
+    tint: 'rgba(249,159,56,0.14)',
+    desc: 'Event management companies and PCOs reporting delegate volumes, event budgets, repeat client rates, and international delegate percentages.',
   },
   {
     name: 'Suppliers',
-    icon: '🔧',
-    color: 'bg-purple-50 border-purple-200',
-    desc: 'AV, catering, décor, and service providers reporting active contracts, average contract values, client retention, revenue growth, and lead times. Suppliers gain insight into market positioning and pricing norms.',
+    label: 'SUP',
+    accent: '#EF3D55',
+    tint: 'rgba(239,61,85,0.1)',
+    desc: 'AV, catering, production, decor, and service providers reporting active contracts, contract values, retention, growth, and lead times.',
   },
   {
     name: 'Bureaux',
-    icon: '🌏',
-    color: 'bg-orange-50 border-orange-200',
-    desc: 'Convention bureaux and destination organisations reporting bids submitted, win rates, economic impact, delegate nights, and international events won. Bureaux can track ROI and competitiveness in the global bidding market.',
+    label: 'BUR',
+    accent: '#00A7E2',
+    tint: 'rgba(0,167,226,0.1)',
+    desc: 'Convention bureaux and destination organisations reporting bids submitted, win rates, economic impact, delegate nights, and international events won.',
   },
 ]
 
 const protections = [
-  { icon: '🔒', title: 'Anonymised at Submission', desc: 'Your organisation name is never attached to published data. Metrics are stripped of identifying context before aggregation.' },
-  { icon: '📊', title: 'Minimum 5 Organisations', desc: 'Benchmark results only publish when at least 5 organisations have contributed to that metric. No benchmark ever reflects fewer than 5 data points.' },
-  { icon: '🚫', title: 'No Individual Data Published', desc: 'We never publish, share, or expose individual organisation data. You only ever see aggregated, anonymised industry-wide benchmarks.' },
-  { icon: '🔐', title: 'Secure Platform', desc: 'Data is encrypted in transit and at rest. Access is role-controlled. Your submissions are visible only to your organisation and ABEA administrators.' },
+  {
+    title: 'Anonymised before benchmarks',
+    desc: 'Organisation names are not attached to published benchmark outputs.',
+  },
+  {
+    title: 'Minimum contribution thresholds',
+    desc: 'Benchmarks publish only when enough organisations have contributed to protect anonymity.',
+  },
+  {
+    title: 'No individual records exposed',
+    desc: 'Members see aggregated industry and peer-group signals, not other organisations&apos; raw submissions.',
+  },
+  {
+    title: 'Role-controlled access',
+    desc: 'Submissions are visible to the contributing organisation and authorised ABEA administrators.',
+  },
 ]
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F8FAFC' }}>
-      {/* Nav */}
-      <nav
-        style={{ backgroundColor: '#052460', position: 'sticky', top: 0, zIndex: 50 }}
-        className="text-white px-6 py-4 flex items-center justify-between shadow-md"
-      >
-        <Link href="/" className="flex items-center gap-4">
-          <Image src="/brand/abea-logo-foot.png" alt="Australian Business Events Association" width={236} height={49} className="abea-logo h-12 w-auto max-w-[210px]" priority />
-          <span className="hidden sm:inline text-white/70 text-sm font-semibold border-l border-white/20 pl-4">National Data Hub</span>
-        </Link>
-        <div className="flex items-center gap-5">
-          <Link href="/about" className="text-white text-sm hidden md:inline font-medium">About</Link>
-          <Link href="/login" className="text-white/80 hover:text-white text-sm">Sign In</Link>
-          <Link
-            href="/register"
-            className="px-4 py-2 rounded-lg text-sm font-semibold text-white"
-            style={{ backgroundColor: '#F99F38' }}
-          >
-            Register
+    <div className="min-h-screen bg-[var(--abea-light-grey)] text-[var(--abea-black)]">
+      <nav className="sticky top-0 z-50 bg-[var(--abea-royalist)] px-6 py-4 text-white shadow-sm">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6">
+          <Link href="/" className="flex min-w-0 items-center gap-4">
+            <Image
+              src="/brand/abea-logo-foot.png"
+              alt="Australian Business Events Association"
+              width={236}
+              height={49}
+              className="abea-logo h-11 w-auto max-w-[200px]"
+              priority
+            />
+            <span className="hidden border-l border-white/20 pl-4 text-sm font-semibold text-white/70 sm:inline">
+              National Data Hub
+            </span>
           </Link>
+          <div className="flex items-center gap-4 text-sm">
+            <Link href="/" className="hidden text-white/70 transition-colors hover:text-white md:inline">
+              Home
+            </Link>
+            <Link href="/login" className="text-white/80 transition-colors hover:text-white">
+              Sign in
+            </Link>
+            <Link
+              href="/register"
+              className="rounded-lg bg-[var(--abea-sunday)] px-4 py-2 font-semibold text-white transition-opacity hover:opacity-90"
+            >
+              Register
+            </Link>
+          </div>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section style={{ background: 'linear-gradient(135deg, #052460 0%, #031B4B 100%)' }} className="text-white py-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
-            style={{ backgroundColor: 'rgba(249,159,56,0.18)', color: '#F99F38' }}
-          >
-            🇦🇺 Australia&apos;s First National Business Events Data Platform
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-            About the <span style={{ color: '#F99F38' }}>ABEA National Data Hub</span>
+      <section className="brand-hero px-6 py-20 text-white">
+        <div className="mx-auto max-w-5xl">
+          <p className="mb-5 inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-[var(--abea-sky)]">
+            About the National Data Hub
+          </p>
+          <h1 className="max-w-4xl text-4xl font-bold leading-tight md:text-5xl">
+            Building a shared evidence base for Australian business events.
           </h1>
-          <p className="text-xl text-white/70 max-w-2xl mx-auto">
-            Built by the industry, for the industry — turning fragmented data into a national standard that drives better decisions for every corner of business events.
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-white/76">
+            The Hub brings ABEA members into one standardised data framework so the sector can benchmark performance, identify trends, and advocate with clearer evidence.
           </p>
         </div>
       </section>
 
-      {/* What is it */}
-      <section className="py-16 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl p-10 shadow-sm border border-gray-100">
-            <h2 className="text-3xl font-bold mb-6" style={{ color: '#052460' }}>What is the ABEA National Data Hub?</h2>
-            <p className="text-gray-700 leading-relaxed text-lg mb-4">
-              The ABEA National Data Hub is <strong>Australia&apos;s first national, standardised data platform</strong> for the business events industry. It brings together venues, organisers, suppliers, and bureaux under a common data framework — enabling meaningful benchmarks for the first time.
-            </p>
-            <p className="text-gray-600 leading-relaxed">
-              Before the Hub existed, there was no way to answer basic questions like: <em>How does my occupancy rate compare to similar venues? Are our event budgets competitive? Is our bid win rate above or below industry average?</em> Every organisation tracked metrics differently — or not at all. The Hub changes that.
-            </p>
-          </div>
-        </div>
-      </section>
+      <main className="px-6 py-16">
+        <div className="mx-auto max-w-5xl space-y-8">
+          <section className="rounded-lg border border-black/5 bg-white p-8 shadow-sm md:p-10">
+            <p className="text-sm font-bold uppercase text-[var(--abea-hibiscus)]">What it is</p>
+            <h2 className="mt-3 text-3xl font-bold text-[var(--abea-royalist)]">A national standard for industry data.</h2>
+            <div className="mt-6 grid gap-6 text-base leading-8 text-gray-700 md:grid-cols-2">
+              <p>
+                The ABEA National Data Hub is a standardised platform for collecting and benchmarking business events data across venues, organisers, suppliers, and bureaux.
+              </p>
+              <p>
+                It gives participating members access to comparable, anonymised benchmarks and gives ABEA a stronger evidence base for sector-wide advocacy.
+              </p>
+            </div>
+          </section>
 
-      {/* Why it exists */}
-      <section className="py-8 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl p-10 shadow-sm border border-gray-100">
-            <h2 className="text-3xl font-bold mb-6" style={{ color: '#052460' }}>Why It Exists</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <section className="rounded-lg border border-black/5 bg-white p-8 shadow-sm md:p-10">
+            <p className="text-sm font-bold uppercase text-[var(--abea-marine)]">Why it exists</p>
+            <h2 className="mt-3 text-3xl font-bold text-[var(--abea-royalist)]">Business events need evidence that matches their economic role.</h2>
+            <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3">
               {[
-                { icon: '🧩', title: 'Fragmented Data', desc: 'Every organisation measured differently. No common definitions, no compatible formats, no ability to compare.' },
-                { icon: '📉', title: 'No Benchmarks', desc: 'Without industry-wide data, organisations had no reference point for performance. Strategy was based on gut feel.' },
-                { icon: '🦯', title: 'Flying Blind', desc: 'Boards, associations, and government bodies lacked evidence to advocate for the sector or set credible targets.' },
-              ].map(item => (
-                <div key={item.title} className="text-center p-6 rounded-xl" style={{ backgroundColor: '#F8FAFC' }}>
-                  <div className="text-3xl mb-3">{item.icon}</div>
-                  <h3 className="font-bold text-base mb-2" style={{ color: '#052460' }}>{item.title}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{item.desc}</p>
+                {
+                  title: 'Fragmented inputs',
+                  desc: 'Different organisations track different metrics, definitions, and reporting cycles.',
+                },
+                {
+                  title: 'Limited benchmarks',
+                  desc: 'Without common data, members have little context for performance, planning, and investment.',
+                },
+                {
+                  title: 'Weaker advocacy',
+                  desc: 'Associations and government need credible evidence to understand sector needs and opportunities.',
+                },
+              ].map((item, index) => (
+                <div key={item.title} className="rounded-lg bg-[var(--abea-light-grey)] p-6">
+                  <div className="mb-5 h-1.5 w-14 rounded-full" style={{ backgroundColor: index === 1 ? '#F99F38' : index === 2 ? '#EF3D55' : '#1C4DA1' }} />
+                  <h3 className="font-bold text-[var(--abea-royalist)]">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-gray-600">{item.desc}</p>
                 </div>
               ))}
             </div>
-            <p className="text-gray-700 leading-relaxed">
-              The Hub solves all three. By establishing a common metric framework and aggregating data across the industry, it gives every participating organisation access to benchmarks they could never have built alone — and gives the sector a credible, evidence-based voice.
-            </p>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* Data Protection */}
-      <section className="py-8 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="rounded-2xl p-10 border" style={{ backgroundColor: '#052460' }}>
-            <h2 className="text-3xl font-bold mb-2 text-white">How Your Data Is Protected</h2>
-            <p className="text-white/60 mb-8">Your data is safe. Here&apos;s exactly how we handle it.</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {protections.map(p => (
-                <div key={p.title} className="bg-white/10 rounded-xl p-6 border border-white/10">
-                  <div className="text-2xl mb-3">{p.icon}</div>
-                  <h3 className="font-bold text-white mb-2">{p.title}</h3>
-                  <p className="text-white/60 text-sm leading-relaxed">{p.desc}</p>
+          <section className="rounded-lg border border-black/5 bg-[var(--abea-royalist)] p-8 text-white shadow-sm md:p-10">
+            <p className="text-sm font-bold uppercase text-[var(--abea-sunday)]">Data protection</p>
+            <h2 className="mt-3 text-3xl font-bold">Useful benchmarks without exposing individual organisations.</h2>
+            <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2">
+              {protections.map((item) => (
+                <div key={item.title} className="rounded-lg border border-white/12 bg-white/10 p-6">
+                  <h3 className="font-bold text-white">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-white/68">{item.desc}</p>
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* Four Pillars */}
-      <section className="py-8 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl p-10 shadow-sm border border-gray-100">
-            <h2 className="text-3xl font-bold mb-2" style={{ color: '#052460' }}>The Four Industry Pillars</h2>
-            <p className="text-gray-500 mb-8">The Hub covers the full business events ecosystem through four defined pillars.</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {pillars.map(p => (
-                <div key={p.name} className={`rounded-xl p-6 border ${p.color}`}>
-                  <div className="text-3xl mb-3">{p.icon}</div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: '#052460' }}>{p.name}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{p.desc}</p>
+          <section className="rounded-lg border border-black/5 bg-white p-8 shadow-sm md:p-10">
+            <p className="text-sm font-bold uppercase text-[var(--abea-hibiscus)]">Industry pillars</p>
+            <h2 className="mt-3 text-3xl font-bold text-[var(--abea-royalist)]">A framework for the full business events ecosystem.</h2>
+            <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2">
+              {pillars.map((pillar) => (
+                <div key={pillar.name} className="rounded-lg border p-6" style={{ backgroundColor: pillar.tint, borderColor: `${pillar.accent}33` }}>
+                  <div className="mb-4 flex items-center gap-3">
+                    <div className="rounded-md px-3 py-2 text-xs font-black tracking-wide text-white" style={{ backgroundColor: pillar.accent }}>
+                      {pillar.label}
+                    </div>
+                    <h3 className="text-lg font-bold text-[var(--abea-royalist)]">{pillar.name}</h3>
+                  </div>
+                  <p className="text-sm leading-7 text-gray-700">{pillar.desc}</p>
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* Who's behind it */}
-      <section className="py-8 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl p-10 shadow-sm border border-gray-100">
-            <h2 className="text-3xl font-bold mb-6" style={{ color: '#052460' }}>Who&apos;s Behind It</h2>
-            <div className="flex items-start gap-6">
-              <div className="w-16 h-16 rounded-2xl flex-shrink-0 flex items-center justify-center text-2xl" style={{ backgroundColor: '#F99F38' }}>
-                🤝
+          <section className="rounded-lg border border-black/5 bg-white p-8 shadow-sm md:p-10">
+            <p className="text-sm font-bold uppercase text-[var(--abea-marine)]">Who is behind it</p>
+            <div className="mt-4 flex flex-col gap-6 md:flex-row md:items-start">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-[var(--abea-sunday)] text-2xl font-black text-white">
+                A
               </div>
               <div>
-                <h3 className="text-xl font-bold mb-3" style={{ color: '#052460' }}>ABEA — Australian Business Events Association</h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  The National Data Hub is an initiative of the <strong>Australian Business Events Association (ABEA)</strong>, the peak body representing Australia&apos;s business events industry. ABEA developed the Hub in partnership with member organisations across all four pillars — ensuring the metric framework reflects what the industry actually needs to measure.
-                </p>
-                <p className="text-gray-600 leading-relaxed text-sm">
-                  The platform is governed by ABEA and operated on behalf of the industry. Data contribution is voluntary and open to all ABEA member organisations. Benchmark access is available to all contributing members as part of their membership.
+                <h2 className="text-2xl font-bold text-[var(--abea-royalist)]">Australian Business Events Association</h2>
+                <p className="mt-4 leading-8 text-gray-700">
+                  The National Data Hub is an ABEA initiative for members and the wider business events industry. It supports a united voice for real impact by turning sector participation into clearer benchmarks and advocacy evidence.
                 </p>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* CTA */}
-      <section className="py-16 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="rounded-2xl p-12 text-center text-white" style={{ background: 'linear-gradient(135deg, #052460 0%, #031B4B 100%)' }}>
-            <h2 className="text-3xl font-bold mb-4">Ready to join the Hub?</h2>
-            <p className="text-white/70 mb-8 max-w-xl mx-auto text-lg">
-              Register your organisation today and start contributing to — and benefiting from — Australia&apos;s national business events data standard.
+          <section className="rounded-lg bg-[var(--abea-royalist)] p-8 text-center text-white md:p-12">
+            <h2 className="text-3xl font-bold">Ready to join the Hub?</h2>
+            <p className="mx-auto mt-4 max-w-2xl leading-7 text-white/70">
+              Register your organisation to contribute to and benefit from Australia&apos;s national business events data standard.
             </p>
-            <div className="flex items-center justify-center gap-4 flex-wrap">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/register"
-                className="px-8 py-4 rounded-xl font-bold text-white text-lg shadow-lg hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: '#F99F38' }}
+                className="rounded-lg bg-[var(--abea-sunday)] px-8 py-4 text-base font-bold text-white transition-opacity hover:opacity-90"
               >
                 Register Your Organisation
               </Link>
               <Link
                 href="/login"
-                className="px-8 py-4 rounded-xl font-bold text-white/80 hover:text-white border border-white/20 text-lg transition-colors"
+                className="rounded-lg border border-white/20 px-8 py-4 text-base font-bold text-white/80 transition-colors hover:border-white/40 hover:text-white"
               >
                 Sign In
               </Link>
             </div>
-          </div>
+          </section>
         </div>
-      </section>
+      </main>
 
-      {/* Footer */}
-      <footer style={{ backgroundColor: '#052460' }} className="px-6 pt-12 pb-6 text-white">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+      <footer className="bg-[var(--abea-royalist)] px-6 pb-6 pt-12 text-white">
+        <div className="mx-auto mb-10 grid max-w-6xl grid-cols-1 gap-10 border-t border-white/10 pt-10 md:grid-cols-3">
           <div>
-            <Image src="/brand/abea-logo-foot.png" alt="Australian Business Events Association" width={273} height={56} className="abea-logo h-14 w-auto max-w-[230px] mb-4" />
-            <p className="text-white/50 text-sm leading-relaxed">
+            <Image src="/brand/abea-logo-foot.png" alt="Australian Business Events Association" width={273} height={56} className="abea-logo mb-4 h-14 w-auto max-w-[230px]" />
+            <p className="text-sm leading-relaxed text-white/55">
               Australia&apos;s national business events data standard.
             </p>
           </div>
           <div>
-            <h4 className="text-white/80 text-xs uppercase tracking-widest font-semibold mb-4">Navigation</h4>
+            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/80">Navigation</h4>
             <ul className="space-y-2 text-sm">
               {[
                 { label: 'Home', href: '/' },
                 { label: 'About', href: '/about' },
                 { label: 'Register', href: '/register' },
                 { label: 'Sign In', href: '/login' },
-              ].map(link => (
+              ].map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-white/60 hover:text-white transition-colors">
+                  <Link href={link.href} className="text-white/60 transition-colors hover:text-white">
                     {link.label}
                   </Link>
                 </li>
@@ -234,17 +237,17 @@ export default function AboutPage() {
             </ul>
           </div>
           <div>
-            <h4 className="text-white/80 text-xs uppercase tracking-widest font-semibold mb-4">Contact</h4>
-            <p className="text-white/60 text-sm mb-1">
-              <a href="mailto:admin@abea.org.au" className="hover:text-white transition-colors">
+            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/80">Contact</h4>
+            <p className="mb-1 text-sm text-white/60">
+              <a href="mailto:admin@abea.org.au" className="transition-colors hover:text-white">
                 admin@abea.org.au
               </a>
             </p>
-            <p className="text-white/60 text-sm">© 2026 ABEA National Data Hub</p>
+            <p className="text-sm text-white/60">© 2026 ABEA National Data Hub</p>
           </div>
         </div>
-        <div className="max-w-5xl mx-auto border-t border-white/10 pt-6 text-center">
-          <p className="text-white/30 text-xs">Prototype v0.1 · Data is anonymised and aggregated</p>
+        <div className="mx-auto max-w-6xl text-center">
+          <p className="text-xs text-white/35">Prototype v0.1 - data is anonymised and aggregated</p>
         </div>
       </footer>
     </div>

@@ -97,7 +97,7 @@ export async function GET() {
   const AMBER = '#F59E0B'
   const GREEN = '#10B981'
   const RED = '#EF4444'
-  const LIGHT = '#F8FAFC'
+  const LIGHT = '#EFEEEE'
 
   const styles = StyleSheet.create({
     coverPage: {

@@ -3,240 +3,301 @@ import Image from 'next/image'
 import StatsBar from '@/components/StatsBar'
 
 const pillars = [
-  { name: 'Venues', icon: '🏛️', desc: 'Convention centres, hotels, and unique venues reporting occupancy, capacity, and delegate metrics.', color: 'bg-blue-50 border-blue-200' },
-  { name: 'Organisers', icon: '📋', desc: 'Event management companies reporting delegate volumes, budgets, and client retention.', color: 'bg-orange-50 border-orange-200' },
-  { name: 'Suppliers', icon: '🔧', desc: 'AV, catering, and service providers reporting contracts, retention, and revenue growth.', color: 'bg-purple-50 border-purple-200' },
-  { name: 'Bureaux', icon: '🌏', desc: 'Convention bureaux reporting bids, win rates, economic impact, and delegate nights.', color: 'bg-orange-50 border-orange-200' },
+  {
+    name: 'Venues',
+    label: 'VEN',
+    desc: 'Convention centres, hotels, and unique venues reporting occupancy, capacity, event volume, revenue, and delegate metrics.',
+    accent: '#1C4DA1',
+    tint: 'rgba(28,77,161,0.08)',
+  },
+  {
+    name: 'Organisers',
+    label: 'ORG',
+    desc: 'Event management companies and PCOs tracking delegate volumes, budgets, retention, event mix, and growth signals.',
+    accent: '#F99F38',
+    tint: 'rgba(249,159,56,0.14)',
+  },
+  {
+    name: 'Suppliers',
+    label: 'SUP',
+    desc: 'AV, catering, production, and service providers benchmarking contract value, demand, lead times, and client retention.',
+    accent: '#EF3D55',
+    tint: 'rgba(239,61,85,0.1)',
+  },
+  {
+    name: 'Bureaux',
+    label: 'BUR',
+    desc: 'Convention bureaux and destination organisations comparing bids, win rates, economic impact, and delegate nights.',
+    accent: '#00A7E2',
+    tint: 'rgba(0,167,226,0.1)',
+  },
 ]
 
 const steps = [
-  { n: '01', title: 'Submit Your Data', desc: 'Upload standardised metrics through our secure portal or CSV template. We normalise inconsistent formats automatically.' },
-  { n: '02', title: 'We Anonymise & Aggregate', desc: 'All data is anonymised. Benchmarks only publish when 5+ organisations contribute — your data is never individually identifiable.' },
-  { n: '03', title: 'Access Industry Benchmarks', desc: 'See where you sit against your peers. Export insights. Make evidence-based decisions.' },
+  {
+    n: '01',
+    title: 'Contribute standardised data',
+    desc: 'Members submit agreed metrics through a secure portal or CSV template so the industry can compare like with like.',
+  },
+  {
+    n: '02',
+    title: 'Aggregate with protection',
+    desc: 'Organisation-level records stay private. Benchmarks publish only when enough contributors exist to protect anonymity.',
+  },
+  {
+    n: '03',
+    title: 'Use evidence with confidence',
+    desc: 'Members and ABEA can use benchmark trends to plan, advocate, invest, and show the value of business events.',
+  },
 ]
 
-const testimonials = [
+const valueProps = [
   {
-    quote: 'Finally a standardised way to measure what matters.',
-    name: 'General Manager',
-    org: 'Melbourne Convention Bureau',
+    title: 'A common data language',
+    desc: 'Shared definitions across venues, organisers, suppliers, and bureaux reduce fragmented reporting and improve comparability.',
   },
   {
-    quote: 'Our board now has real benchmarks to set targets against.',
-    name: 'CEO',
-    org: 'National Events Company',
+    title: 'Benchmarks members can trust',
+    desc: 'Participating organisations see anonymised national and peer-group signals without exposing individual commercial data.',
   },
   {
-    quote: 'The data quality is excellent. This is what the industry needed.',
-    name: 'Director',
-    org: 'Sydney Convention Centre',
+    title: 'A stronger advocacy base',
+    desc: 'ABEA can present clearer evidence for an industry that connects people, trade, learning, and innovation.',
   },
 ]
 
 export default function Home() {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F8FAFC' }}>
-      {/* Nav — sticky */}
-      <nav
-        style={{ backgroundColor: '#052460', position: 'sticky', top: 0, zIndex: 50 }}
-        className="text-white px-6 py-4 flex items-center justify-between shadow-md"
-      >
-        <div className="flex items-center gap-4">
-          <Image src="/brand/abea-logo-foot.png" alt="Australian Business Events Association" width={236} height={49} className="abea-logo h-12 w-auto max-w-[210px]" priority />
-          <span className="hidden sm:inline text-white/70 text-sm font-semibold border-l border-white/20 pl-4">National Data Hub</span>
-        </div>
-        <div className="flex items-center gap-5">
-          <Link href="#how-it-works" className="text-white/70 hover:text-white text-sm hidden md:inline">
-            How It Works
+    <div className="min-h-screen bg-[var(--abea-light-grey)] text-[var(--abea-black)]">
+      <nav className="sticky top-0 z-50 bg-[var(--abea-royalist)] px-6 py-4 text-white shadow-sm">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6">
+          <Link href="/" className="flex min-w-0 items-center gap-4">
+            <Image
+              src="/brand/abea-logo-foot.png"
+              alt="Australian Business Events Association"
+              width={236}
+              height={49}
+              className="abea-logo h-11 w-auto max-w-[200px]"
+              priority
+            />
+            <span className="hidden border-l border-white/20 pl-4 text-sm font-semibold text-white/70 sm:inline">
+              National Data Hub
+            </span>
           </Link>
-          <Link href="/login" className="text-white/70 hover:text-white text-sm hidden md:inline">
-            For Members
-          </Link>
-          <Link href="/login" className="text-white/80 hover:text-white text-sm">Sign In</Link>
-          <Link
-            href="/register"
-            className="px-4 py-2 rounded-lg text-sm font-semibold text-white"
-            style={{ backgroundColor: '#F99F38' }}
-          >
-            Register
-          </Link>
+          <div className="flex items-center gap-4 text-sm">
+            <Link href="/about" className="hidden text-white/70 transition-colors hover:text-white md:inline">
+              About
+            </Link>
+            <Link href="#how-it-works" className="hidden text-white/70 transition-colors hover:text-white md:inline">
+              How it works
+            </Link>
+            <Link href="/login" className="text-white/80 transition-colors hover:text-white">
+              Sign in
+            </Link>
+            <Link
+              href="/register"
+              className="rounded-lg bg-[var(--abea-sunday)] px-4 py-2 font-semibold text-white transition-opacity hover:opacity-90"
+            >
+              Register
+            </Link>
+          </div>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section style={{ background: 'linear-gradient(135deg, #052460 0%, #031B4B 100%)' }} className="text-white py-24 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
-            style={{ backgroundColor: 'rgba(249,159,56,0.18)', color: '#F99F38' }}
-          >
-            🇦🇺 Trusted by 12+ Business Events Organisations
+      <section className="brand-hero px-6 py-20 text-white md:py-24">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-[1.05fr_0.95fr]">
+          <div>
+            <p className="mb-5 inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-[var(--abea-sky)]">
+              United, for real impact
+            </p>
+            <h1 className="max-w-3xl text-4xl font-bold leading-tight md:text-6xl">
+              Australia&apos;s national benchmark for business events.
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/76">
+              The ABEA National Data Hub gives the business events industry a shared evidence base across venues, organisers, suppliers, and bureaux.
+            </p>
+            <div className="mt-9 flex flex-wrap items-center gap-4">
+              <Link
+                href="/register"
+                className="rounded-lg bg-[var(--abea-sunday)] px-7 py-4 text-base font-bold text-white shadow-lg shadow-black/15 transition-opacity hover:opacity-90"
+              >
+                Join the Hub
+              </Link>
+              <Link
+                href="/about"
+                className="rounded-lg border border-white/20 px-7 py-4 text-base font-bold text-white/80 transition-colors hover:border-white/40 hover:text-white"
+              >
+                See how it works
+              </Link>
+            </div>
           </div>
-          <h1 className="text-5xl font-bold mb-6 leading-tight">
-            Australia&apos;s Business Events<br />
-            <span style={{ color: '#F99F38' }}>Data Hub</span>
-          </h1>
-          <p className="text-xl text-white/70 mb-10 max-w-2xl mx-auto">
-            The first national platform aggregating standardised data across venues, organisers, suppliers, and bureaux — turning fragmented intelligence into industry-wide benchmarks.
-          </p>
-          <div className="flex items-center justify-center gap-4 flex-wrap">
-            <Link
-              href="/register"
-              className="px-8 py-4 rounded-xl font-bold text-white text-lg shadow-lg hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: '#F99F38' }}
-            >
-              Join the Hub
-            </Link>
-            <Link
-              href="/login"
-              className="px-8 py-4 rounded-xl font-bold text-white/80 hover:text-white border border-white/20 text-lg transition-colors"
-            >
-              Sign In
-            </Link>
+
+          <div className="rounded-lg border border-white/12 bg-white/[0.08] p-6 shadow-2xl shadow-black/15 backdrop-blur">
+            <div className="mb-8 flex items-center justify-between gap-4 border-b border-white/12 pb-5">
+              <div>
+                <p className="text-sm font-semibold uppercase text-[var(--abea-sunday)]">Business events</p>
+                <p className="mt-1 text-2xl font-bold">Trade. Meet. Connect. Learn. Innovate.</p>
+              </div>
+              <div className="hidden h-14 w-14 items-center justify-center rounded-lg bg-[var(--abea-hibiscus)] text-lg font-black sm:flex">
+                A
+              </div>
+            </div>
+            <div className="grid gap-3">
+              {pillars.map((pillar) => (
+                <div key={pillar.name} className="flex items-start gap-4 rounded-lg bg-white/10 p-4">
+                  <div
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-xs font-black tracking-wide text-white"
+                    style={{ backgroundColor: pillar.accent }}
+                  >
+                    {pillar.label}
+                  </div>
+                  <div>
+                    <h2 className="font-bold">{pillar.name}</h2>
+                    <p className="mt-1 text-sm leading-6 text-white/68">{pillar.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Live Stats Bar */}
       <StatsBar />
 
-      {/* Value Props */}
-      <section className="py-16 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { icon: '📐', title: 'Standardise', desc: 'Common metric definitions across all four industry pillars. No more comparing apples to oranges.' },
-              { icon: '📊', title: 'Benchmark', desc: 'See your performance against anonymised industry peers. Know where you rank — and where to grow.' },
-              { icon: '🚀', title: 'Grow', desc: 'Evidence-based decisions for venues, organisers, suppliers, and bureaux. Backed by real data.' },
-            ].map(v => (
-              <div key={v.title} className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center">
-                <div className="text-4xl mb-4">{v.icon}</div>
-                <h3 className="text-xl font-bold mb-3" style={{ color: '#052460' }}>{v.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{v.desc}</p>
+      <section className="px-6 py-16">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-10 max-w-3xl">
+            <p className="text-sm font-bold uppercase text-[var(--abea-marine)]">Why it matters</p>
+            <h2 className="mt-3 text-3xl font-bold text-[var(--abea-royalist)] md:text-4xl">
+              A practical data standard for a national industry.
+            </h2>
+            <p className="mt-4 leading-7 text-gray-700">
+              Business events underpin sectors across the Australian economy. The Hub turns scattered reporting into benchmarks that members can use and ABEA can advocate from.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            {valueProps.map((item, index) => (
+              <div key={item.title} className="rounded-lg border border-black/5 bg-white p-7 shadow-sm">
+                <div className="mb-5 h-1.5 w-16 rounded-full" style={{ backgroundColor: index === 1 ? '#F99F38' : index === 2 ? '#EF3D55' : '#1C4DA1' }} />
+                <h3 className="text-xl font-bold text-[var(--abea-royalist)]">{item.title}</h3>
+                <p className="mt-3 leading-7 text-gray-600">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* How it works */}
-      <section id="how-it-works" className="py-16 px-6 bg-white">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12" style={{ color: '#052460' }}>How It Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {steps.map(s => (
-              <div key={s.n} className="relative">
-                <div className="text-6xl font-black mb-4" style={{ color: '#F99F38', opacity: 0.2 }}>{s.n}</div>
-                <h3 className="text-lg font-bold mb-2" style={{ color: '#052460' }}>{s.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{s.desc}</p>
+      <section id="how-it-works" className="bg-white px-6 py-16">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-12 text-center">
+            <p className="text-sm font-bold uppercase text-[var(--abea-hibiscus)]">How it works</p>
+            <h2 className="mt-3 text-3xl font-bold text-[var(--abea-royalist)]">From member data to industry evidence.</h2>
+          </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {steps.map((step) => (
+              <div key={step.n} className="rounded-lg border border-gray-200 p-7">
+                <div className="mb-6 text-5xl font-black text-[var(--abea-sunday)]/30">{step.n}</div>
+                <h3 className="text-lg font-bold text-[var(--abea-royalist)]">{step.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-gray-600">{step.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Pillars */}
-      <section className="py-16 px-6">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-4" style={{ color: '#052460' }}>Four Industry Pillars</h2>
-          <p className="text-center text-gray-500 mb-12">Coverage across the full business events ecosystem</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {pillars.map(p => (
-              <div key={p.name} className={`rounded-2xl p-6 border ${p.color}`}>
-                <div className="text-3xl mb-3">{p.icon}</div>
-                <h3 className="text-lg font-bold mb-2" style={{ color: '#052460' }}>{p.name}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{p.desc}</p>
-              </div>
-            ))}
+      <section className="px-6 py-16">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-10 text-center">
+            <p className="text-sm font-bold uppercase text-[var(--abea-marine)]">Four industry pillars</p>
+            <h2 className="mt-3 text-3xl font-bold text-[var(--abea-royalist)]">Coverage across the full business events ecosystem.</h2>
           </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-16 px-6 bg-white">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-4" style={{ color: '#052460' }}>
-            Built with the industry, for the industry
-          </h2>
-          <p className="text-center text-gray-500 mb-12">What our members are saying</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {testimonials.map(t => (
-              <div
-                key={t.org}
-                className="bg-white rounded-2xl p-8 border border-gray-100"
-                style={{ boxShadow: '0 4px 24px rgba(30,58,95,0.08)' }}
-              >
-                <div className="text-3xl mb-4" style={{ color: '#F99F38' }}>&ldquo;</div>
-                <p className="text-gray-700 italic leading-relaxed mb-6">{t.quote}</p>
-                <div>
-                  <div className="font-semibold text-sm" style={{ color: '#052460' }}>{t.name}</div>
-                  <div className="text-gray-400 text-sm">{t.org}</div>
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            {pillars.map((pillar) => (
+              <div key={pillar.name} className="rounded-lg border p-7" style={{ backgroundColor: pillar.tint, borderColor: `${pillar.accent}33` }}>
+                <div className="mb-5 flex items-center gap-3">
+                  <div className="rounded-md px-3 py-2 text-xs font-black tracking-wide text-white" style={{ backgroundColor: pillar.accent }}>
+                    {pillar.label}
+                  </div>
+                  <h3 className="text-xl font-bold text-[var(--abea-royalist)]">{pillar.name}</h3>
                 </div>
+                <p className="leading-7 text-gray-700">{pillar.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section style={{ backgroundColor: '#052460' }} className="py-16 px-6 text-white text-center">
-        <h2 className="text-3xl font-bold mb-4">Ready to benchmark your business?</h2>
-        <p className="text-white/70 mb-8 max-w-xl mx-auto">
-          Join Australia&apos;s growing community of business events organisations contributing to the national data standard.
+      <section className="bg-white px-6 py-16">
+        <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-[0.85fr_1.15fr]">
+          <div>
+            <p className="text-sm font-bold uppercase text-[var(--abea-hibiscus)]">Evidence with care</p>
+            <h2 className="mt-3 text-3xl font-bold text-[var(--abea-royalist)]">Designed for useful insight without exposing individual organisations.</h2>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {[
+              'Anonymised benchmark outputs',
+              'Minimum contribution thresholds',
+              'Role-controlled member access',
+              'Sector-wide reporting for advocacy',
+            ].map((item) => (
+              <div key={item} className="rounded-lg border border-gray-200 bg-[var(--abea-light-grey)] p-5 font-semibold text-[var(--abea-royalist)]">
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[var(--abea-royalist)] px-6 py-16 text-center text-white">
+        <h2 className="text-3xl font-bold">Ready to benchmark your organisation?</h2>
+        <p className="mx-auto mt-4 max-w-2xl leading-7 text-white/70">
+          Register to contribute to the national data standard and help build the evidence base for Australian business events.
         </p>
         <Link
           href="/register"
-          className="inline-block px-8 py-4 rounded-xl font-bold text-white text-lg hover:opacity-90 transition-opacity"
-          style={{ backgroundColor: '#F99F38' }}
+          className="mt-8 inline-block rounded-lg bg-[var(--abea-sunday)] px-8 py-4 text-base font-bold text-white transition-opacity hover:opacity-90"
         >
           Register Your Organisation
         </Link>
       </section>
 
-      {/* Footer — 3 column */}
-      <footer style={{ backgroundColor: '#052460' }} className="px-6 pt-12 pb-6 text-white">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
-          {/* Col 1: Brand */}
+      <footer className="bg-[var(--abea-royalist)] px-6 pb-6 pt-12 text-white">
+        <div className="mx-auto mb-10 grid max-w-6xl grid-cols-1 gap-10 border-t border-white/10 pt-10 md:grid-cols-3">
           <div>
-            <Image src="/brand/abea-logo-foot.png" alt="Australian Business Events Association" width={273} height={56} className="abea-logo h-14 w-auto max-w-[230px] mb-4" />
-            <p className="text-white/50 text-sm leading-relaxed">
+            <Image src="/brand/abea-logo-foot.png" alt="Australian Business Events Association" width={273} height={56} className="abea-logo mb-4 h-14 w-auto max-w-[230px]" />
+            <p className="text-sm leading-relaxed text-white/55">
               Australia&apos;s national business events data standard.
             </p>
           </div>
-
-          {/* Col 2: Links */}
           <div>
-            <h4 className="text-white/80 text-xs uppercase tracking-widest font-semibold mb-4">Navigation</h4>
+            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/80">Navigation</h4>
             <ul className="space-y-2 text-sm">
               {[
                 { label: 'Home', href: '/' },
+                { label: 'About', href: '/about' },
                 { label: 'Register', href: '/register' },
                 { label: 'Sign In', href: '/login' },
-                { label: 'About', href: '/about' },
-              ].map(link => (
+              ].map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-white/60 hover:text-white transition-colors">
+                  <Link href={link.href} className="text-white/60 transition-colors hover:text-white">
                     {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
-
-          {/* Col 3: Contact */}
           <div>
-            <h4 className="text-white/80 text-xs uppercase tracking-widest font-semibold mb-4">Contact</h4>
-            <p className="text-white/60 text-sm mb-1">
-              <a href="mailto:admin@abea.org.au" className="hover:text-white transition-colors">
+            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/80">Contact</h4>
+            <p className="mb-1 text-sm text-white/60">
+              <a href="mailto:admin@abea.org.au" className="transition-colors hover:text-white">
                 admin@abea.org.au
               </a>
             </p>
-            <p className="text-white/60 text-sm">© 2026 ABEA National Data Hub</p>
+            <p className="text-sm text-white/60">© 2026 ABEA National Data Hub</p>
           </div>
         </div>
-
-        <div className="max-w-5xl mx-auto border-t border-white/10 pt-6 text-center">
-          <p className="text-white/30 text-xs">Prototype v0.1 · Data is anonymised and aggregated</p>
+        <div className="mx-auto max-w-6xl text-center">
+          <p className="text-xs text-white/35">Prototype v0.1 - data is anonymised and aggregated</p>
         </div>
       </footer>
     </div>

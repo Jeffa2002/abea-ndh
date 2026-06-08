@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 
 const PILLAR_COLORS: Record<string, string> = {
-  VENUE: '#1C4DA1', ORGANISER: '#F99F38', SUPPLIER: '#8E4F9E', BUREAU: '#F99F38'
+  VENUE: '#1C4DA1', ORGANISER: '#F99F38', SUPPLIER: '#EF3D55', BUREAU: '#00A7E2'
 }
 
 export default async function AdminPage() {
@@ -56,7 +56,7 @@ export default async function AdminPage() {
         </div>
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="text-sm text-gray-500 mb-1">Total Organisations</div>
-          <div className="text-3xl font-black" style={{ color: '#8E4F9E' }}>{totalOrgs}</div>
+          <div className="text-3xl font-black" style={{ color: '#EF3D55' }}>{totalOrgs}</div>
         </div>
       </div>
 

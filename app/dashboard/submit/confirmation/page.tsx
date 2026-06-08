@@ -31,7 +31,7 @@ function ConfirmationContent() {
           <p className="text-gray-500 mb-8">Your data has been securely submitted to the ABEA National Data Hub.</p>
 
           {/* Details */}
-          <div className="rounded-xl p-6 mb-8 text-left space-y-4" style={{ backgroundColor: '#F8FAFC' }}>
+          <div className="rounded-xl p-6 mb-8 text-left space-y-4" style={{ backgroundColor: '#EFEEEE' }}>
             {id && (
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-500 font-medium">Submission ID</span>

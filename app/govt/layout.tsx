@@ -8,7 +8,7 @@ export default async function GovtLayout({ children }: { children: React.ReactNo
   if (!session || !['ADMIN', 'GOVT_VIEWER'].includes(session.role)) redirect('/login')
 
   return (
-    <div className="min-h-screen flex" style={{ backgroundColor: '#F8FAFC' }}>
+    <div className="min-h-screen flex" style={{ backgroundColor: '#EFEEEE' }}>
       <aside className="w-64 min-h-screen flex flex-col" style={{ backgroundColor: '#052460' }}>
         <div className="p-6 border-b border-white/10">
           <Link href="/" className="block">

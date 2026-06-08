@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -26,11 +25,11 @@ export default function StatsBar() {
   ]
 
   return (
-    <div style={{ backgroundColor: '#152D4A' }} className="py-10 px-6">
+    <div className="bg-[var(--abea-royalist)] px-6 py-10">
       <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
         {items.map(item => (
           <div key={item.label}>
-            <div className="text-5xl font-black mb-1" style={{ color: '#F99F38' }}>
+            <div className="text-5xl font-black mb-1 text-[var(--abea-sunday)]">
               {item.value.toLocaleString()}
             </div>
             <div className="text-white/60 text-sm uppercase tracking-wider font-medium">

@@ -38,7 +38,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#F8FAFC' }}>
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#EFEEEE' }}>
       <nav style={{ backgroundColor: '#052460' }} className="px-6 py-4">
         <Link href="/" className="inline-flex items-center gap-4">
           <Image src="/brand/abea-logo-foot.png" alt="Australian Business Events Association" width={236} height={49} className="abea-logo h-12 w-auto max-w-[210px]" priority />

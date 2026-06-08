@@ -24,7 +24,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   }
 
   return (
-    <div className="min-h-screen flex" style={{ backgroundColor: '#F8FAFC' }}>
+    <div className="min-h-screen flex" style={{ backgroundColor: '#EFEEEE' }}>
       {/* Sidebar */}
       <aside className="w-64 min-h-screen flex flex-col" style={{ backgroundColor: '#052460' }}>
         <div className="p-6 border-b border-white/10">

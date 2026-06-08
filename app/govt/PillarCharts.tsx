@@ -9,8 +9,8 @@ import {
 const PILLAR_COLORS: Record<string, string> = {
   VENUE: '#1C4DA1',
   ORGANISER: '#F99F38',
-  SUPPLIER: '#8E4F9E',
-  BUREAU: '#F99F38',
+  SUPPLIER: '#EF3D55',
+  BUREAU: '#00A7E2',
 }
 
 function formatValue(value: number, code: string): string {
@@ -76,7 +76,7 @@ export function PillarCharts({ overview, totalOrgs, totalSubmissions, metricsTra
           <div className="text-xs text-gray-400">Processed Submissions</div>
         </div>
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
-          <div className="text-3xl font-black mb-1" style={{ color: '#8E4F9E' }}>{metricsTracked}</div>
+          <div className="text-3xl font-black mb-1" style={{ color: '#EF3D55' }}>{metricsTracked}</div>
           <div className="text-xs text-gray-400">Metrics Tracked</div>
         </div>
       </div>

@@ -9,7 +9,7 @@ const STATUS_COLORS = {
 }
 
 const ROLE_COLORS = {
-  ADMIN: 'bg-purple-100 text-purple-800',
+  ADMIN: 'bg-red-100 text-red-800',
   MEMBER: 'bg-blue-100 text-blue-800',
   GOVT_VIEWER: 'bg-gray-100 text-gray-700',
 }

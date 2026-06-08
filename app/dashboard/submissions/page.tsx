@@ -116,7 +116,7 @@ export default function SubmissionsPage() {
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <table className="w-full">
             <thead>
-              <tr className="border-b" style={{ backgroundColor: '#F8FAFC' }}>
+              <tr className="border-b" style={{ backgroundColor: '#EFEEEE' }}>
                 <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wide">Period</th>
                 <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wide">Status</th>
                 <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wide">Metrics</th>

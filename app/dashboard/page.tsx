@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 
 const PILLAR_COLORS: Record<string, string> = {
-  VENUE: '#1C4DA1', ORGANISER: '#F99F38', SUPPLIER: '#8E4F9E', BUREAU: '#F99F38'
+  VENUE: '#1C4DA1', ORGANISER: '#F99F38', SUPPLIER: '#EF3D55', BUREAU: '#00A7E2'
 }
 
 function formatValue(value: number, unit: string) {

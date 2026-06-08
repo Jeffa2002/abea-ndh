@@ -1,19 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  --navy: #052460;
-  --orange: #F99F38;
-  --blue: #1C4DA1;
-  --purple: #8E4F9E;
-  --bg: #F8FAFC;
+  --abea-royalist: #052460;
+  --abea-sunday: #F99F38;
+  --abea-hibiscus: #EF3D55;
+  --abea-marine: #1C4DA1;
+  --abea-splashed: #00A7E2;
+  --abea-sky: #A3C7E9;
+  --abea-light-grey: #EFEEEE;
+  --abea-white: #FFFFFF;
+  --abea-black: #000000;
+  --navy: var(--abea-royalist);
+  --orange: var(--abea-sunday);
+  --blue: var(--abea-marine);
+  --purple: var(--abea-hibiscus);
+  --bg: var(--abea-light-grey);
 }
 
 body {
   background-color: var(--bg);
-  color: #1a202c;
+  color: var(--abea-black);
 }
 
 .abea-logo {
   display: block;
   object-fit: contain;
+}
+
+.brand-hero {
+  background:
+    linear-gradient(135deg, rgba(5, 36, 96, 0.98) 0%, rgba(28, 77, 161, 0.94) 100%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px 22px);
 }

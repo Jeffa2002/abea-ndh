@@ -18,8 +18,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   ]
 
   return (
-    <div className="min-h-screen flex" style={{ backgroundColor: '#F8FAFC' }}>
-      <aside className="w-64 min-h-screen flex flex-col" style={{ backgroundColor: '#031B4B' }}>
+    <div className="min-h-screen flex" style={{ backgroundColor: '#EFEEEE' }}>
+      <aside className="w-64 min-h-screen flex flex-col" style={{ backgroundColor: '#052460' }}>
         <div className="p-6 border-b border-white/10">
           <Link href="/" className="block">
             <Image src="/brand/abea-logo-foot.png" alt="Australian Business Events Association" width={236} height={49} className="abea-logo h-12 w-auto max-w-[190px]" />

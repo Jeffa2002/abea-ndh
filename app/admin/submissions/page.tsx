@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma'
 
 const PILLAR_COLORS: Record<string, string> = {
-  VENUE: '#1C4DA1', ORGANISER: '#F99F38', SUPPLIER: '#8E4F9E', BUREAU: '#F99F38'
+  VENUE: '#1C4DA1', ORGANISER: '#F99F38', SUPPLIER: '#EF3D55', BUREAU: '#00A7E2'
 }
 const STATUS_STYLES: Record<string, string> = {
   DRAFT: 'bg-gray-100 text-gray-600', SUBMITTED: 'bg-blue-100 text-blue-700',
