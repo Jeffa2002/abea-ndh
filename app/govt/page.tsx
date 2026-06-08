@@ -44,10 +44,14 @@ export default async function GovtPage({ searchParams }: PageProps) {
   )
 
   const totalOrgs = await prisma.organisation.count({ where: { isApproved: true } })
-  const totalSubmissions = await prisma.dataSubmission.count({ where: { status: 'PROCESSED' } })
-  const selectedSubmissions = await prisma.dataSubmission.count({ where: { status: 'PROCESSED', period: selectedPeriod } })
+  const reportableWhere = {
+    status: 'PROCESSED' as const,
+    OR: [{ importBatchId: null }, { importBatch: { excludeFromReporting: false } }],
+  }
+  const totalSubmissions = await prisma.dataSubmission.count({ where: reportableWhere })
+  const selectedSubmissions = await prisma.dataSubmission.count({ where: { ...reportableWhere, period: selectedPeriod } })
   const metricsTracked = overview.reduce((sum, { snapshots }) => sum + snapshots.length, 0)
-  const metricRows = await prisma.metricValue.count({ where: { submission: { status: 'PROCESSED', period: selectedPeriod } } })
+  const metricRows = await prisma.metricValue.count({ where: { submission: { ...reportableWhere, period: selectedPeriod } } })
   const benchmarkSampleTotal = overview.reduce(
     (sum, { snapshots }) => sum + snapshots.reduce((inner, snapshot) => inner + snapshot.sampleSize, 0),
     0,
@@ -59,20 +63,20 @@ export default async function GovtPage({ searchParams }: PageProps) {
 
   const trendSubmissions = await prisma.dataSubmission.groupBy({
     by: ['period'],
-    where: { status: 'PROCESSED' },
+    where: reportableWhere,
     _count: { id: true },
     orderBy: { period: 'desc' },
   })
   const trendMetricValues = await prisma.metricValue.groupBy({
     by: ['period'],
-    where: { submission: { status: 'PROCESSED' } },
+    where: { submission: reportableWhere },
     _count: { id: true },
     orderBy: { period: 'desc' },
   })
   const trendMetricByPeriod = Object.fromEntries(trendMetricValues.map(item => [item.period, item._count.id]))
   const economicValues = await prisma.metricValue.findMany({
     where: {
-      submission: { status: 'PROCESSED', period: selectedPeriod },
+      submission: { ...reportableWhere, period: selectedPeriod },
       metric: { code: { in: ['BUR_ECONOMIC_IMPACT', 'ORG_DELEGATE_DIRECT_EVENT_SPEND', 'ORG_INDIRECT_VISITOR_SPEND', 'ORG_DIRECT_VIC_SPEND'] } },
     },
     include: {

@@ -29,7 +29,11 @@ export async function POST(req: Request) {
       const values = await prisma.metricValue.findMany({
         where: {
           metric: { code: metric.code },
-          submission: { status: SubmissionStatus.PROCESSED, pillar },
+          submission: {
+            status: SubmissionStatus.PROCESSED,
+            pillar,
+            OR: [{ importBatchId: null }, { importBatch: { excludeFromReporting: false } }],
+          },
           ...(periodFilter ? { period: periodFilter } : {}),
         },
         select: { value: true, period: true },

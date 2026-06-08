@@ -26,6 +26,7 @@ export async function GET(req: NextRequest) {
         status: 'PROCESSED',
         period,
         pillar,
+        OR: [{ importBatchId: null }, { importBatch: { excludeFromReporting: false } }],
         org: { region, tier },
       },
     },

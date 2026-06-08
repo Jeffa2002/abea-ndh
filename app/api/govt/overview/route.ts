@@ -40,8 +40,22 @@ export async function GET(req: Request) {
   })
 
   const [processedSubmissions, metricRows] = await Promise.all([
-    prisma.dataSubmission.count({ where: { status: 'PROCESSED', period } }),
-    prisma.metricValue.count({ where: { submission: { status: 'PROCESSED', period } } }),
+    prisma.dataSubmission.count({
+      where: {
+        status: 'PROCESSED',
+        period,
+        OR: [{ importBatchId: null }, { importBatch: { excludeFromReporting: false } }],
+      },
+    }),
+    prisma.metricValue.count({
+      where: {
+        submission: {
+          status: 'PROCESSED',
+          period,
+          OR: [{ importBatchId: null }, { importBatch: { excludeFromReporting: false } }],
+        },
+      },
+    }),
   ])
 
   return NextResponse.json({ overview, economicImpact, period, processedSubmissions, metricRows })

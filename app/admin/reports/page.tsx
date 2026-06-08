@@ -44,6 +44,7 @@ export default async function AdminReportsPage({ searchParams }: PageProps) {
         status: 'PROCESSED',
         period: period || undefined,
         pillar: pillar || undefined,
+        OR: [{ importBatchId: null }, { importBatch: { excludeFromReporting: false } }],
         org: {
           region: region || undefined,
           tier: tier || undefined,

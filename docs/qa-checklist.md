@@ -32,6 +32,7 @@
 
 - Admin overview loads.
 - Organisations list loads.
+- Organisation reporting dimensions can be updated from controlled dropdowns.
 - Members list loads and approval/rejection controls still work.
 - Submissions list shows latest 100 submissions.
 - Submitted records can be processed by an admin.
@@ -40,9 +41,13 @@
 - Submission timeline displays audit events for submitted, CSV uploaded, processed, and rejected records.
 - `/admin/data-quality` loads with lake fact rows, audit events, reporting periods, incomplete submissions, stale contributors, and rejected/error records.
 - `/admin/data-quality` shows recent CSV import batches when uploads have occurred.
+- `/admin/imports` lists import batches and can exclude/include batches from reporting.
 - Reviewed-submissions CSV export downloads from `/api/admin/submissions/export`.
 - `/admin/reports` filters aggregate report rows by period, pillar, region, tier, and metric code.
 - Aggregate report CSV export downloads from `/api/admin/reports/export`.
+- `/admin/powerbi` loads and documents the lake feed tables.
+- `/api/powerbi/lake?table=metric_values` returns processed, non-excluded rows for an authenticated admin.
+- `/api/powerbi/lake?table=aggregates` returns aggregate rows for an authenticated admin.
 - Benchmarks page calculates without including legacy non-core organiser metrics.
 - Benchmark recalculation uses only processed submissions.
 - Benchmark recalculation respects selected period and minimum sample threshold.

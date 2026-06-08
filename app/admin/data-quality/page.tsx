@@ -223,6 +223,7 @@ export default async function DataQualityPage() {
               <th className="px-5 py-3 text-right text-xs font-semibold uppercase text-gray-500">Rows</th>
               <th className="px-5 py-3 text-right text-xs font-semibold uppercase text-gray-500">Accepted</th>
               <th className="px-5 py-3 text-right text-xs font-semibold uppercase text-gray-500">Rejected</th>
+              <th className="px-5 py-3 text-left text-xs font-semibold uppercase text-gray-500">Reporting</th>
               <th className="px-5 py-3 text-left text-xs font-semibold uppercase text-gray-500">Uploaded</th>
             </tr>
           </thead>
@@ -235,12 +236,13 @@ export default async function DataQualityPage() {
                 <td className="px-5 py-3 text-right text-sm text-gray-600">{batch.rowCount}</td>
                 <td className="px-5 py-3 text-right text-sm text-gray-600">{batch.acceptedRows}</td>
                 <td className="px-5 py-3 text-right text-sm text-gray-600">{batch.rejectedRows}</td>
+                <td className="px-5 py-3 text-sm text-gray-600">{batch.excludeFromReporting ? 'Excluded' : 'Included'}</td>
                 <td className="px-5 py-3 text-sm text-gray-600">{formatDate(batch.createdAt)}</td>
               </tr>
             ))}
             {importBatches.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-5 py-8 text-center text-sm text-gray-400">No CSV import batches recorded yet.</td>
+                <td colSpan={8} className="px-5 py-8 text-center text-sm text-gray-400">No CSV import batches recorded yet.</td>
               </tr>
             )}
           </tbody>

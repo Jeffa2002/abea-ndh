@@ -70,6 +70,10 @@ model ImportBatch {
   rowCount          Int              @default(0)
   acceptedRows      Int              @default(0)
   rejectedRows      Int              @default(0)
+  excludeFromReporting Boolean        @default(false)
+  exclusionNote     String?
+  excludedAt        DateTime?
+  excludedById      String?
   validationSummary Json?
   createdAt         DateTime         @default(now())
   submissions       DataSubmission[]

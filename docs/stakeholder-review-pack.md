@@ -26,6 +26,11 @@ This pack summarises the current review slice for ABEA, vendor, and government s
 - Government reporting now shows period selector, reporting basis metadata, benchmark vintage, sample context, processed-row counts, trend table, and economic impact/spend inputs.
 - Data model now includes first-class reporting dimensions for organisation cohort, primary event type, capacity band, government program, and CSV import batches.
 - CSV import batches now record filename, status, period, pillar, row counts, accepted/rejected counts, uploader, and validation summary.
+- Organisation admin now manages controlled reporting dimensions through dropdowns, reducing free-text drift in future reporting.
+- Import governance now has `/admin/imports` for batch review and reporting inclusion/exclusion without deleting audit history.
+- Report builder, government reporting, benchmark recalculation, and Power BI feeds exclude batches marked as excluded from reporting.
+- Power BI feed added at `/api/powerbi/lake`, with table selectors for metric values, aggregates, submissions, organisations, and import batches.
+- Power BI admin guide added at `/admin/powerbi`, including suggested fact/dimension modelling and bearer-token deployment note.
 - Benchmark recalculation now uses a selected period and minimum sample threshold.
 
 ## Review Questions
@@ -47,8 +52,11 @@ This pack summarises the current review slice for ABEA, vendor, and government s
 6. Open `/dashboard/benchmarks` and download the PDF report.
 7. Sign in as an admin and review `/admin/submissions`, `/admin/benchmarks`, `/admin/members`, and `/admin/organisations`.
 8. Open `/admin/data-quality` and review import governance, completeness, stale contributors, and reviewed-submissions CSV export.
-9. Open `/admin/reports`, filter the aggregate extract, and download the aggregate CSV.
-10. Sign in as a government viewer and review `/govt`, including report basis, trends, and economic input tables.
+9. Open `/admin/imports`, review batches, and test excluding/including a batch where test data allows it.
+10. Open `/admin/organisations` and update reporting dimensions through the controlled lists.
+11. Open `/admin/reports`, filter the aggregate extract, and download the aggregate CSV.
+12. Open `/admin/powerbi` and inspect the available Power BI feed tables.
+13. Sign in as a government viewer and review `/govt`, including report basis, trends, and economic input tables.
 
 ## Open Decisions
 
@@ -58,3 +66,4 @@ This pack summarises the current review slice for ABEA, vendor, and government s
 - Whether ABEA wants a visible methodology version number for external reporting.
 - Which reporting-dimension values ABEA wants as controlled lists: jurisdiction/state, event type, organisation cohort, venue capacity band, and government-program linkage.
 - Whether import rollback should delete created submissions or mark batches as excluded from official reporting.
+- Whether ABEA wants Power BI scheduled refresh via secured Web connector first, or direct push semantic models through the Power BI REST API once Microsoft tenant/app credentials are available.
