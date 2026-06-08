@@ -10,6 +10,25 @@ export type AdminChangelogEntry = {
 
 export const ADMIN_CHANGELOG: AdminChangelogEntry[] = [
   {
+    version: 'v0.9',
+    date: '9 June 2026',
+    title: 'Exportable stakeholder artefacts and privacy controls',
+    intent: 'Give reviewers shareable report artefacts while making privacy suppression explicit across aggregate reporting surfaces.',
+    areas: ['Report packs', 'Review pack', 'Power BI', 'Privacy threshold', 'Exports'],
+    changes: [
+      'Added report-pack generator for board, government, and internal review audiences.',
+      'Report packs include executive summary, methodology basis, data quality/import notes, aggregate metric summary, and open decisions appendix.',
+      'Added print-friendly stakeholder review pack view for meeting distribution or save-as-PDF.',
+      'Added configurable reporting minimum sample size and suppression helper.',
+      'Applied suppression metadata to aggregate CSV exports and Power BI aggregate feeds.',
+      'Added Power BI feed status indicators for bearer-token configuration and aggregate privacy threshold.',
+    ],
+    proof: [
+      'Local lint passed.',
+      'Local production build passed.',
+    ],
+  },
+  {
     version: 'v0.8',
     date: '9 June 2026',
     title: 'Stakeholder review packaging',

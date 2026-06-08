@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { REPORTING_MIN_SAMPLE_SIZE } from '@/lib/privacy'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,6 +24,7 @@ export default async function PowerBiPage() {
     }),
     prisma.importBatch.count(),
   ])
+  const tokenConfigured = Boolean(process.env.POWERBI_FEED_TOKEN)
 
   const tables = [
     {
@@ -61,11 +63,13 @@ export default async function PowerBiPage() {
         </p>
       </div>
 
-      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-5">
         {[
           { label: 'Metric fact rows', value: metricRows, note: 'Processed, non-excluded rows' },
           { label: 'Periods available', value: aggregatePeriods.length, note: aggregatePeriods.map(item => item.period).join(', ') || 'None' },
           { label: 'Import batches', value: importBatches, note: 'Governance records available' },
+          { label: 'Bearer token', value: tokenConfigured ? 'Set' : 'Not set', note: tokenConfigured ? 'Ready for scheduled refresh' : 'Admin session only until configured' },
+          { label: 'Privacy threshold', value: `n=${REPORTING_MIN_SAMPLE_SIZE}`, note: 'Aggregate suppression threshold' },
         ].map(item => (
           <div key={item.label} className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
             <div className="text-xs font-semibold uppercase text-gray-400">{item.label}</div>

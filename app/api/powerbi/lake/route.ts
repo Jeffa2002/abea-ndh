@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { aggregateMetricRows } from '@/lib/reporting'
+import { REPORTING_MIN_SAMPLE_SIZE, isSuppressed } from '@/lib/privacy'
 
 export const dynamic = 'force-dynamic'
 
@@ -72,7 +73,18 @@ export async function GET(req: NextRequest) {
       where: { submission: submissionWhere },
       include: { metric: true, submission: { include: { org: true } } },
     })
-    return NextResponse.json({ table, rows: aggregateMetricRows(metricValues) })
+    return NextResponse.json({
+      table,
+      rows: aggregateMetricRows(metricValues).map(row => ({
+        ...row,
+        privacyThreshold: REPORTING_MIN_SAMPLE_SIZE,
+        suppressed: isSuppressed(row.sampleSize),
+        avgValue: isSuppressed(row.sampleSize) ? null : row.avgValue,
+        totalValue: isSuppressed(row.sampleSize) ? null : row.totalValue,
+        minValue: isSuppressed(row.sampleSize) ? null : row.minValue,
+        maxValue: isSuppressed(row.sampleSize) ? null : row.maxValue,
+      })),
+    })
   }
 
   if (table === 'import_batches') {

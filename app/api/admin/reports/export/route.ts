@@ -3,6 +3,7 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { toCsv } from '@/lib/csv'
 import { aggregateMetricRows } from '@/lib/reporting'
+import { REPORTING_MIN_SAMPLE_SIZE, isSuppressed } from '@/lib/privacy'
 import type { Pillar } from '@prisma/client'
 
 const PILLARS: Pillar[] = ['VENUE', 'ORGANISER', 'SUPPLIER', 'BUREAU']
@@ -43,10 +44,12 @@ export async function GET(req: NextRequest) {
     metric_label: row.metricLabel,
     unit: row.unit,
     sample_size: row.sampleSize,
-    average_value: row.avgValue,
-    total_value: row.totalValue,
-    min_value: row.minValue,
-    max_value: row.maxValue,
+    privacy_threshold: REPORTING_MIN_SAMPLE_SIZE,
+    suppressed: isSuppressed(row.sampleSize),
+    average_value: isSuppressed(row.sampleSize) ? null : row.avgValue,
+    total_value: isSuppressed(row.sampleSize) ? null : row.totalValue,
+    min_value: isSuppressed(row.sampleSize) ? null : row.minValue,
+    max_value: isSuppressed(row.sampleSize) ? null : row.maxValue,
     regions: row.regions.join('|'),
     tiers: row.tiers.join('|'),
   }))
@@ -58,6 +61,8 @@ export async function GET(req: NextRequest) {
     'metric_label',
     'unit',
     'sample_size',
+    'privacy_threshold',
+    'suppressed',
     'average_value',
     'total_value',
     'min_value',

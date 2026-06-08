@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import { PILLAR_COLORS } from '@/lib/brand'
 import { aggregateMetricRows, formatReportValue } from '@/lib/reporting'
+import { REPORTING_MIN_SAMPLE_SIZE, displaySampleValue, isSuppressed } from '@/lib/privacy'
 import type { Pillar } from '@prisma/client'
 
 export const dynamic = 'force-dynamic'
@@ -143,6 +144,10 @@ export default async function AdminReportsPage({ searchParams }: PageProps) {
         ))}
       </div>
 
+      <div className="mb-6 rounded-xl border border-blue-100 bg-blue-50 p-4 text-xs leading-6 text-blue-800">
+        Privacy threshold: aggregate values with sample size below n={REPORTING_MIN_SAMPLE_SIZE} are suppressed in reporting views and exports.
+      </div>
+
       <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
         <table className="w-full">
           <thead>
@@ -168,11 +173,12 @@ export default async function AdminReportsPage({ searchParams }: PageProps) {
                   <span className="rounded px-2 py-1 text-xs font-bold text-white" style={{ backgroundColor: PILLAR_COLORS[row.pillar] }}>{row.pillar}</span>
                 </td>
                 <td className="px-5 py-3 text-right text-sm text-gray-600">{row.sampleSize}</td>
-                <td className="px-5 py-3 text-right text-sm font-semibold text-gray-900">{formatReportValue(row.avgValue, row.unit)}</td>
-                <td className="px-5 py-3 text-right text-sm text-gray-600">{formatReportValue(row.totalValue, row.unit)}</td>
+                <td className="px-5 py-3 text-right text-sm font-semibold text-gray-900">{displaySampleValue(formatReportValue(row.avgValue, row.unit), row.sampleSize)}</td>
+                <td className="px-5 py-3 text-right text-sm text-gray-600">{displaySampleValue(formatReportValue(row.totalValue, row.unit), row.sampleSize)}</td>
                 <td className="px-5 py-3 text-xs leading-5 text-gray-500">
                   Regions: {row.regions.join(', ') || '—'}<br />
                   Tiers: {row.tiers.join(', ') || '—'}
+                  {isSuppressed(row.sampleSize) ? <><br />Suppressed below privacy threshold</> : null}
                 </td>
               </tr>
             ))}

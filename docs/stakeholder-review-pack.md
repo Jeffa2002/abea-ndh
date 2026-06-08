@@ -36,6 +36,10 @@ This pack summarises the current review slice for ABEA, vendor, and government s
 - Stakeholder review hub added at `/admin/review-pack` to link methodology, changelog, reports, government view, Power BI, data quality, decisions, and walkthroughs.
 - Open decisions register added at `/admin/decisions`.
 - Guided review scripts added at `/admin/walkthroughs` for ABEA admin, member, government viewer, and Power BI/data analyst audiences.
+- Report-pack generator added at `/admin/report-packs` with board, government, and internal PDF exports by period.
+- Print-friendly stakeholder review pack added at `/admin/review-pack/print`.
+- Aggregate exports and Power BI aggregate feeds now include privacy threshold and suppression metadata.
+- Power BI admin page now shows bearer-token configuration status and active privacy threshold.
 - Benchmark recalculation now uses a selected period and minimum sample threshold.
 
 ## Review Questions
@@ -63,7 +67,9 @@ This pack summarises the current review slice for ABEA, vendor, and government s
 12. Open `/admin/powerbi` and inspect the available Power BI feed tables.
 13. Open `/admin/security-audit` and review access-control expectations.
 14. Open `/admin/review-pack`, `/admin/decisions`, and `/admin/walkthroughs`.
-15. Sign in as a government viewer and review `/govt`, including report basis, trends, and economic input tables.
+15. Open `/admin/report-packs` and export one board or government PDF for `2025-H1`.
+16. Open `/admin/review-pack/print` and confirm it is print/save-as-PDF friendly.
+17. Sign in as a government viewer and review `/govt`, including report basis, trends, and economic input tables.
 
 ## Open Decisions
 

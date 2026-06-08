@@ -17,6 +17,8 @@ export default function ReviewPackPage() {
     { title: 'Data Quality', href: '/admin/data-quality', desc: 'Completeness, stale contributors, rejected data, and import batches.' },
     { title: 'Open Decisions', href: '/admin/decisions', desc: 'Decision register for ABEA/vendor/government review.' },
     { title: 'Walkthroughs', href: '/admin/walkthroughs', desc: 'Guided scripts for each reviewer audience.' },
+    { title: 'Printable Review Pack', href: '/admin/review-pack/print', desc: 'Print-friendly pack for meeting distribution or save-as-PDF.' },
+    { title: 'Report Packs', href: '/admin/report-packs', desc: 'Audience-specific PDF exports by reporting period.' },
   ]
 
   return (

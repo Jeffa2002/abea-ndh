@@ -45,10 +45,15 @@
 - Reviewed-submissions CSV export downloads from `/api/admin/submissions/export`.
 - `/admin/reports` filters aggregate report rows by period, pillar, region, tier, and metric code.
 - Aggregate report CSV export downloads from `/api/admin/reports/export`.
+- Aggregate report CSV export includes privacy threshold and suppression flags.
 - `/admin/powerbi` loads and documents the lake feed tables.
+- `/admin/powerbi` shows bearer-token configuration status and privacy threshold.
 - `/admin/changelog` loads and explains implementation slices, intent, affected areas, and proof notes.
 - `/admin/security-audit` loads and lists role/API/export/feed access controls.
 - `/admin/review-pack` loads and links the main stakeholder-review resources.
+- `/admin/review-pack/print` loads as a print-friendly stakeholder pack.
+- `/admin/report-packs` loads and offers board, government, and internal PDF exports by period.
+- `/api/admin/report-packs/export?period=2025-H1&audience=board` downloads a PDF.
 - `/admin/decisions` loads and lists open stakeholder decisions.
 - `/admin/walkthroughs` loads and shows guided scripts for admin, member, government, and Power BI reviewer paths.
 - Demo scenario data covers multiple periods, pillars, regions, tiers, reporting cohorts, event types, capacity bands, and import batches after `npm run demo:seed`.
