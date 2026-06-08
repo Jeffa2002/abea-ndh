@@ -73,6 +73,19 @@ export default async function AdminPage() {
         </Link>
       </div>
 
+      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Link href="/admin/reports" className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-colors hover:border-orange-300">
+          <div className="text-sm font-semibold text-gray-500">Report Builder</div>
+          <div className="mt-2 text-xl font-black" style={{ color: '#052460' }}>Build aggregate extracts →</div>
+          <div className="mt-2 text-xs leading-5 text-gray-400">Filter by period, pillar, region, tier, and metric, then export lake-backed CSV outputs.</div>
+        </Link>
+        <Link href="/govt" className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-colors hover:border-orange-300">
+          <div className="text-sm font-semibold text-gray-500">Government Reporting</div>
+          <div className="mt-2 text-xl font-black" style={{ color: '#F99F38' }}>Open reporting view →</div>
+          <div className="mt-2 text-xs leading-5 text-gray-400">Review methodology metadata, period trends, economic inputs, and benchmark sample context.</div>
+        </Link>
+      </div>
+
       {/* Recent submissions */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-4 border-b flex items-center justify-between">

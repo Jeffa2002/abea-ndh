@@ -12,7 +12,7 @@ function formatDate(value: Date | null | undefined) {
 }
 
 export default async function DataQualityPage() {
-  const [submissions, approvedOrgs, coreMetrics, metricRows, auditEvents] = await Promise.all([
+  const [submissions, approvedOrgs, coreMetrics, metricRows, auditEvents, importBatches] = await Promise.all([
     prisma.dataSubmission.findMany({
       include: { org: true, _count: { select: { metrics: true } } },
       orderBy: { createdAt: 'desc' },
@@ -30,6 +30,7 @@ export default async function DataQualityPage() {
     prisma.metricDefinition.findMany({ where: { isCore: true }, select: { pillar: true } }),
     prisma.metricValue.count(),
     prisma.submissionAuditEvent.count(),
+    prisma.importBatch.findMany({ orderBy: { createdAt: 'desc' }, take: 8 }),
   ])
 
   const periods = [...new Set(submissions.map(submission => submission.period))].sort().reverse()
@@ -50,6 +51,7 @@ export default async function DataQualityPage() {
   const summary = [
     { label: 'Lake fact rows', value: formatNumber(metricRows), note: 'Metric-value rows ready for long-format analytics' },
     { label: 'Audit events', value: formatNumber(auditEvents), note: 'Submission lifecycle records captured' },
+    { label: 'Import batches', value: formatNumber(importBatches.length), note: 'Recent CSV ingestion files tracked' },
     { label: 'Reporting periods', value: formatNumber(periods.length), note: latestPeriod ? `Latest period: ${latestPeriod}` : 'No periods yet' },
     { label: 'Processed latest records', value: formatNumber(processedLatest.length), note: `Approved records feeding ${latestPeriod || 'the latest period'} reports` },
     { label: 'Avg metrics / submission', value: String(averageMetrics), note: 'Completeness signal across all ingested records' },
@@ -100,7 +102,7 @@ export default async function DataQualityPage() {
         </a>
       </div>
 
-      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-5">
+      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-6">
         {summary.map(item => (
           <div key={item.label} className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
             <div className="text-xs font-semibold uppercase text-gray-400">{item.label}</div>
@@ -205,6 +207,44 @@ export default async function DataQualityPage() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div className="mt-8 overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
+        <div className="border-b p-4">
+          <h2 className="font-bold text-gray-900">Import Governance</h2>
+          <p className="mt-1 text-xs text-gray-500">Recent CSV batches with accepted/rejected row counts for operational follow-up.</p>
+        </div>
+        <table className="w-full">
+          <thead>
+            <tr className="border-b bg-gray-50">
+              <th className="px-5 py-3 text-left text-xs font-semibold uppercase text-gray-500">File</th>
+              <th className="px-5 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
+              <th className="px-5 py-3 text-left text-xs font-semibold uppercase text-gray-500">Period</th>
+              <th className="px-5 py-3 text-right text-xs font-semibold uppercase text-gray-500">Rows</th>
+              <th className="px-5 py-3 text-right text-xs font-semibold uppercase text-gray-500">Accepted</th>
+              <th className="px-5 py-3 text-right text-xs font-semibold uppercase text-gray-500">Rejected</th>
+              <th className="px-5 py-3 text-left text-xs font-semibold uppercase text-gray-500">Uploaded</th>
+            </tr>
+          </thead>
+          <tbody>
+            {importBatches.map(batch => (
+              <tr key={batch.id} className="border-b last:border-0">
+                <td className="px-5 py-3 text-sm font-semibold text-gray-900">{batch.filename}</td>
+                <td className="px-5 py-3 text-sm text-gray-600">{batch.status}</td>
+                <td className="px-5 py-3 text-sm text-gray-600">{batch.period || '—'}</td>
+                <td className="px-5 py-3 text-right text-sm text-gray-600">{batch.rowCount}</td>
+                <td className="px-5 py-3 text-right text-sm text-gray-600">{batch.acceptedRows}</td>
+                <td className="px-5 py-3 text-right text-sm text-gray-600">{batch.rejectedRows}</td>
+                <td className="px-5 py-3 text-sm text-gray-600">{formatDate(batch.createdAt)}</td>
+              </tr>
+            ))}
+            {importBatches.length === 0 && (
+              <tr>
+                <td colSpan={7} className="px-5 py-8 text-center text-sm text-gray-400">No CSV import batches recorded yet.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
 
       <div className="mt-8 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">

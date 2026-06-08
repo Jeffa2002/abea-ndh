@@ -52,12 +52,39 @@ export async function POST(req: NextRequest) {
 
     const { values, issues } = validateMetricInputs(inputs, metricDefs, period)
     if (issues.length > 0) {
+      await prisma.importBatch.create({
+        data: {
+          filename: file.name,
+          status: 'REJECTED',
+          period,
+          pillar: org.pillar,
+          orgId: org.id,
+          uploadedById: session.userId,
+          rowCount: records.length,
+          acceptedRows: 0,
+          rejectedRows: issues.length,
+          validationSummary: issues,
+        },
+      })
       return NextResponse.json({ error: validationSummary(issues), issues }, { status: 400 })
     }
 
     const rawData = Object.fromEntries(values.map(({ code, value }) => [code, value]))
 
     const submission = await prisma.$transaction(async tx => {
+      const batch = await tx.importBatch.create({
+        data: {
+          filename: file.name,
+          status: 'ACCEPTED',
+          period,
+          pillar: org.pillar,
+          orgId: org.id,
+          uploadedById: session.userId,
+          rowCount: records.length,
+          acceptedRows: values.length,
+          rejectedRows: 0,
+        },
+      })
       const created = await tx.dataSubmission.create({
         data: {
           orgId: org.id,
@@ -66,6 +93,7 @@ export async function POST(req: NextRequest) {
           status: SubmissionStatus.SUBMITTED,
           rawData,
           mappedData: rawData,
+          importBatchId: batch.id,
         },
       })
 

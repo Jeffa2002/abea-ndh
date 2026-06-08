@@ -39,7 +39,10 @@
 - Review date and review note display on the submissions table.
 - Submission timeline displays audit events for submitted, CSV uploaded, processed, and rejected records.
 - `/admin/data-quality` loads with lake fact rows, audit events, reporting periods, incomplete submissions, stale contributors, and rejected/error records.
+- `/admin/data-quality` shows recent CSV import batches when uploads have occurred.
 - Reviewed-submissions CSV export downloads from `/api/admin/submissions/export`.
+- `/admin/reports` filters aggregate report rows by period, pillar, region, tier, and metric code.
+- Aggregate report CSV export downloads from `/api/admin/reports/export`.
 - Benchmarks page calculates without including legacy non-core organiser metrics.
 - Benchmark recalculation uses only processed submissions.
 - Benchmark recalculation respects selected period and minimum sample threshold.
@@ -49,6 +52,8 @@
 - Government viewer can access `/govt`.
 - Government viewer cannot access admin-only pages.
 - Industry overview charts load.
+- Government report basis cards show methodology version, benchmark vintage, sample context, processed submissions, and metric fact rows.
+- Period trend and economic impact input tables load.
 - Methodology note and privacy note are visible.
 
 ## Verification Commands

@@ -21,6 +21,11 @@ This pack summarises the current review slice for ABEA, vendor, and government s
 - Admins can explicitly process or reject submissions before those submissions are eligible for benchmark recalculation.
 - Submission review now writes audit events, giving ABEA an event trail for ingestion, CSV upload, processing, and rejection decisions.
 - Admin data-quality view added for the reporting-lake path: long-format fact-row count, audit event count, reporting-period coverage, incomplete core metric sets, stale contributors, rejected records, and lake-ready CSV export.
+- Admin report builder added at `/admin/reports` for governed aggregate extracts filtered by period, pillar, region, tier, and metric code.
+- Aggregate report CSV export added at `/api/admin/reports/export`.
+- Government reporting now shows period selector, reporting basis metadata, benchmark vintage, sample context, processed-row counts, trend table, and economic impact/spend inputs.
+- Data model now includes first-class reporting dimensions for organisation cohort, primary event type, capacity band, government program, and CSV import batches.
+- CSV import batches now record filename, status, period, pillar, row counts, accepted/rejected counts, uploader, and validation summary.
 - Benchmark recalculation now uses a selected period and minimum sample threshold.
 
 ## Review Questions
@@ -41,8 +46,9 @@ This pack summarises the current review slice for ABEA, vendor, and government s
 5. Try a CSV upload with one invalid metric code and confirm the row-level validation message.
 6. Open `/dashboard/benchmarks` and download the PDF report.
 7. Sign in as an admin and review `/admin/submissions`, `/admin/benchmarks`, `/admin/members`, and `/admin/organisations`.
-8. Open `/admin/data-quality` and download the reviewed-submissions CSV export.
-9. Sign in as a government viewer and review `/govt`.
+8. Open `/admin/data-quality` and review import governance, completeness, stale contributors, and reviewed-submissions CSV export.
+9. Open `/admin/reports`, filter the aggregate extract, and download the aggregate CSV.
+10. Sign in as a government viewer and review `/govt`, including report basis, trends, and economic input tables.
 
 ## Open Decisions
 
@@ -50,4 +56,5 @@ This pack summarises the current review slice for ABEA, vendor, and government s
 - Whether government reporting should be Victoria-specific or support state/territory variants.
 - Whether organiser submissions should ask for examples or guidance text beside each metric.
 - Whether ABEA wants a visible methodology version number for external reporting.
-- Which additional dimensions should become first-class data-lake fields before wider onboarding: jurisdiction, event type, organisation cohort, venue capacity band, and government-program linkage.
+- Which reporting-dimension values ABEA wants as controlled lists: jurisdiction/state, event type, organisation cohort, venue capacity band, and government-program linkage.
+- Whether import rollback should delete created submissions or mark batches as excluded from official reporting.
