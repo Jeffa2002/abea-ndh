@@ -24,6 +24,9 @@ export const UPDATED_INPUT_CATEGORIES = [
 export const INPUT_CATEGORY_CAVEAT =
   'Subject to final government input, a multiplier may be applied to selected spend categories.'
 
+export const METHODOLOGY_VERSION = 'v0.2'
+export const METHODOLOGY_UPDATED_AT = '9 June 2026'
+
 export const METHODOLOGY_PRINCIPLES = [
   {
     title: 'Standardised definitions',
@@ -73,3 +76,16 @@ export const STAKEHOLDER_REVIEW_POINTS = [
   'Review whether event days, shoulder days, and accompanying guests need additional examples.',
   'Confirm whether Victoria-specific organiser spend should remain the default wording for all future reporting.',
 ] as const
+
+export const ORGANISER_METRIC_GUIDANCE: Record<string, string> = {
+  ORG_EVENTS_DELIVERED: 'Count events delivered in the reporting period, not events contracted for a later period.',
+  ORG_TOTAL_DELEGATES: 'Include delegates and exhibitors across the submitted events. Avoid double counting repeat attendance across the same event.',
+  ORG_DELEGATE_DIRECT_EVENT_SPEND: 'Use direct event spend attributed to delegates and exhibitors, before any final government multiplier is applied.',
+  ORG_INDIRECT_VISITOR_SPEND: 'Capture linked visitor spend such as tourism, retail, hospitality, transport, and local services.',
+  ORG_EVENT_AND_SHOULDER_DAYS: 'Include official event days plus recognised pre/post-event shoulder days used for visitor impact modelling.',
+  ORG_ACCOMPANYING_GUESTS: 'Count guests accompanying delegates or exhibitors where those guests are part of the event impact estimate.',
+  ORG_EXHIBITING_COST: 'Use exhibitor cost for conference and expo formats, including booth or exhibition participation costs where available.',
+  ORG_NATIONAL_PARTICIPANT_PCT: 'Enter the Australian participant share as a percentage from 0 to 100.',
+  ORG_INTERNATIONAL_PARTICIPANT_PCT: 'Enter the overseas participant share as a percentage from 0 to 100. National and international shares should usually total 100.',
+  ORG_DIRECT_VIC_SPEND: 'Use organiser direct spend into Victoria, including sponsorship, delegate entertaining, and event delivery spend.',
+}

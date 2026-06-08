@@ -25,6 +25,7 @@ Aggregates standardised data across four industry pillars:
 ## Review Materials
 
 - Public methodology: `/methodology`
+- Current methodology version: `v0.2` updated 9 June 2026
 - Stakeholder review pack: `docs/stakeholder-review-pack.md`
 - QA checklist: `docs/qa-checklist.md`
 

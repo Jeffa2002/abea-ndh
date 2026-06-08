@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import type { CSSProperties, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
-import { INPUT_CATEGORY_CAVEAT } from '@/lib/inputCategories'
+import { INPUT_CATEGORY_CAVEAT, METHODOLOGY_VERSION, ORGANISER_METRIC_GUIDANCE } from '@/lib/inputCategories'
 
 const PERIODS = ['2024-FY', '2024-H1', '2024-H2', '2024-Q1', '2024-Q2', '2024-Q3', '2024-Q4', '2025-FY']
 
@@ -99,7 +99,7 @@ export default function SubmitPage() {
   return (
     <div className="p-8 max-w-3xl">
       <h1 className="text-2xl font-bold mb-2" style={{ color: '#052460' }}>Submit Data</h1>
-      <p className="text-gray-500 text-sm mb-8">Submit your organisation&apos;s metrics for a specific period</p>
+      <p className="text-gray-500 text-sm mb-8">Submit your organisation&apos;s metrics for a specific period · Methodology {METHODOLOGY_VERSION}</p>
 
       {error && (
         <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
@@ -163,6 +163,11 @@ export default function SubmitPage() {
                 <div className="flex-1">
                   <div className="font-medium text-sm text-gray-900">{m.label}</div>
                   <div className="text-xs text-gray-400">{m.description}</div>
+                  {ORGANISER_METRIC_GUIDANCE[m.code] && (
+                    <div className="mt-2 rounded-lg bg-orange-50 px-3 py-2 text-xs leading-5 text-orange-800">
+                      {ORGANISER_METRIC_GUIDANCE[m.code]}
+                    </div>
+                  )}
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-400 w-12 text-right">{unitLabel(m.unit)}</span>

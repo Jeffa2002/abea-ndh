@@ -12,10 +12,13 @@ function percentile(sorted: number[], p: number): number {
   return sorted[lower] + (sorted[upper] - sorted[lower]) * (idx - lower)
 }
 
-export async function POST() {
+export async function POST(req: Request) {
   const session = await getSession()
   if (!session || session.role !== 'ADMIN') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
+  const body = await req.json().catch(() => ({})) as { period?: string; minSampleSize?: number }
+  const periodFilter = body.period?.trim()
+  const minSampleSize = Number.isFinite(body.minSampleSize) ? Math.max(1, Math.floor(Number(body.minSampleSize))) : 5
   const pillars = Object.values(Pillar)
   const results: Array<{ pillar: Pillar; metricCode: string; period: string; sampleSize: number }> = []
 
@@ -27,6 +30,7 @@ export async function POST() {
         where: {
           metric: { code: metric.code },
           submission: { status: SubmissionStatus.PROCESSED, pillar },
+          ...(periodFilter ? { period: periodFilter } : {}),
         },
         select: { value: true, period: true },
       })
@@ -38,12 +42,22 @@ export async function POST() {
       }
 
       for (const [period, vals] of Object.entries(byPeriod)) {
-        if (vals.length < 3) continue // lowered for demo (spec says 5)
+        if (vals.length < minSampleSize) continue
         const sorted = [...vals].sort((a, b) => a - b)
         const avg = vals.reduce((s, v) => s + v, 0) / vals.length
         const median = percentile(sorted, 50)
         const p25 = percentile(sorted, 25)
         const p75 = percentile(sorted, 75)
+
+        await prisma.benchmarkSnapshot.deleteMany({
+          where: {
+            pillar,
+            metricCode: metric.code,
+            period,
+            region: null,
+            tier: null,
+          },
+        })
 
         await prisma.benchmarkSnapshot.create({
           data: {
@@ -60,13 +74,7 @@ export async function POST() {
         results.push({ pillar, metricCode: metric.code, period, sampleSize: vals.length })
       }
     }
-
-    // Mark SUBMITTED as PROCESSED
-    await prisma.dataSubmission.updateMany({
-      where: { pillar, status: SubmissionStatus.SUBMITTED },
-      data: { status: SubmissionStatus.PROCESSED, processedAt: new Date() },
-    })
   }
 
-  return NextResponse.json({ calculated: results.length, snapshots: results })
+  return NextResponse.json({ calculated: results.length, minSampleSize, period: periodFilter || 'all processed periods', snapshots: results })
 }

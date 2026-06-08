@@ -45,6 +45,9 @@ model DataSubmission {
   mappedData  Json?
   createdAt   DateTime         @default(now())
   processedAt DateTime?
+  reviewedAt  DateTime?
+  reviewedById String?
+  reviewNote  String?
   metrics     MetricValue[]
 }
 

@@ -2,6 +2,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import {
   INPUT_CATEGORY_CAVEAT,
+  METHODOLOGY_UPDATED_AT,
+  METHODOLOGY_VERSION,
   METHODOLOGY_PRINCIPLES,
   METHODOLOGY_STEPS,
   STAKEHOLDER_REVIEW_POINTS,
@@ -49,7 +51,7 @@ export default function MethodologyPage() {
       <section className="brand-hero px-6 py-20 text-white">
         <div className="mx-auto max-w-5xl">
           <p className="mb-5 inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-[var(--abea-sky)]">
-            Methodology
+            Methodology {METHODOLOGY_VERSION} · Updated {METHODOLOGY_UPDATED_AT}
           </p>
           <h1 className="max-w-4xl text-4xl font-bold leading-tight md:text-5xl">
             How the Hub turns member inputs into usable industry evidence.

@@ -25,6 +25,8 @@ export default function AdminBenchmarksPage() {
   const [loading, setLoading] = useState(true)
   const [calculating, setCalculating] = useState(false)
   const [calcResult, setCalcResult] = useState('')
+  const [period, setPeriod] = useState('2024-FY')
+  const [minSampleSize, setMinSampleSize] = useState(5)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -55,10 +57,16 @@ export default function AdminBenchmarksPage() {
   async function recalculate() {
     setCalculating(true)
     setCalcResult('')
-    const res = await fetch('/api/admin/benchmarks/calculate', { method: 'POST' })
-    const data = await res.json()
+    const res = await fetch('/api/admin/benchmarks/calculate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ period, minSampleSize }),
+    })
+    const data = await res.json() as { calculated?: number; minSampleSize?: number; period?: string; error?: string }
     setCalculating(false)
-    setCalcResult(`Calculated ${data.calculated} benchmark snapshots`)
+    setCalcResult(res.ok
+      ? `Calculated ${data.calculated} benchmark snapshots for ${data.period} with minimum n=${data.minSampleSize}`
+      : data.error || 'Benchmark calculation failed')
     void load()
   }
 
@@ -75,14 +83,38 @@ export default function AdminBenchmarksPage() {
           <h1 className="text-2xl font-bold" style={{ color: '#052460' }}>Benchmarks</h1>
           <p className="text-gray-500 text-sm mt-1">Current benchmark snapshots across all pillars</p>
         </div>
-        <button onClick={recalculate} disabled={calculating}
-          className="px-6 py-3 rounded-xl font-bold text-white text-sm disabled:opacity-60"
-          style={{ backgroundColor: '#F99F38' }}>
-          {calculating ? '⏳ Calculating...' : '🔄 Recalculate Benchmarks'}
-        </button>
+        <div className="flex flex-wrap items-end gap-3">
+          <label className="text-xs font-semibold uppercase text-gray-500">
+            Period
+            <input
+              value={period}
+              onChange={event => setPeriod(event.target.value)}
+              className="mt-1 block w-28 rounded-lg border border-gray-200 px-3 py-2 text-sm font-normal text-gray-700"
+            />
+          </label>
+          <label className="text-xs font-semibold uppercase text-gray-500">
+            Min n
+            <input
+              type="number"
+              min={1}
+              value={minSampleSize}
+              onChange={event => setMinSampleSize(Number(event.target.value))}
+              className="mt-1 block w-20 rounded-lg border border-gray-200 px-3 py-2 text-sm font-normal text-gray-700"
+            />
+          </label>
+          <button onClick={recalculate} disabled={calculating}
+            className="px-6 py-3 rounded-xl font-bold text-white text-sm disabled:opacity-60"
+            style={{ backgroundColor: '#F99F38' }}>
+            {calculating ? 'Calculating...' : 'Recalculate'}
+          </button>
+        </div>
       </div>
 
       {calcResult && <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm">{calcResult}</div>}
+
+      <div className="mb-6 rounded-xl border border-blue-100 bg-blue-50 p-4 text-xs leading-6 text-blue-800">
+        Governance rule: recalculation only uses submissions that an admin has explicitly processed. It refreshes matching snapshots for the selected period and skips metrics below the minimum sample threshold.
+      </div>
 
       {loading ? <div className="text-gray-400">Loading...</div> : (
         <div className="space-y-8">

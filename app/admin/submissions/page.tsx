@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { PILLAR_COLORS } from '@/lib/brand'
+import { ReviewActions } from './ReviewActions'
 
 export const dynamic = 'force-dynamic'
 const STATUS_STYLES: Record<string, string> = {
@@ -50,6 +51,7 @@ export default async function AdminSubmissionsPage() {
               <th className="text-left px-6 py-4 text-xs text-gray-500 font-semibold uppercase">Metrics</th>
               <th className="text-left px-6 py-4 text-xs text-gray-500 font-semibold uppercase">Status</th>
               <th className="text-left px-6 py-4 text-xs text-gray-500 font-semibold uppercase">Submitted</th>
+              <th className="text-left px-6 py-4 text-xs text-gray-500 font-semibold uppercase">Review</th>
             </tr>
           </thead>
           <tbody>
@@ -61,6 +63,17 @@ export default async function AdminSubmissionsPage() {
                 <td className="px-6 py-4 text-sm text-gray-600">{s._count.metrics}</td>
                 <td className="px-6 py-4"><span className={`px-2 py-1 text-xs font-bold rounded ${STATUS_STYLES[s.status]}`}>{s.status}</span></td>
                 <td className="px-6 py-4 text-sm text-gray-500">{new Date(s.createdAt).toLocaleDateString('en-AU')}</td>
+                <td className="px-6 py-4">
+                  <div className="space-y-2">
+                    {s.reviewedAt && (
+                      <div className="text-xs leading-5 text-gray-500">
+                        Reviewed {new Date(s.reviewedAt).toLocaleDateString('en-AU')}
+                        {s.reviewNote ? <div className="mt-1 italic text-gray-400">{s.reviewNote}</div> : null}
+                      </div>
+                    )}
+                    <ReviewActions submissionId={s.id} status={s.status} />
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>

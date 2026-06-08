@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma'
-import { INPUT_CATEGORY_CAVEAT, METHODOLOGY_PRINCIPLES } from '@/lib/inputCategories'
+import { INPUT_CATEGORY_CAVEAT, METHODOLOGY_PRINCIPLES, METHODOLOGY_UPDATED_AT, METHODOLOGY_VERSION } from '@/lib/inputCategories'
 import { PillarCharts } from './PillarCharts'
 
 export const dynamic = 'force-dynamic'
@@ -48,7 +48,7 @@ export default async function GovtPage() {
 
       <div className="mt-8 rounded-2xl border border-blue-100 bg-white p-6 shadow-sm">
         <div className="mb-4">
-          <p className="text-xs font-bold uppercase text-blue-700">Methodology note</p>
+          <p className="text-xs font-bold uppercase text-blue-700">Methodology note · {METHODOLOGY_VERSION} · {METHODOLOGY_UPDATED_AT}</p>
           <h2 className="mt-1 text-lg font-bold" style={{ color: '#052460' }}>
             Benchmarks use standardised pillar definitions and aggregated member submissions.
           </h2>

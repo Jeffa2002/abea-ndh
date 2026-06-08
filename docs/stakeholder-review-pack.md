@@ -1,6 +1,7 @@
 # ABEA National Data Hub Stakeholder Review Pack
 
 Generated: 2026-06-09
+Methodology version: v0.2
 
 ## Purpose
 
@@ -16,6 +17,8 @@ This pack summarises the current review slice for ABEA, vendor, and government s
 - Methodology caveat is visible across the site and reports: subject to final government input, a multiplier may be applied to selected spend categories.
 - CSV upload validation now checks active metric codes, numeric values, negative values, percentage bounds, duplicate metrics, and reporting-period mismatches before saving.
 - Member PDF reports now include a methodology page before metric detail pages.
+- Admins can explicitly process or reject submissions before those submissions are eligible for benchmark recalculation.
+- Benchmark recalculation now uses a selected period and minimum sample threshold.
 
 ## Review Questions
 

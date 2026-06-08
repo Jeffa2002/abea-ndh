@@ -3,6 +3,8 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import {
   INPUT_CATEGORY_CAVEAT,
+  METHODOLOGY_UPDATED_AT,
+  METHODOLOGY_VERSION,
   METHODOLOGY_PRINCIPLES,
   METHODOLOGY_STEPS,
   UPDATED_INPUT_CATEGORIES,
@@ -314,7 +316,7 @@ export async function GET() {
       h(View, { style: styles.coverContent },
         h(View, { style: styles.coverAccent }),
         h(Text, { style: styles.coverTitle }, 'Benchmarking\nReport'),
-        h(Text, { style: styles.coverSubtitle }, 'ABEA National Data Hub'),
+        h(Text, { style: styles.coverSubtitle }, `ABEA National Data Hub · Methodology ${METHODOLOGY_VERSION}`),
         h(Text, { style: styles.coverOrg }, org.name),
         h(Text, { style: styles.coverMeta }, `Pillar: ${org.pillar}  ·  Period: ${currentYear}-FY  ·  Generated: ${dateGenerated}`),
       ),
@@ -391,7 +393,7 @@ export async function GET() {
       h(View, { style: styles.pageHeader },
         h(View, null,
           h(Text, { style: styles.pageHeaderTitle }, 'Methodology'),
-          h(Text, { style: styles.pageHeaderSub }, 'Collection, validation, aggregation, and reporting basis'),
+          h(Text, { style: styles.pageHeaderSub }, `Collection, validation, aggregation, and reporting basis · ${METHODOLOGY_VERSION} · Updated ${METHODOLOGY_UPDATED_AT}`),
         ),
         h(Text, { style: { fontSize: 10, color: SUNDAY, fontFamily: 'Helvetica-Bold' } }, 'ABEA NDH'),
       ),

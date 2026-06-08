@@ -34,7 +34,12 @@
 - Organisations list loads.
 - Members list loads and approval/rejection controls still work.
 - Submissions list shows latest 100 submissions.
+- Submitted records can be processed by an admin.
+- Rejected records require a review note.
+- Review date and review note display on the submissions table.
 - Benchmarks page calculates without including legacy non-core organiser metrics.
+- Benchmark recalculation uses only processed submissions.
+- Benchmark recalculation respects selected period and minimum sample threshold.
 
 ## Government Flow
 
