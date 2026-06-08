@@ -31,6 +31,7 @@
 ## Admin Flow
 
 - Admin overview loads.
+- `/admin/brand` loads with ABEA logo, brand identity, colour system, and pillar colour guidance.
 - Organisations list loads.
 - Organisation reporting dimensions can be updated from controlled dropdowns.
 - Members list loads and approval/rejection controls still work.

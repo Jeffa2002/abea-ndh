@@ -9,6 +9,7 @@ export const dynamic = 'force-dynamic'
 export default function ReviewPackPage() {
   const resources = [
     { title: 'Methodology', href: '/methodology', desc: 'Public methodology, input model, process, and review questions.' },
+    { title: 'Brand Guide', href: '/admin/brand', desc: 'ABEA identity, colour system, report tone, and pillar-colour rules.' },
     { title: 'Implementation Changelog', href: '/admin/changelog', desc: 'Versioned interpretation of what changed and why.' },
     { title: 'Security Audit', href: '/admin/security-audit', desc: 'Role, API, export, rejected-data, import, and Power BI access controls.' },
     { title: 'Report Builder', href: '/admin/reports?period=2025-H1', desc: 'Admin aggregate reporting and CSV export.' },

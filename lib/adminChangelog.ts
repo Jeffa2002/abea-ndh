@@ -10,6 +10,23 @@ export type AdminChangelogEntry = {
 
 export const ADMIN_CHANGELOG: AdminChangelogEntry[] = [
   {
+    version: 'v1.0',
+    date: '9 June 2026',
+    title: 'Brand-awareness pass',
+    intent: 'Make the admin, methodology, reporting, and review surfaces easier to keep aligned to the ABEA identity.',
+    areas: ['Brand guide', 'Methodology', 'Review pack', 'Admin navigation'],
+    changes: [
+      'Added formal brand identity labels and colour-usage guidance.',
+      'Added admin Brand Guide with logo, naming, tagline, colour system, pillar colours, and report tone rules.',
+      'Linked Brand Guide from the stakeholder Review Pack and admin navigation.',
+      'Updated methodology input-category accents to use ABEA brand colours instead of off-brand purple/red values.',
+    ],
+    proof: [
+      'Local lint passed.',
+      'Local production build passed.',
+    ],
+  },
+  {
     version: 'v0.9',
     date: '9 June 2026',
     title: 'Exportable stakeholder artefacts and privacy controls',

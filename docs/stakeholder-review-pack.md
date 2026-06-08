@@ -40,6 +40,8 @@ This pack summarises the current review slice for ABEA, vendor, and government s
 - Print-friendly stakeholder review pack added at `/admin/review-pack/print`.
 - Aggregate exports and Power BI aggregate feeds now include privacy threshold and suppression metadata.
 - Power BI admin page now shows bearer-token configuration status and active privacy threshold.
+- Brand guide added at `/admin/brand` with ABEA naming, logo, colour usage, pillar colours, and report tone guidance.
+- Methodology input-category accents now use ABEA brand colours.
 - Benchmark recalculation now uses a selected period and minimum sample threshold.
 
 ## Review Questions
@@ -66,7 +68,7 @@ This pack summarises the current review slice for ABEA, vendor, and government s
 11. Open `/admin/reports`, filter the aggregate extract, and download the aggregate CSV.
 12. Open `/admin/powerbi` and inspect the available Power BI feed tables.
 13. Open `/admin/security-audit` and review access-control expectations.
-14. Open `/admin/review-pack`, `/admin/decisions`, and `/admin/walkthroughs`.
+14. Open `/admin/brand`, `/admin/review-pack`, `/admin/decisions`, and `/admin/walkthroughs`.
 15. Open `/admin/report-packs` and export one board or government PDF for `2025-H1`.
 16. Open `/admin/review-pack/print` and confirm it is print/save-as-PDF friendly.
 17. Sign in as a government viewer and review `/govt`, including report basis, trends, and economic input tables.

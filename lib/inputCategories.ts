@@ -1,7 +1,7 @@
 export const UPDATED_INPUT_CATEGORIES = [
   {
     title: 'Delegates and exhibitors',
-    accent: '#8F80F4',
+    accent: '#1C4DA1',
     items: [
       'Direct event spend',
       'Indirect spend - tourism, retail and local services',
@@ -13,7 +13,7 @@ export const UPDATED_INPUT_CATEGORIES = [
   },
   {
     title: 'Organisers',
-    accent: '#FF0000',
+    accent: '#F99F38',
     items: [
       'Direct spend into Victoria, including sponsorship and delegate entertaining',
       'National and international segmentation',
