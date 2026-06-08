@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { validateMetricInputs, validatePeriod, validationSummary } from '@/lib/dataValidation'
 import { SubmissionStatus } from '@prisma/client'
 
 export async function POST(req: NextRequest) {
@@ -9,13 +10,27 @@ export async function POST(req: NextRequest) {
 
   try {
     const { period, metrics } = await req.json()
-    if (!period || !metrics) return NextResponse.json({ error: 'period and metrics required' }, { status: 400 })
+    const periodIssues = validatePeriod(period)
+    if (periodIssues.length > 0) {
+      return NextResponse.json({ error: validationSummary(periodIssues), issues: periodIssues }, { status: 400 })
+    }
+    if (!metrics || typeof metrics !== 'object' || Array.isArray(metrics)) {
+      return NextResponse.json({ error: 'Submit at least one metric value.' }, { status: 400 })
+    }
 
     const org = await prisma.organisation.findUnique({ where: { id: session.orgId } })
     if (!org || !org.isApproved) return NextResponse.json({ error: 'Organisation not approved' }, { status: 403 })
 
     const metricDefs = await prisma.metricDefinition.findMany({ where: { pillar: org.pillar, isCore: true } })
     const metricByCode = Object.fromEntries(metricDefs.map(m => [m.code, m]))
+    const inputs = Object.entries(metrics).map(([code, value]) => ({ code, value }))
+    const { values, issues } = validateMetricInputs(inputs, metricDefs, period)
+
+    if (issues.length > 0) {
+      return NextResponse.json({ error: validationSummary(issues), issues }, { status: 400 })
+    }
+
+    const cleanMetrics = Object.fromEntries(values.map(({ code, value }) => [code, value]))
 
     const submission = await prisma.dataSubmission.create({
       data: {
@@ -23,23 +38,21 @@ export async function POST(req: NextRequest) {
         pillar: org.pillar,
         period,
         status: SubmissionStatus.SUBMITTED,
-        rawData: metrics,
-        mappedData: metrics,
+        rawData: cleanMetrics,
+        mappedData: cleanMetrics,
       },
     })
 
-    for (const [code, value] of Object.entries(metrics)) {
+    for (const { code, value } of values) {
       const metric = metricByCode[code]
-      if (metric && typeof value === 'number') {
-        await prisma.metricValue.create({
-          data: {
-            submissionId: submission.id,
-            metricId: metric.id,
-            value,
-            period,
-          },
-        })
-      }
+      await prisma.metricValue.create({
+        data: {
+          submissionId: submission.id,
+          metricId: metric.id,
+          value,
+          period,
+        },
+      })
     }
 
     return NextResponse.json({ submissionId: submission.id }, { status: 201 })

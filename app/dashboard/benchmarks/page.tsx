@@ -157,6 +157,10 @@ export default function BenchmarksPage() {
         🔒 Benchmarks are calculated from aggregated, anonymised data. Individual organisations are never identifiable.
       </div>
 
+      <div className="p-3 bg-orange-50 border border-orange-100 rounded-xl text-xs text-orange-800 mb-6">
+        Methodology note: organiser benchmarks separate delegate/exhibitor spend from organiser direct spend, preserve national and international participant segmentation, and may be adjusted once final government multiplier guidance is confirmed.
+      </div>
+
       {/* Pillar filter tabs */}
       <div className="flex gap-2 mb-8 flex-wrap">
         {PILLARS.map(p => (

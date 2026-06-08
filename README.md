@@ -22,6 +22,12 @@ Aggregates standardised data across four industry pillars:
 - Member (Venue): `member@sydney-icc.com.au` / `Member2026!`
 - Member (Organiser): `member@events-australia.com.au` / `Member2026!`
 
+## Review Materials
+
+- Public methodology: `/methodology`
+- Stakeholder review pack: `docs/stakeholder-review-pack.md`
+- QA checklist: `docs/qa-checklist.md`
+
 ## Setup
 1. `npm install`
 2. Copy `.env.example` to `.env` and configure

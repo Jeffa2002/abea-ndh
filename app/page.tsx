@@ -89,6 +89,9 @@ export default function Home() {
             <Link href="/about" className="hidden text-white/70 transition-colors hover:text-white md:inline">
               About
             </Link>
+            <Link href="/methodology" className="hidden text-white/70 transition-colors hover:text-white md:inline">
+              Methodology
+            </Link>
             <Link href="#how-it-works" className="hidden text-white/70 transition-colors hover:text-white md:inline">
               How it works
             </Link>
@@ -307,6 +310,7 @@ export default function Home() {
               {[
                 { label: 'Home', href: '/' },
                 { label: 'About', href: '/about' },
+                { label: 'Methodology', href: '/methodology' },
                 { label: 'Register', href: '/register' },
                 { label: 'Sign In', href: '/login' },
               ].map((link) => (

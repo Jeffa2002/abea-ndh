@@ -74,6 +74,9 @@ export default function AboutPage() {
             <Link href="/" className="hidden text-white/70 transition-colors hover:text-white md:inline">
               Home
             </Link>
+            <Link href="/methodology" className="hidden text-white/70 transition-colors hover:text-white md:inline">
+              Methodology
+            </Link>
             <Link href="/login" className="text-white/80 transition-colors hover:text-white">
               Sign in
             </Link>
@@ -250,6 +253,7 @@ export default function AboutPage() {
               {[
                 { label: 'Home', href: '/' },
                 { label: 'About', href: '/about' },
+                { label: 'Methodology', href: '/methodology' },
                 { label: 'Register', href: '/register' },
                 { label: 'Sign In', href: '/login' },
               ].map((link) => (

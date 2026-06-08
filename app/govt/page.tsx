@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { INPUT_CATEGORY_CAVEAT, METHODOLOGY_PRINCIPLES } from '@/lib/inputCategories'
 import { PillarCharts } from './PillarCharts'
 
 export const dynamic = 'force-dynamic'
@@ -44,6 +45,24 @@ export default async function GovtPage() {
         totalSubmissions={totalSubmissions}
         metricsTracked={metricsTracked}
       />
+
+      <div className="mt-8 rounded-2xl border border-blue-100 bg-white p-6 shadow-sm">
+        <div className="mb-4">
+          <p className="text-xs font-bold uppercase text-blue-700">Methodology note</p>
+          <h2 className="mt-1 text-lg font-bold" style={{ color: '#052460' }}>
+            Benchmarks use standardised pillar definitions and aggregated member submissions.
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+          {METHODOLOGY_PRINCIPLES.map((principle) => (
+            <div key={principle.title} className="rounded-xl bg-blue-50 p-4">
+              <div className="text-sm font-semibold text-blue-900">{principle.title}</div>
+              <p className="mt-2 text-xs leading-5 text-blue-700">{principle.desc}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-4 text-xs italic text-gray-500">{INPUT_CATEGORY_CAVEAT}</p>
+      </div>
 
       <div className="mt-8 p-4 bg-gray-50 rounded-xl text-xs text-gray-400 text-center">
         🔒 All data is aggregated and anonymised. Individual organisations are never identifiable.

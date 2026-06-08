@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import {
+  INPUT_CATEGORY_CAVEAT,
+  METHODOLOGY_PRINCIPLES,
+  METHODOLOGY_STEPS,
+  UPDATED_INPUT_CATEGORIES,
+} from '@/lib/inputCategories'
 import React from 'react'
 
 export const runtime = 'nodejs'
@@ -276,6 +282,28 @@ export async function GET() {
       fontSize: 8,
       color: '#9CA3AF',
     },
+    methodGrid: {
+      flexDirection: 'row',
+      gap: 10,
+      marginBottom: 12,
+    },
+    methodCard: {
+      flex: 1,
+      padding: 12,
+      backgroundColor: LIGHT,
+      borderRadius: 8,
+    },
+    methodCardTitle: {
+      fontSize: 9,
+      fontFamily: 'Helvetica-Bold',
+      color: NAVY,
+      marginBottom: 5,
+    },
+    methodCardText: {
+      fontSize: 8,
+      color: '#4B5563',
+      lineHeight: 1.5,
+    },
   })
 
   const h = React.createElement
@@ -355,6 +383,81 @@ export async function GET() {
       h(View, { style: styles.pageFooter },
         h(Text, { style: styles.footerText }, `Generated ${dateGenerated}  ·  ABEA National Data Hub`),
         h(Text, { style: styles.footerText }, 'Page 2'),
+      ),
+    ),
+
+    // ---- METHODOLOGY PAGE ----
+    h(Page, { size: 'A4', style: styles.page },
+      h(View, { style: styles.pageHeader },
+        h(View, null,
+          h(Text, { style: styles.pageHeaderTitle }, 'Methodology'),
+          h(Text, { style: styles.pageHeaderSub }, 'Collection, validation, aggregation, and reporting basis'),
+        ),
+        h(Text, { style: { fontSize: 10, color: SUNDAY, fontFamily: 'Helvetica-Bold' } }, 'ABEA NDH'),
+      ),
+
+      h(View, { style: { marginBottom: 18 } },
+        h(Text, { style: { fontSize: 11, color: '#4B5563', lineHeight: 1.7 } },
+          'The ABEA National Data Hub uses standardised pillar metrics so member submissions can be compared on a consistent basis. Organisation-level records remain private; benchmark outputs are aggregated and anonymised before publication.',
+        ),
+      ),
+
+      h(View, { style: styles.sectionHeader },
+        h(Text, { style: styles.sectionHeaderText }, 'Core Principles'),
+      ),
+      h(View, { style: styles.methodGrid },
+        ...METHODOLOGY_PRINCIPLES.slice(0, 2).map(principle =>
+          h(View, { key: principle.title, style: styles.methodCard },
+            h(Text, { style: styles.methodCardTitle }, principle.title),
+            h(Text, { style: styles.methodCardText }, principle.desc),
+          ),
+        ),
+      ),
+      h(View, { style: styles.methodGrid },
+        ...METHODOLOGY_PRINCIPLES.slice(2).map(principle =>
+          h(View, { key: principle.title, style: styles.methodCard },
+            h(Text, { style: styles.methodCardTitle }, principle.title),
+            h(Text, { style: styles.methodCardText }, principle.desc),
+          ),
+        ),
+      ),
+
+      h(View, { style: [styles.sectionHeader, { marginTop: 14 }] },
+        h(Text, { style: styles.sectionHeaderText }, 'Updated Economic-Impact Inputs'),
+      ),
+      h(View, { style: styles.methodGrid },
+        ...UPDATED_INPUT_CATEGORIES.map(category =>
+          h(View, { key: category.title, style: styles.methodCard },
+            h(Text, { style: styles.methodCardTitle }, category.title),
+            h(Text, { style: styles.methodCardText }, category.items.join('  |  ')),
+          ),
+        ),
+      ),
+      h(Text, { style: { fontSize: 8, color: '#6B7280', marginBottom: 16, fontStyle: 'italic' } }, INPUT_CATEGORY_CAVEAT),
+
+      h(View, { style: styles.sectionHeader },
+        h(Text, { style: styles.sectionHeaderText }, 'Process'),
+      ),
+      h(View, { style: styles.methodGrid },
+        ...METHODOLOGY_STEPS.slice(0, 2).map(step =>
+          h(View, { key: step.n, style: styles.methodCard },
+            h(Text, { style: styles.methodCardTitle }, `${step.n} ${step.title}`),
+            h(Text, { style: styles.methodCardText }, step.desc),
+          ),
+        ),
+      ),
+      h(View, { style: styles.methodGrid },
+        ...METHODOLOGY_STEPS.slice(2).map(step =>
+          h(View, { key: step.n, style: styles.methodCard },
+            h(Text, { style: styles.methodCardTitle }, `${step.n} ${step.title}`),
+            h(Text, { style: styles.methodCardText }, step.desc),
+          ),
+        ),
+      ),
+
+      h(View, { style: styles.pageFooter },
+        h(Text, { style: styles.footerText }, `Generated ${dateGenerated}  ·  ABEA National Data Hub`),
+        h(Text, { style: styles.footerText }, 'Page 3'),
       ),
     ),
 
@@ -466,7 +569,7 @@ export async function GET() {
         // Footer
         h(View, { style: styles.pageFooter },
           h(Text, { style: styles.footerText }, `Generated ${dateGenerated}  ·  ABEA National Data Hub`),
-          h(Text, { style: styles.footerText }, `Page ${idx + 3}`),
+          h(Text, { style: styles.footerText }, `Page ${idx + 4}`),
         ),
       )
     }),

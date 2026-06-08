@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { validateMetricInputs, validatePeriod, validationSummary } from '@/lib/dataValidation'
 import { parse } from 'csv-parse/sync'
 import { SubmissionStatus } from '@prisma/client'
 
@@ -13,13 +14,21 @@ export async function POST(req: NextRequest) {
     const file = formData.get('file') as File
     const period = formData.get('period') as string
 
-    if (!file || !period) return NextResponse.json({ error: 'file and period required' }, { status: 400 })
+    if (!file) return NextResponse.json({ error: 'CSV file is required.' }, { status: 400 })
+    const periodIssues = validatePeriod(period)
+    if (periodIssues.length > 0) {
+      return NextResponse.json({ error: validationSummary(periodIssues), issues: periodIssues }, { status: 400 })
+    }
 
     const org = await prisma.organisation.findUnique({ where: { id: session.orgId } })
     if (!org || !org.isApproved) return NextResponse.json({ error: 'Organisation not approved' }, { status: 403 })
 
     const text = await file.text()
-    const records = parse(text, { columns: true, skip_empty_lines: true }) as Array<{
+    const records = parse(text, {
+      columns: true,
+      skip_empty_lines: true,
+      trim: true,
+    }) as Array<{
       metric_code: string
       value: string
       period?: string
@@ -28,13 +37,25 @@ export async function POST(req: NextRequest) {
 
     const metricDefs = await prisma.metricDefinition.findMany({ where: { pillar: org.pillar, isCore: true } })
     const metricByCode = Object.fromEntries(metricDefs.map(m => [m.code, m]))
+    const inputs = records
+      .map((record, index) => ({
+        code: record.metric_code,
+        value: record.value,
+        period: record.period,
+        row: index + 2,
+      }))
+      .filter(record => String(record.value ?? '').trim() !== '')
 
-    const validRecords = records.filter(r => metricByCode[r.metric_code])
-    if (validRecords.length === 0) {
-      return NextResponse.json({ error: 'No valid metric codes found for your pillar' }, { status: 400 })
+    if (inputs.length === 0) {
+      return NextResponse.json({ error: 'CSV has no rows with metric values.' }, { status: 400 })
     }
 
-    const rawData = Object.fromEntries(validRecords.map(r => [r.metric_code, parseFloat(r.value)]))
+    const { values, issues } = validateMetricInputs(inputs, metricDefs, period)
+    if (issues.length > 0) {
+      return NextResponse.json({ error: validationSummary(issues), issues }, { status: 400 })
+    }
+
+    const rawData = Object.fromEntries(values.map(({ code, value }) => [code, value]))
 
     const submission = await prisma.dataSubmission.create({
       data: {
@@ -47,19 +68,19 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    for (const r of validRecords) {
-      const metric = metricByCode[r.metric_code]
+    for (const { code, value } of values) {
+      const metric = metricByCode[code]
       await prisma.metricValue.create({
         data: {
           submissionId: submission.id,
           metricId: metric.id,
-          value: parseFloat(r.value),
+          value,
           period,
         },
       })
     }
 
-    return NextResponse.json({ submissionId: submission.id, recordsProcessed: validRecords.length }, { status: 201 })
+    return NextResponse.json({ submissionId: submission.id, recordsProcessed: values.length }, { status: 201 })
   } catch (e) {
     console.error(e)
     return NextResponse.json({ error: 'Server error' }, { status: 500 })

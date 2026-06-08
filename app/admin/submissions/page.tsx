@@ -13,11 +13,32 @@ export default async function AdminSubmissionsPage() {
     orderBy: { createdAt: 'desc' },
     take: 100,
   })
+  const totalMetrics = submissions.reduce((sum, submission) => sum + submission._count.metrics, 0)
+  const submittedCount = submissions.filter(submission => submission.status === 'SUBMITTED').length
+  const processedCount = submissions.filter(submission => submission.status === 'PROCESSED').length
 
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-2" style={{ color: '#052460' }}>All Submissions</h1>
       <p className="text-gray-500 text-sm mb-8">Showing last 100 submissions across all organisations</p>
+
+      <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-4">
+        {[
+          { label: 'Submissions shown', value: submissions.length },
+          { label: 'Metrics captured', value: totalMetrics },
+          { label: 'Awaiting review', value: submittedCount },
+          { label: 'Processed', value: processedCount },
+        ].map((item) => (
+          <div key={item.label} className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+            <div className="text-xs font-semibold uppercase text-gray-400">{item.label}</div>
+            <div className="mt-2 text-3xl font-black" style={{ color: '#052460' }}>{item.value}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mb-6 rounded-xl border border-blue-100 bg-blue-50 p-4 text-xs leading-6 text-blue-800">
+        CSV and manual submissions now validate metric codes, numeric values, percent bounds, duplicates, and period mismatches before records are saved. Rows that fail validation are returned to the member for correction.
+      </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <table className="w-full">

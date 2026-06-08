@@ -13,6 +13,13 @@ type MetricDefinition = {
   description: string | null
 }
 
+type ValidationIssue = {
+  row?: number
+  metricCode?: string
+  field: string
+  message: string
+}
+
 export default function SubmitPage() {
   const router = useRouter()
   const [period, setPeriod] = useState('2024-FY')
@@ -20,6 +27,7 @@ export default function SubmitPage() {
   const [values, setValues] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [issues, setIssues] = useState<ValidationIssue[]>([])
   const [uploadMode, setUploadMode] = useState(false)
   const [csvFile, setCsvFile] = useState<File | null>(null)
   const hasOrganiserInputs = metrics.some(metric => metric.code.startsWith('ORG_'))
@@ -39,6 +47,7 @@ export default function SubmitPage() {
     e.preventDefault()
     setLoading(true)
     setError('')
+    setIssues([])
 
     const numericValues: Record<string, number> = {}
     for (const [k, v] of Object.entries(values)) {
@@ -50,9 +59,13 @@ export default function SubmitPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ period, metrics: numericValues }),
     })
-    const data = await res.json() as { error?: string; submissionId?: string }
+    const data = await res.json() as { error?: string; issues?: ValidationIssue[]; submissionId?: string }
     setLoading(false)
-    if (!res.ok) { setError(data.error || 'Submission failed'); return }
+    if (!res.ok) {
+      setError(data.error || 'Submission failed')
+      setIssues(data.issues || [])
+      return
+    }
     const count = Object.keys(numericValues).length
     router.push(`/dashboard/submit/confirmation?id=${data.submissionId}&metrics=${count}&period=${encodeURIComponent(period)}`)
   }
@@ -62,13 +75,18 @@ export default function SubmitPage() {
     if (!csvFile) return
     setLoading(true)
     setError('')
+    setIssues([])
     const fd = new FormData()
     fd.append('file', csvFile)
     fd.append('period', period)
     const res = await fetch('/api/data/upload', { method: 'POST', body: fd })
-    const data = await res.json() as { error?: string; submissionId?: string; recordsProcessed?: number }
+    const data = await res.json() as { error?: string; issues?: ValidationIssue[]; submissionId?: string; recordsProcessed?: number }
     setLoading(false)
-    if (!res.ok) { setError(data.error || 'Upload failed'); return }
+    if (!res.ok) {
+      setError(data.error || 'Upload failed')
+      setIssues(data.issues || [])
+      return
+    }
     router.push(`/dashboard/submit/confirmation?id=${data.submissionId || 'csv'}&metrics=${data.recordsProcessed || 0}&period=${encodeURIComponent(period)}`)
   }
 
@@ -83,7 +101,23 @@ export default function SubmitPage() {
       <h1 className="text-2xl font-bold mb-2" style={{ color: '#052460' }}>Submit Data</h1>
       <p className="text-gray-500 text-sm mb-8">Submit your organisation&apos;s metrics for a specific period</p>
 
-      {error && <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">{error}</div>}
+      {error && (
+        <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          <div className="font-semibold">{error}</div>
+          {issues.length > 0 && (
+            <ul className="mt-3 space-y-1 text-xs leading-5 text-red-600">
+              {issues.slice(0, 6).map((issue, index) => (
+                <li key={`${issue.field}-${issue.metricCode || index}`}>
+                  {issue.row ? `Row ${issue.row}: ` : ''}
+                  {issue.metricCode ? `${issue.metricCode} - ` : ''}
+                  {issue.message}
+                </li>
+              ))}
+              {issues.length > 6 && <li>{issues.length - 6} more issue{issues.length === 7 ? '' : 's'} found.</li>}
+            </ul>
+          )}
+        </div>
+      )}
 
       {/* Period selector */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
@@ -160,11 +194,17 @@ export default function SubmitPage() {
                 📥 Download CSV Template
               </a>
             </div>
-            <p className="text-sm text-gray-500 mb-4">Expected columns: <code className="bg-gray-100 px-1 rounded">metric_code, value, period, notes</code></p>
-            <div className="p-4 bg-gray-50 rounded-xl text-xs text-gray-500 font-mono mb-4">
+            <p className="text-sm text-gray-500 mb-4">
+              Expected columns: <code className="bg-gray-100 px-1 rounded">metric_code, value, period, notes</code>.
+              Values can include commas or dollar signs. Rows with blank values are ignored.
+            </p>
+            <div className="p-4 bg-gray-50 rounded-xl text-xs text-gray-500 font-mono mb-4 overflow-x-auto">
               metric_code,label,unit,pillar,value,period,notes<br/>
               ORG_DELEGATE_DIRECT_EVENT_SPEND,Delegate and Exhibitor Direct Event Spend,AUD,ORGANISER,59520000,2025-FY,Subject to final government input multiplier<br/>
               ORG_DIRECT_VIC_SPEND,Organiser Direct Spend into Victoria,AUD,ORGANISER,8900000,2025-FY,
+            </div>
+            <div className="mb-4 rounded-xl border border-blue-100 bg-blue-50 p-4 text-xs leading-6 text-blue-800">
+              The upload will stop before saving if a metric code is not active for your pillar, a percentage is over 100, a value is negative, or a row period does not match the selected reporting period.
             </div>
             <input type="file" accept=".csv" onChange={e => setCsvFile(e.target.files?.[0] || null)}
               className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:font-semibold file:text-white"
