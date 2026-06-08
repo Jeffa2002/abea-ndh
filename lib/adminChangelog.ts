@@ -10,6 +10,23 @@ export type AdminChangelogEntry = {
 
 export const ADMIN_CHANGELOG: AdminChangelogEntry[] = [
   {
+    version: 'v1.1',
+    date: '9 June 2026',
+    title: 'Security review hotfixes',
+    intent: 'Close concrete access-control and data-exposure issues found during a safe penetration-test pass.',
+    areas: ['Auth', 'Member APIs', 'Admin APIs', 'Security headers'],
+    changes: [
+      'Restricted member metric and benchmark APIs so member users cannot request other pillar metadata via query string.',
+      'Removed password hashes from the admin members API response.',
+      'Added baseline security headers for content sniffing, clickjacking, referrer policy, browser permissions, and HSTS.',
+      'Added in-process login throttling to slow repeated credential attempts.',
+    ],
+    proof: [
+      'Local lint passed.',
+      'Local production build passed.',
+    ],
+  },
+  {
     version: 'v1.0',
     date: '9 June 2026',
     title: 'Brand-awareness pass',

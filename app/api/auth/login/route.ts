@@ -2,12 +2,21 @@ import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { prisma } from '@/lib/prisma'
 import { signToken, COOKIE_NAME } from '@/lib/auth'
+import { checkRateLimit, rateLimitKey } from '@/lib/rateLimit'
 
 export async function POST(req: NextRequest) {
   try {
     const { email, password } = await req.json() as { email?: string; password?: string }
     if (!email || !password) {
       return NextResponse.json({ error: 'Email and password required' }, { status: 400 })
+    }
+    const forwardedFor = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    const rateLimit = checkRateLimit(rateLimitKey(['login', email, forwardedFor || req.headers.get('x-real-ip')]))
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { error: 'Too many login attempts. Please try again later.' },
+        { status: 429, headers: { 'Retry-After': String(Math.ceil((rateLimit.resetAt - Date.now()) / 1000)) } }
+      )
     }
 
     const user = await prisma.user.findUnique({

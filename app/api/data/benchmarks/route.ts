@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { searchParams } = new URL(req.url)
-  const requestedPillar = searchParams.get('pillar') || session.pillar
+  const requestedPillar = session.role === 'MEMBER' ? session.pillar : searchParams.get('pillar') || session.pillar
   const pillar = isPillar(requestedPillar) ? requestedPillar : undefined
   const period = searchParams.get('period') || '2024-FY'
   const coreMetrics = await prisma.metricDefinition.findMany({

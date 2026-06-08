@@ -11,6 +11,7 @@ export async function GET() {
   const users = await prisma.user.findMany({
     orderBy: { createdAt: 'desc' },
     include: { org: true },
+    omit: { passwordHash: true },
   })
 
   return NextResponse.json({ users })
