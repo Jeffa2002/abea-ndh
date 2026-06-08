@@ -46,6 +46,7 @@
 - `/admin/reports` filters aggregate report rows by period, pillar, region, tier, and metric code.
 - Aggregate report CSV export downloads from `/api/admin/reports/export`.
 - `/admin/powerbi` loads and documents the lake feed tables.
+- `/admin/changelog` loads and explains implementation slices, intent, affected areas, and proof notes.
 - `/api/powerbi/lake?table=metric_values` returns processed, non-excluded rows for an authenticated admin.
 - `/api/powerbi/lake?table=aggregates` returns aggregate rows for an authenticated admin.
 - Benchmarks page calculates without including legacy non-core organiser metrics.
