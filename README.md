@@ -17,10 +17,11 @@ Aggregates standardised data across four industry pillars:
 - Tailwind CSS v4
 
 ## Demo Accounts
-- Admin: `admin@abea.org.au` / `Admin2026!`
-- Govt: `viewer@austrade.gov.au` / `Govt2026!`
-- Member (Venue): `member@sydney-icc.com.au` / `Member2026!`
-- Member (Organiser): `member@events-australia.com.au` / `Member2026!`
+
+Demo accounts are disabled by default in production. For local-only walkthroughs, set
+`ALLOW_DEMO_ACCOUNTS=true` before running the seed script, or provide private
+`SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`, `SEED_GOVT_EMAIL`, and
+`SEED_GOVT_PASSWORD` values for an environment-specific review user.
 
 ## Review Materials
 

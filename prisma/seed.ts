@@ -5,30 +5,41 @@ const prisma = new PrismaClient()
 
 async function main() {
   console.log('Seeding database...')
+  const allowDemoAccounts = process.env.ALLOW_DEMO_ACCOUNTS === 'true' || process.env.NODE_ENV !== 'production'
+  const adminEmail = process.env.SEED_ADMIN_EMAIL || (allowDemoAccounts ? 'admin@abea.org.au' : undefined)
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD || (allowDemoAccounts ? 'Admin2026!' : undefined)
+  const govtEmail = process.env.SEED_GOVT_EMAIL || (allowDemoAccounts ? 'viewer@austrade.gov.au' : undefined)
+  const govtPassword = process.env.SEED_GOVT_PASSWORD || (allowDemoAccounts ? 'Govt2026!' : undefined)
 
-  // Admin user (no org)
-  const adminHash = await bcrypt.hash('Admin2026!', 10)
-  await prisma.user.upsert({
-    where: { email: 'admin@abea.org.au' },
-    update: {},
-    create: {
-      email: 'admin@abea.org.au',
-      passwordHash: adminHash,
-      role: UserRole.ADMIN,
-    },
-  })
+  if (adminEmail && adminPassword) {
+    const adminHash = await bcrypt.hash(adminPassword, 10)
+    await prisma.user.upsert({
+      where: { email: adminEmail },
+      update: { passwordHash: adminHash, approvalStatus: 'APPROVED', approvedAt: new Date() },
+      create: {
+        email: adminEmail,
+        passwordHash: adminHash,
+        role: UserRole.ADMIN,
+        approvalStatus: 'APPROVED',
+        approvedAt: new Date(),
+      },
+    })
+  }
 
-  // Govt viewer
-  const govtHash = await bcrypt.hash('Govt2026!', 10)
-  await prisma.user.upsert({
-    where: { email: 'viewer@austrade.gov.au' },
-    update: {},
-    create: {
-      email: 'viewer@austrade.gov.au',
-      passwordHash: govtHash,
-      role: UserRole.GOVT_VIEWER,
-    },
-  })
+  if (govtEmail && govtPassword) {
+    const govtHash = await bcrypt.hash(govtPassword, 10)
+    await prisma.user.upsert({
+      where: { email: govtEmail },
+      update: { passwordHash: govtHash, approvalStatus: 'APPROVED', approvedAt: new Date() },
+      create: {
+        email: govtEmail,
+        passwordHash: govtHash,
+        role: UserRole.GOVT_VIEWER,
+        approvalStatus: 'APPROVED',
+        approvedAt: new Date(),
+      },
+    })
+  }
 
   // Metric Definitions
   const metrics = [
@@ -96,18 +107,22 @@ async function main() {
     })
     createdOrgs[o.slug] = org
 
-    const memberHash = await bcrypt.hash('Member2026!', 10)
-    const email = `member@${o.slug}.com.au`
-    await prisma.user.upsert({
-      where: { email },
-      update: {},
-      create: {
-        email,
-        passwordHash: memberHash,
-        role: UserRole.MEMBER,
-        orgId: org.id,
-      },
-    })
+    if (allowDemoAccounts) {
+      const memberHash = await bcrypt.hash('Member2026!', 10)
+      const email = `member@${o.slug}.com.au`
+      await prisma.user.upsert({
+        where: { email },
+        update: { passwordHash: memberHash, approvalStatus: 'APPROVED', approvedAt: new Date() },
+        create: {
+          email,
+          passwordHash: memberHash,
+          role: UserRole.MEMBER,
+          orgId: org.id,
+          approvalStatus: 'APPROVED',
+          approvedAt: new Date(),
+        },
+      })
+    }
   }
   console.log('Organisations and members seeded')
 

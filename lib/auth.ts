@@ -1,5 +1,6 @@
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
+import { prisma } from '@/lib/prisma'
 
 const COOKIE_NAME = 'abea_token'
 
@@ -36,7 +37,22 @@ export async function getSession(): Promise<JWTPayload | null> {
   const cookieStore = await cookies()
   const token = cookieStore.get(COOKIE_NAME)?.value
   if (!token) return null
-  return verifyToken(token)
+  const payload = await verifyToken(token)
+  if (!payload) return null
+
+  const user = await prisma.user.findUnique({
+    where: { id: payload.userId },
+    include: { org: true },
+  })
+  if (!user || user.approvalStatus === 'PENDING' || user.approvalStatus === 'REJECTED') return null
+
+  return {
+    userId: user.id,
+    email: user.email,
+    role: user.role,
+    orgId: user.orgId ?? undefined,
+    pillar: user.org?.pillar ?? undefined,
+  }
 }
 
 export { COOKIE_NAME }

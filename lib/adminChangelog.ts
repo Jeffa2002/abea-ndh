@@ -10,6 +10,25 @@ export type AdminChangelogEntry = {
 
 export const ADMIN_CHANGELOG: AdminChangelogEntry[] = [
   {
+    version: 'v1.2',
+    date: '9 June 2026',
+    title: 'Security review remediation',
+    intent: 'Apply priority fixes from the SecSpy review before wider stakeholder access.',
+    areas: ['Auth', 'Demo access', 'Power BI feed', 'Documentation'],
+    changes: [
+      'Removed production rendering of fixed demo credentials from the login page unless explicitly enabled for a non-production walkthrough.',
+      'Changed seed behaviour so fixed demo users are not created in production unless explicitly allowed or replaced by environment-specific credentials.',
+      'Revalidated JWT sessions against current user approval status and role data, so rejected or changed accounts lose access on their next request.',
+      'Limited bearer-token Power BI access to privacy-suppressed aggregate rows; raw organisation-level feeds now require an admin session.',
+      'Removed public demo credentials from the README and documented the safer local-only demo-account controls.',
+    ],
+    proof: [
+      'SecSpy prioritized live demo admin access and raw Power BI feed exposure.',
+      'Local lint and production build passed after remediation.',
+      'Production demo credentials were invalidated after deployment.',
+    ],
+  },
+  {
     version: 'v1.1',
     date: '9 June 2026',
     title: 'Security review hotfixes',

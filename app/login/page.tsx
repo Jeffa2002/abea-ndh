@@ -3,6 +3,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
+const showDemoAccounts = process.env.NEXT_PUBLIC_SHOW_DEMO_ACCOUNTS === 'true'
+
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -92,13 +94,15 @@ export default function LoginPage() {
             <Link href="/register" className="font-semibold" style={{ color: '#F99F38' }}>Register your organisation</Link>
           </p>
 
-          <div className="mt-8 p-4 bg-gray-50 rounded-xl text-xs text-gray-500">
-            <p className="font-semibold mb-2">Demo accounts:</p>
-            <p>Admin: admin@abea.org.au / Admin2026!</p>
-            <p>Govt: viewer@austrade.gov.au / Govt2026!</p>
-            <p>Venue: member@sydney-icc.com.au / Member2026!</p>
-            <p>Organiser: member@events-australia.com.au / Member2026!</p>
-          </div>
+          {showDemoAccounts && (
+            <div className="mt-8 p-4 bg-gray-50 rounded-xl text-xs text-gray-500">
+              <p className="font-semibold mb-2">Demo accounts:</p>
+              <p>Admin: admin@abea.org.au / Admin2026!</p>
+              <p>Govt: viewer@austrade.gov.au / Govt2026!</p>
+              <p>Venue: member@sydney-icc.com.au / Member2026!</p>
+              <p>Organiser: member@events-australia.com.au / Member2026!</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

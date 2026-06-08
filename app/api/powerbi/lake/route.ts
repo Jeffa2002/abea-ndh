@@ -9,17 +9,25 @@ export const dynamic = 'force-dynamic'
 async function isAuthorized(req: NextRequest) {
   const feedToken = process.env.POWERBI_FEED_TOKEN
   const auth = req.headers.get('authorization')
-  if (feedToken && auth === `Bearer ${feedToken}`) return true
+  if (feedToken && auth === `Bearer ${feedToken}`) return { authorized: true, mode: 'feed' as const }
 
   const session = await getSession()
-  return session?.role === 'ADMIN'
+  if (session?.role === 'ADMIN') return { authorized: true, mode: 'admin' as const }
+  return { authorized: false, mode: null }
 }
 
 export async function GET(req: NextRequest) {
-  if (!(await isAuthorized(req))) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const auth = await isAuthorized(req)
+  if (!auth.authorized) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const table = req.nextUrl.searchParams.get('table') || 'metric_values'
+  const table = req.nextUrl.searchParams.get('table') || 'aggregates'
   const period = req.nextUrl.searchParams.get('period') || undefined
+  if (auth.mode === 'feed' && table !== 'aggregates') {
+    return NextResponse.json(
+      { error: 'Bearer-token Power BI access is limited to privacy-suppressed aggregate rows.' },
+      { status: 403 }
+    )
+  }
 
   const submissionWhere = {
     status: 'PROCESSED' as const,
