@@ -17,7 +17,10 @@ This pack summarises the current review slice for ABEA, vendor, and government s
 - Methodology caveat is visible across the site and reports: subject to final government input, a multiplier may be applied to selected spend categories.
 - CSV upload validation now checks active metric codes, numeric values, negative values, percentage bounds, duplicate metrics, and reporting-period mismatches before saving.
 - Member PDF reports now include a methodology page before metric detail pages.
+- Member PDF reports now include data-basis metadata: methodology version, benchmark vintage, submission review date, sample context, and processed-record caveat.
 - Admins can explicitly process or reject submissions before those submissions are eligible for benchmark recalculation.
+- Submission review now writes audit events, giving ABEA an event trail for ingestion, CSV upload, processing, and rejection decisions.
+- Admin data-quality view added for the reporting-lake path: long-format fact-row count, audit event count, reporting-period coverage, incomplete core metric sets, stale contributors, rejected records, and lake-ready CSV export.
 - Benchmark recalculation now uses a selected period and minimum sample threshold.
 
 ## Review Questions
@@ -38,7 +41,8 @@ This pack summarises the current review slice for ABEA, vendor, and government s
 5. Try a CSV upload with one invalid metric code and confirm the row-level validation message.
 6. Open `/dashboard/benchmarks` and download the PDF report.
 7. Sign in as an admin and review `/admin/submissions`, `/admin/benchmarks`, `/admin/members`, and `/admin/organisations`.
-8. Sign in as a government viewer and review `/govt`.
+8. Open `/admin/data-quality` and download the reviewed-submissions CSV export.
+9. Sign in as a government viewer and review `/govt`.
 
 ## Open Decisions
 
@@ -46,3 +50,4 @@ This pack summarises the current review slice for ABEA, vendor, and government s
 - Whether government reporting should be Victoria-specific or support state/territory variants.
 - Whether organiser submissions should ask for examples or guidance text beside each metric.
 - Whether ABEA wants a visible methodology version number for external reporting.
+- Which additional dimensions should become first-class data-lake fields before wider onboarding: jurisdiction, event type, organisation cohort, venue capacity band, and government-program linkage.

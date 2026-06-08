@@ -86,6 +86,11 @@ export async function GET() {
       myMap[mv.metric.code] = { value: mv.value, label: mv.metric.label, unit: mv.metric.unit }
     }
   }
+  const benchmarkSampleTotal = benchmarks.reduce((sum, benchmark) => sum + benchmark.sampleSize, 0)
+  const benchmarkVintage = benchmarks[0]?.createdAt
+    ? new Date(benchmarks[0].createdAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })
+    : 'Not available'
+  const submissionVintage = latestSub?.reviewedAt || latestSub?.processedAt || latestSub?.createdAt
 
   // Tally performance
   let above = 0, atAvg = 0, below = 0, noData = 0
@@ -306,6 +311,18 @@ export async function GET() {
       color: '#4B5563',
       lineHeight: 1.5,
     },
+    dataBasisBox: {
+      padding: 12,
+      backgroundColor: '#F8FAFC',
+      borderRadius: 8,
+      marginBottom: 14,
+      borderLeft: `4 solid ${SUNDAY}`,
+    },
+    dataBasisText: {
+      fontSize: 9,
+      color: '#4B5563',
+      lineHeight: 1.6,
+    },
   })
 
   const h = React.createElement
@@ -319,6 +336,7 @@ export async function GET() {
         h(Text, { style: styles.coverSubtitle }, `ABEA National Data Hub · Methodology ${METHODOLOGY_VERSION}`),
         h(Text, { style: styles.coverOrg }, org.name),
         h(Text, { style: styles.coverMeta }, `Pillar: ${org.pillar}  ·  Period: ${currentYear}-FY  ·  Generated: ${dateGenerated}`),
+        h(Text, { style: [styles.coverMeta, { marginTop: 8 }] }, `Benchmark vintage: ${benchmarkVintage}  ·  Submission basis: ${latestSub ? latestSub.period : 'No processed submission'}`),
       ),
       h(View, { style: styles.coverFooter },
         h(Text, { style: styles.coverFooterText }, '© Australian Business Events Association'),
@@ -340,6 +358,14 @@ export async function GET() {
         h(Text, { style: { fontSize: 11, color: '#4B5563', lineHeight: 1.6 } },
           `This report summarises ${org.name}'s performance against industry benchmarks across the ${org.pillar.toLowerCase()} pillar. ` +
           `Data has been compared to anonymised, aggregated industry averages from ${benchmarks.length} metric${benchmarks.length !== 1 ? 's' : ''} tracked for the ${currentYear}-FY period.`
+        ),
+      ),
+
+      h(View, { style: styles.dataBasisBox },
+        h(Text, { style: styles.dataBasisText },
+          `Data basis: ${latestSub ? `${latestSub.metrics.length} processed organisation metric rows from ${latestSub.period}` : 'no processed organisation submission'}; ` +
+          `${benchmarks.length} benchmark metrics; ${benchmarkSampleTotal} cumulative benchmark sample observations. ` +
+          `Only admin-processed records are included in official reporting outputs.`
         ),
       ),
 
@@ -401,6 +427,13 @@ export async function GET() {
       h(View, { style: { marginBottom: 18 } },
         h(Text, { style: { fontSize: 11, color: '#4B5563', lineHeight: 1.7 } },
           'The ABEA National Data Hub uses standardised pillar metrics so member submissions can be compared on a consistent basis. Organisation-level records remain private; benchmark outputs are aggregated and anonymised before publication.',
+        ),
+      ),
+
+      h(View, { style: styles.dataBasisBox },
+        h(Text, { style: styles.dataBasisText },
+          `Reporting lake controls: this PDF records methodology version, reporting period, benchmark vintage (${benchmarkVintage}), ` +
+          `submission review date (${submissionVintage ? new Date(submissionVintage).toLocaleDateString('en-AU') : 'not available'}), and sample sizes so future longitudinal extracts remain auditable.`
         ),
       ),
 

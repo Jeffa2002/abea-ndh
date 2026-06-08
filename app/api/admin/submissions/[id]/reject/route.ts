@@ -21,16 +21,30 @@ export async function POST(req: NextRequest, { params }: Params) {
 
   const submission = await prisma.dataSubmission.findUnique({ where: { id } })
   if (!submission) return NextResponse.json({ error: 'Submission not found' }, { status: 404 })
+  if (submission.status === SubmissionStatus.PROCESSED) {
+    return NextResponse.json({ error: 'Processed submissions cannot be rejected.' }, { status: 400 })
+  }
 
-  const updated = await prisma.dataSubmission.update({
-    where: { id },
-    data: {
-      status: SubmissionStatus.ERROR,
-      reviewedAt: new Date(),
-      reviewedById: session.userId,
-      reviewNote: note,
-    },
-    include: { org: true, _count: { select: { metrics: true } } },
+  const updated = await prisma.$transaction(async tx => {
+    const rejected = await tx.dataSubmission.update({
+      where: { id },
+      data: {
+        status: SubmissionStatus.REJECTED,
+        reviewedAt: new Date(),
+        reviewedById: session.userId,
+        reviewNote: note,
+      },
+      include: { org: true, _count: { select: { metrics: true } } },
+    })
+    await tx.submissionAuditEvent.create({
+      data: {
+        submissionId: id,
+        action: 'REJECTED',
+        actorId: session.userId,
+        note,
+      },
+    })
+    return rejected
   })
 
   return NextResponse.json(updated)

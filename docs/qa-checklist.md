@@ -37,6 +37,9 @@
 - Submitted records can be processed by an admin.
 - Rejected records require a review note.
 - Review date and review note display on the submissions table.
+- Submission timeline displays audit events for submitted, CSV uploaded, processed, and rejected records.
+- `/admin/data-quality` loads with lake fact rows, audit events, reporting periods, incomplete submissions, stale contributors, and rejected/error records.
+- Reviewed-submissions CSV export downloads from `/api/admin/submissions/export`.
 - Benchmarks page calculates without including legacy non-core organiser metrics.
 - Benchmark recalculation uses only processed submissions.
 - Benchmark recalculation respects selected period and minimum sample threshold.

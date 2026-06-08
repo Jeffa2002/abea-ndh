@@ -32,28 +32,41 @@ export async function POST(req: NextRequest) {
 
     const cleanMetrics = Object.fromEntries(values.map(({ code, value }) => [code, value]))
 
-    const submission = await prisma.dataSubmission.create({
-      data: {
-        orgId: org.id,
-        pillar: org.pillar,
-        period,
-        status: SubmissionStatus.SUBMITTED,
-        rawData: cleanMetrics,
-        mappedData: cleanMetrics,
-      },
-    })
-
-    for (const { code, value } of values) {
-      const metric = metricByCode[code]
-      await prisma.metricValue.create({
+    const submission = await prisma.$transaction(async tx => {
+      const created = await tx.dataSubmission.create({
         data: {
-          submissionId: submission.id,
-          metricId: metric.id,
-          value,
+          orgId: org.id,
+          pillar: org.pillar,
           period,
+          status: SubmissionStatus.SUBMITTED,
+          rawData: cleanMetrics,
+          mappedData: cleanMetrics,
         },
       })
-    }
+
+      await tx.submissionAuditEvent.create({
+        data: {
+          submissionId: created.id,
+          action: 'SUBMITTED',
+          actorId: session.userId,
+          note: `Manual submission received with ${values.length} metric value${values.length === 1 ? '' : 's'}.`,
+        },
+      })
+
+      for (const { code, value } of values) {
+        const metric = metricByCode[code]
+        await tx.metricValue.create({
+          data: {
+            submissionId: created.id,
+            metricId: metric.id,
+            value,
+            period,
+          },
+        })
+      }
+
+      return created
+    })
 
     return NextResponse.json({ submissionId: submission.id }, { status: 201 })
   } catch (e) {

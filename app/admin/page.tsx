@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 const PILLARS: Pillar[] = ['VENUE', 'ORGANISER', 'SUPPLIER', 'BUREAU']
 
 export default async function AdminPage() {
-  const [totalOrgs, byPillar, totalSubmissions, pendingApprovals, totalSnapshots, recentSubmissions] = await Promise.all([
+  const [totalOrgs, byPillar, totalSubmissions, pendingApprovals, totalSnapshots, recentSubmissions, metricRows, auditEvents] = await Promise.all([
     prisma.organisation.count(),
     prisma.organisation.groupBy({ by: ['pillar'], _count: { id: true } }),
     prisma.dataSubmission.count(),
@@ -18,6 +18,8 @@ export default async function AdminPage() {
       orderBy: { createdAt: 'desc' },
       include: { org: true },
     }),
+    prisma.metricValue.count(),
+    prisma.submissionAuditEvent.count(),
   ])
 
   const pillarMap = Object.fromEntries(byPillar.map(p => [p.pillar, p._count.id]))
@@ -46,7 +48,7 @@ export default async function AdminPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="text-sm text-gray-500 mb-1">Total Submissions</div>
           <div className="text-3xl font-black" style={{ color: '#052460' }}>{totalSubmissions}</div>
@@ -59,6 +61,16 @@ export default async function AdminPage() {
           <div className="text-sm text-gray-500 mb-1">Total Organisations</div>
           <div className="text-3xl font-black" style={{ color: '#EF3D55' }}>{totalOrgs}</div>
         </div>
+        <Link href="/admin/data-quality" className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-orange-300 transition-colors">
+          <div className="text-sm text-gray-500 mb-1">Lake Fact Rows</div>
+          <div className="text-3xl font-black" style={{ color: '#052460' }}>{metricRows}</div>
+          <div className="text-xs text-gray-400 mt-1">{auditEvents} audit events</div>
+        </Link>
+        <Link href="/admin/data-quality" className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-orange-300 transition-colors">
+          <div className="text-sm text-gray-500 mb-1">Data Quality</div>
+          <div className="text-lg font-black mt-2" style={{ color: '#F99F38' }}>Open dashboard →</div>
+          <div className="text-xs text-gray-400 mt-2">Completeness, stale data, exports</div>
+        </Link>
       </div>
 
       {/* Recent submissions */}

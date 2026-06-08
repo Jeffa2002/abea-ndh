@@ -5,12 +5,16 @@ import { ReviewActions } from './ReviewActions'
 export const dynamic = 'force-dynamic'
 const STATUS_STYLES: Record<string, string> = {
   DRAFT: 'bg-gray-100 text-gray-600', SUBMITTED: 'bg-blue-100 text-blue-700',
-  PROCESSING: 'bg-yellow-100 text-yellow-700', PROCESSED: 'bg-green-100 text-green-700', ERROR: 'bg-red-100 text-red-700',
+  PROCESSING: 'bg-yellow-100 text-yellow-700', PROCESSED: 'bg-green-100 text-green-700', REJECTED: 'bg-red-100 text-red-700', ERROR: 'bg-red-100 text-red-700',
 }
 
 export default async function AdminSubmissionsPage() {
   const submissions = await prisma.dataSubmission.findMany({
-    include: { org: true, _count: { select: { metrics: true } } },
+    include: {
+      org: true,
+      _count: { select: { metrics: true } },
+      auditEvents: { orderBy: { createdAt: 'desc' }, take: 4 },
+    },
     orderBy: { createdAt: 'desc' },
     take: 100,
   })
@@ -21,7 +25,16 @@ export default async function AdminSubmissionsPage() {
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-2" style={{ color: '#052460' }}>All Submissions</h1>
-      <p className="text-gray-500 text-sm mb-8">Showing last 100 submissions across all organisations</p>
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-gray-500 text-sm">Showing last 100 submissions across all organisations</p>
+        <a
+          href="/api/admin/submissions/export"
+          className="rounded-lg px-4 py-2 text-sm font-bold text-white"
+          style={{ backgroundColor: '#052460' }}
+        >
+          Export reviewed CSV
+        </a>
+      </div>
 
       <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-4">
         {[
@@ -38,7 +51,7 @@ export default async function AdminSubmissionsPage() {
       </div>
 
       <div className="mb-6 rounded-xl border border-blue-100 bg-blue-50 p-4 text-xs leading-6 text-blue-800">
-        CSV and manual submissions now validate metric codes, numeric values, percent bounds, duplicates, and period mismatches before records are saved. Rows that fail validation are returned to the member for correction.
+        CSV and manual submissions validate metric codes, numeric values, percent bounds, duplicates, and period mismatches before records are saved. Reviewed submissions now keep an event trail so data-lake exports can show who approved or rejected records, when, and why.
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -69,6 +82,21 @@ export default async function AdminSubmissionsPage() {
                       <div className="text-xs leading-5 text-gray-500">
                         Reviewed {new Date(s.reviewedAt).toLocaleDateString('en-AU')}
                         {s.reviewNote ? <div className="mt-1 italic text-gray-400">{s.reviewNote}</div> : null}
+                      </div>
+                    )}
+                    {s.auditEvents.length > 0 && (
+                      <div className="rounded-lg border border-gray-100 bg-gray-50 p-2">
+                        <div className="mb-1 text-[10px] font-bold uppercase text-gray-400">Timeline</div>
+                        <div className="space-y-1">
+                          {s.auditEvents.map(event => (
+                            <div key={event.id} className="text-[11px] leading-4 text-gray-500">
+                              <span className="font-semibold text-gray-700">{event.action}</span>
+                              {' · '}
+                              {new Date(event.createdAt).toLocaleDateString('en-AU')}
+                              {event.note ? <div className="text-gray-400">{event.note}</div> : null}
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     )}
                     <ReviewActions submissionId={s.id} status={s.status} />

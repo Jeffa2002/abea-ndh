@@ -120,6 +120,26 @@ export default function MethodologyPage() {
             </div>
           </section>
 
+          <section className="rounded-lg border border-black/5 bg-white p-8 shadow-sm md:p-10">
+            <p className="text-sm font-bold uppercase text-[var(--abea-marine)]">Reporting lake foundation</p>
+            <h2 className="mt-3 text-3xl font-bold text-[var(--abea-royalist)]">Designed for longitudinal national reporting, not one-off spreadsheet snapshots.</h2>
+            <p className="mt-4 max-w-3xl leading-8 text-gray-700">
+              The Hub keeps submissions, metric values, reporting periods, methodology versions, benchmark sample sizes, and admin review events as separate governed records. This lets future reports cut the same evidence by period, state, pillar, cohort, contributor status, and benchmark vintage without changing the member submission model.
+            </p>
+            <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3">
+              {[
+                ['Long-format metrics', 'Each metric value is stored with its submission, organisation, pillar, period, unit, and review status so analytics tools can aggregate at scale.'],
+                ['Governed lifecycle', 'Submitted, processed, and rejected records keep audit events so ABEA can defend which data was included in a report.'],
+                ['Report metadata', 'Member and stakeholder outputs carry methodology version, benchmark vintage, sample size, and reporting-period context.'],
+              ].map(([title, body]) => (
+                <div key={title} className="rounded-lg bg-[var(--abea-light-grey)] p-6">
+                  <h3 className="font-bold text-[var(--abea-royalist)]">{title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-gray-600">{body}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
           <section className="rounded-lg border border-[var(--abea-sky)] bg-white p-8 shadow-sm md:p-10">
             <p className="text-sm font-bold uppercase text-[var(--abea-marine)]">Review points</p>
             <h2 className="mt-3 text-3xl font-bold text-[var(--abea-royalist)]">Questions for ABEA, the vendor, and government reviewers.</h2>

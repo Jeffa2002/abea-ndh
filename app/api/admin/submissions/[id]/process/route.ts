@@ -19,20 +19,35 @@ export async function POST(req: NextRequest, { params }: Params) {
   })
 
   if (!submission) return NextResponse.json({ error: 'Submission not found' }, { status: 404 })
+  if (submission.status !== SubmissionStatus.SUBMITTED && submission.status !== SubmissionStatus.PROCESSING) {
+    return NextResponse.json({ error: 'Only submitted or processing records can be processed.' }, { status: 400 })
+  }
   if (submission._count.metrics === 0) {
     return NextResponse.json({ error: 'Submission has no metric values to process.' }, { status: 400 })
   }
 
-  const updated = await prisma.dataSubmission.update({
-    where: { id },
-    data: {
-      status: SubmissionStatus.PROCESSED,
-      processedAt: new Date(),
-      reviewedAt: new Date(),
-      reviewedById: session.userId,
-      reviewNote: body.note?.trim() || null,
-    },
-    include: { org: true, _count: { select: { metrics: true } } },
+  const updated = await prisma.$transaction(async tx => {
+    const reviewedAt = new Date()
+    const processed = await tx.dataSubmission.update({
+      where: { id },
+      data: {
+        status: SubmissionStatus.PROCESSED,
+        processedAt: reviewedAt,
+        reviewedAt,
+        reviewedById: session.userId,
+        reviewNote: body.note?.trim() || null,
+      },
+      include: { org: true, _count: { select: { metrics: true } } },
+    })
+    await tx.submissionAuditEvent.create({
+      data: {
+        submissionId: id,
+        action: 'PROCESSED',
+        actorId: session.userId,
+        note: body.note?.trim() || 'Submission approved for benchmark and report use.',
+      },
+    })
+    return processed
   })
 
   return NextResponse.json(updated)

@@ -13,7 +13,7 @@ export function ReviewActions({ submissionId, status }: ReviewActionsProps) {
   const [note, setNote] = useState('')
   const [loadingAction, setLoadingAction] = useState<'process' | 'reject' | null>(null)
   const [error, setError] = useState('')
-  const canReview = status === 'SUBMITTED' || status === 'PROCESSING' || status === 'ERROR'
+  const canReview = status === 'SUBMITTED' || status === 'PROCESSING'
 
   async function submit(action: 'process' | 'reject') {
     setLoadingAction(action)
