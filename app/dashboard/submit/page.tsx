@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import type { CSSProperties, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
+import { INPUT_CATEGORY_CAVEAT } from '@/lib/inputCategories'
 
 const PERIODS = ['2024-FY', '2024-H1', '2024-H2', '2024-Q1', '2024-Q2', '2024-Q3', '2024-Q4', '2025-FY']
 
@@ -21,6 +22,7 @@ export default function SubmitPage() {
   const [error, setError] = useState('')
   const [uploadMode, setUploadMode] = useState(false)
   const [csvFile, setCsvFile] = useState<File | null>(null)
+  const hasOrganiserInputs = metrics.some(metric => metric.code.startsWith('ORG_'))
 
   useEffect(() => {
     fetch('/api/data/metrics').then(r => r.json()).then(data => {
@@ -117,6 +119,11 @@ export default function SubmitPage() {
             <div className="p-4 border-b" style={{ backgroundColor: '#052460' }}>
               <h3 className="font-semibold text-white text-sm">Your Pillar Metrics — {period}</h3>
             </div>
+            {hasOrganiserInputs && (
+              <div className="border-b border-blue-100 bg-blue-50 p-4 text-xs leading-6 text-blue-800">
+                Organiser inputs now separate delegate and exhibitor spend, indirect visitor spend, event and shoulder days, accompanying guests, exhibiting cost, direct spend into Victoria, and national/international segmentation. {INPUT_CATEGORY_CAVEAT}
+              </div>
+            )}
             {metrics.map((m, i) => (
               <div key={m.code} className={`flex items-center gap-4 p-4 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
                 <div className="flex-1">
@@ -156,8 +163,8 @@ export default function SubmitPage() {
             <p className="text-sm text-gray-500 mb-4">Expected columns: <code className="bg-gray-100 px-1 rounded">metric_code, value, period, notes</code></p>
             <div className="p-4 bg-gray-50 rounded-xl text-xs text-gray-500 font-mono mb-4">
               metric_code,label,unit,pillar,value,period,notes<br/>
-              VENUE_OCCUPANCY_RATE,Occupancy Rate,percent,VENUE,72,2025-FY,Annual average<br/>
-              VENUE_EVENTS_HOSTED,Events Hosted,count,VENUE,312,2025-FY,
+              ORG_DELEGATE_DIRECT_EVENT_SPEND,Delegate and Exhibitor Direct Event Spend,AUD,ORGANISER,59520000,2025-FY,Subject to final government input multiplier<br/>
+              ORG_DIRECT_VIC_SPEND,Organiser Direct Spend into Victoria,AUD,ORGANISER,8900000,2025-FY,
             </div>
             <input type="file" accept=".csv" onChange={e => setCsvFile(e.target.files?.[0] || null)}
               className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:font-semibold file:text-white"

@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       notes?: string
     }>
 
-    const metricDefs = await prisma.metricDefinition.findMany({ where: { pillar: org.pillar } })
+    const metricDefs = await prisma.metricDefinition.findMany({ where: { pillar: org.pillar, isCore: true } })
     const metricByCode = Object.fromEntries(metricDefs.map(m => [m.code, m]))
 
     const validRecords = records.filter(r => metricByCode[r.metric_code])

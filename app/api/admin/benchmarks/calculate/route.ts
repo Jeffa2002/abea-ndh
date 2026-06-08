@@ -20,7 +20,7 @@ export async function POST() {
   const results: Array<{ pillar: Pillar; metricCode: string; period: string; sampleSize: number }> = []
 
   for (const pillar of pillars) {
-    const metricDefs = await prisma.metricDefinition.findMany({ where: { pillar } })
+    const metricDefs = await prisma.metricDefinition.findMany({ where: { pillar, isCore: true } })
 
     for (const metric of metricDefs) {
       const values = await prisma.metricValue.findMany({

@@ -52,8 +52,17 @@ export async function GET() {
   const org = await prisma.organisation.findUnique({ where: { id: session.orgId } })
   if (!org) return NextResponse.json({ error: 'Org not found' }, { status: 404 })
 
+  const coreMetrics = await prisma.metricDefinition.findMany({
+    where: { pillar: org.pillar, isCore: true },
+    select: { code: true },
+  })
+
   const benchmarks = await prisma.benchmarkSnapshot.findMany({
-    where: { pillar: org.pillar, period: '2024-FY' },
+    where: {
+      pillar: org.pillar,
+      period: '2024-FY',
+      metricCode: { in: coreMetrics.map(metric => metric.code) },
+    },
     orderBy: { metricCode: 'asc' },
   })
 

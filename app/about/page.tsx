@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { INPUT_CATEGORY_CAVEAT, UPDATED_INPUT_CATEGORIES } from '@/lib/inputCategories'
 
 const pillars = [
   {
@@ -14,7 +15,7 @@ const pillars = [
     label: 'ORG',
     accent: '#F99F38',
     tint: 'rgba(249,159,56,0.14)',
-    desc: 'Event management companies and PCOs reporting delegate volumes, event budgets, repeat client rates, and international delegate percentages.',
+    desc: 'Event management companies and PCOs reporting delegate and exhibitor spend, event and shoulder days, accompanying guests, exhibiting costs, organiser spend into Victoria, and national/international segmentation.',
   },
   {
     name: 'Suppliers',
@@ -171,6 +172,30 @@ export default function AboutPage() {
                 </div>
               ))}
             </div>
+          </section>
+
+          <section className="rounded-lg border border-black/5 bg-white p-8 shadow-sm md:p-10">
+            <p className="text-sm font-bold uppercase text-[var(--abea-marine)]">Updated methodology input</p>
+            <h2 className="mt-3 text-3xl font-bold text-[var(--abea-royalist)]">Current economic-impact categories.</h2>
+            <p className="mt-4 max-w-3xl leading-8 text-gray-700">
+              The Hub has been aligned to the latest vendor input categories so future submissions can distinguish participant-side spend from organiser-side direct spend.
+            </p>
+            <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2">
+              {UPDATED_INPUT_CATEGORIES.map((category) => (
+                <div key={category.title} className="rounded-lg border p-6" style={{ borderColor: `${category.accent}33`, backgroundColor: `${category.accent}14` }}>
+                  <h3 className="text-lg font-bold text-[var(--abea-royalist)]">{category.title}</h3>
+                  <ul className="mt-5 space-y-3 text-sm leading-6 text-gray-700">
+                    {category.items.map((item) => (
+                      <li key={item} className="flex gap-3">
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: category.accent }} />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+            <p className="mt-5 text-sm italic text-gray-500">{INPUT_CATEGORY_CAVEAT}</p>
           </section>
 
           <section className="rounded-lg border border-black/5 bg-white p-8 shadow-sm md:p-10">

@@ -41,11 +41,19 @@ async function main() {
     { pillar: Pillar.VENUE, code: 'VENUE_LEAD_TIME_DAYS', label: 'Lead Time', unit: 'days', description: 'Average booking lead time in days' },
     // ORGANISER
     { pillar: Pillar.ORGANISER, code: 'ORG_EVENTS_DELIVERED', label: 'Events Delivered', unit: 'count', description: 'Total events delivered in period' },
-    { pillar: Pillar.ORGANISER, code: 'ORG_TOTAL_DELEGATES', label: 'Total Delegates', unit: 'count', description: 'Total delegates across all events' },
-    { pillar: Pillar.ORGANISER, code: 'ORG_AVG_EVENT_BUDGET', label: 'Avg Event Budget', unit: 'AUD', description: 'Average budget per event' },
-    { pillar: Pillar.ORGANISER, code: 'ORG_DELEGATE_SPEND', label: 'Delegate Spend', unit: 'AUD', description: 'Average spend per delegate' },
-    { pillar: Pillar.ORGANISER, code: 'ORG_INTL_DELEGATE_PCT', label: 'Intl Delegate %', unit: 'percent', description: 'Percentage of international delegates' },
-    { pillar: Pillar.ORGANISER, code: 'ORG_REPEAT_CLIENT_RATE', label: 'Repeat Client Rate', unit: 'percent', description: 'Percentage of repeat clients' },
+    { pillar: Pillar.ORGANISER, code: 'ORG_TOTAL_DELEGATES', label: 'Total Delegates and Exhibitors', unit: 'count', description: 'Total delegates and exhibitors across all events' },
+    { pillar: Pillar.ORGANISER, code: 'ORG_DELEGATE_DIRECT_EVENT_SPEND', label: 'Delegate and Exhibitor Direct Event Spend', unit: 'AUD', description: 'Direct event spend by delegates and exhibitors; subject to final government input, a multiplier may be applied' },
+    { pillar: Pillar.ORGANISER, code: 'ORG_INDIRECT_VISITOR_SPEND', label: 'Indirect Visitor Spend', unit: 'AUD', description: 'Tourism, retail, hospitality, and other local visitor spend linked to event participation' },
+    { pillar: Pillar.ORGANISER, code: 'ORG_EVENT_AND_SHOULDER_DAYS', label: 'Event and Shoulder Days', unit: 'days', description: 'Combined official event days and shoulder days used for visitor impact modelling' },
+    { pillar: Pillar.ORGANISER, code: 'ORG_ACCOMPANYING_GUESTS', label: 'Accompanying Guests', unit: 'count', description: 'Guests accompanying delegates and exhibitors' },
+    { pillar: Pillar.ORGANISER, code: 'ORG_EXHIBITING_COST', label: 'Exhibiting Cost', unit: 'AUD', description: 'Exhibiting cost for conference and expo formats' },
+    { pillar: Pillar.ORGANISER, code: 'ORG_NATIONAL_PARTICIPANT_PCT', label: 'National Participant Share', unit: 'percent', description: 'Share of delegates and exhibitors from Australia' },
+    { pillar: Pillar.ORGANISER, code: 'ORG_INTERNATIONAL_PARTICIPANT_PCT', label: 'International Participant Share', unit: 'percent', description: 'Share of delegates and exhibitors from overseas' },
+    { pillar: Pillar.ORGANISER, code: 'ORG_DIRECT_VIC_SPEND', label: 'Organiser Direct Spend into Victoria', unit: 'AUD', description: 'Organiser direct spend into Victoria, including sponsorship, delegate entertaining, and related event delivery spend' },
+    { pillar: Pillar.ORGANISER, code: 'ORG_AVG_EVENT_BUDGET', label: 'Avg Event Budget', unit: 'AUD', description: 'Legacy organiser budget metric retained for historic submissions', isCore: false },
+    { pillar: Pillar.ORGANISER, code: 'ORG_DELEGATE_SPEND', label: 'Delegate Spend', unit: 'AUD', description: 'Legacy average delegate spend metric retained for historic submissions', isCore: false },
+    { pillar: Pillar.ORGANISER, code: 'ORG_INTL_DELEGATE_PCT', label: 'Intl Delegate %', unit: 'percent', description: 'Legacy international delegate percentage retained for historic submissions', isCore: false },
+    { pillar: Pillar.ORGANISER, code: 'ORG_REPEAT_CLIENT_RATE', label: 'Repeat Client Rate', unit: 'percent', description: 'Legacy repeat client rate retained for historic submissions', isCore: false },
     // SUPPLIER
     { pillar: Pillar.SUPPLIER, code: 'SUP_ACTIVE_CONTRACTS', label: 'Active Contracts', unit: 'count', description: 'Number of active client contracts' },
     { pillar: Pillar.SUPPLIER, code: 'SUP_AVG_CONTRACT_VALUE', label: 'Avg Contract Value', unit: 'AUD', description: 'Average value per contract' },
@@ -65,7 +73,7 @@ async function main() {
   for (const m of metrics) {
     await prisma.metricDefinition.upsert({
       where: { code: m.code },
-      update: {},
+      update: m,
       create: m,
     })
   }
@@ -116,10 +124,14 @@ async function main() {
     'events-australia': {
       ORG_EVENTS_DELIVERED: 48,
       ORG_TOTAL_DELEGATES: 24800,
-      ORG_AVG_EVENT_BUDGET: 185000,
-      ORG_DELEGATE_SPEND: 2400,
-      ORG_INTL_DELEGATE_PCT: 28,
-      ORG_REPEAT_CLIENT_RATE: 64,
+      ORG_DELEGATE_DIRECT_EVENT_SPEND: 59520000,
+      ORG_INDIRECT_VISITOR_SPEND: 31200000,
+      ORG_EVENT_AND_SHOULDER_DAYS: 6,
+      ORG_ACCOMPANYING_GUESTS: 8200,
+      ORG_EXHIBITING_COST: 1750000,
+      ORG_NATIONAL_PARTICIPANT_PCT: 72,
+      ORG_INTERNATIONAL_PARTICIPANT_PCT: 28,
+      ORG_DIRECT_VIC_SPEND: 8900000,
     },
     'av-solutions': {
       SUP_ACTIVE_CONTRACTS: 34,
@@ -187,10 +199,14 @@ async function main() {
     // ORGANISER benchmarks
     { pillar: Pillar.ORGANISER, metricCode: 'ORG_EVENTS_DELIVERED', period: '2024-FY', avgValue: 32, medianValue: 28, p25Value: 15, p75Value: 48, sampleSize: 9 },
     { pillar: Pillar.ORGANISER, metricCode: 'ORG_TOTAL_DELEGATES', period: '2024-FY', avgValue: 16500, medianValue: 14000, p25Value: 6000, p75Value: 25000, sampleSize: 9 },
-    { pillar: Pillar.ORGANISER, metricCode: 'ORG_AVG_EVENT_BUDGET', period: '2024-FY', avgValue: 125000, medianValue: 110000, p25Value: 65000, p75Value: 180000, sampleSize: 9 },
-    { pillar: Pillar.ORGANISER, metricCode: 'ORG_DELEGATE_SPEND', period: '2024-FY', avgValue: 1950, medianValue: 1800, p25Value: 1200, p75Value: 2600, sampleSize: 9 },
-    { pillar: Pillar.ORGANISER, metricCode: 'ORG_INTL_DELEGATE_PCT', period: '2024-FY', avgValue: 22, medianValue: 20, p25Value: 12, p75Value: 32, sampleSize: 9 },
-    { pillar: Pillar.ORGANISER, metricCode: 'ORG_REPEAT_CLIENT_RATE', period: '2024-FY', avgValue: 55, medianValue: 56, p25Value: 42, p75Value: 68, sampleSize: 9 },
+    { pillar: Pillar.ORGANISER, metricCode: 'ORG_DELEGATE_DIRECT_EVENT_SPEND', period: '2024-FY', avgValue: 32175000, medianValue: 28600000, p25Value: 12400000, p75Value: 51800000, sampleSize: 9 },
+    { pillar: Pillar.ORGANISER, metricCode: 'ORG_INDIRECT_VISITOR_SPEND', period: '2024-FY', avgValue: 16800000, medianValue: 15200000, p25Value: 7400000, p75Value: 26400000, sampleSize: 9 },
+    { pillar: Pillar.ORGANISER, metricCode: 'ORG_EVENT_AND_SHOULDER_DAYS', period: '2024-FY', avgValue: 5.4, medianValue: 5, p25Value: 3, p75Value: 7, sampleSize: 9 },
+    { pillar: Pillar.ORGANISER, metricCode: 'ORG_ACCOMPANYING_GUESTS', period: '2024-FY', avgValue: 5400, medianValue: 4200, p25Value: 1800, p75Value: 7600, sampleSize: 9 },
+    { pillar: Pillar.ORGANISER, metricCode: 'ORG_EXHIBITING_COST', period: '2024-FY', avgValue: 980000, medianValue: 820000, p25Value: 360000, p75Value: 1450000, sampleSize: 9 },
+    { pillar: Pillar.ORGANISER, metricCode: 'ORG_NATIONAL_PARTICIPANT_PCT', period: '2024-FY', avgValue: 78, medianValue: 80, p25Value: 68, p75Value: 88, sampleSize: 9 },
+    { pillar: Pillar.ORGANISER, metricCode: 'ORG_INTERNATIONAL_PARTICIPANT_PCT', period: '2024-FY', avgValue: 22, medianValue: 20, p25Value: 12, p75Value: 32, sampleSize: 9 },
+    { pillar: Pillar.ORGANISER, metricCode: 'ORG_DIRECT_VIC_SPEND', period: '2024-FY', avgValue: 5600000, medianValue: 4400000, p25Value: 1900000, p75Value: 8300000, sampleSize: 9 },
     // SUPPLIER benchmarks
     { pillar: Pillar.SUPPLIER, metricCode: 'SUP_ACTIVE_CONTRACTS', period: '2024-FY', avgValue: 28, medianValue: 25, p25Value: 12, p75Value: 42, sampleSize: 8 },
     { pillar: Pillar.SUPPLIER, metricCode: 'SUP_AVG_CONTRACT_VALUE', period: '2024-FY', avgValue: 35000, medianValue: 32000, p25Value: 18000, p75Value: 52000, sampleSize: 8 },
@@ -206,6 +222,13 @@ async function main() {
     { pillar: Pillar.BUREAU, metricCode: 'BUR_AVG_BID_VALUE', period: '2024-FY', avgValue: 4800000, medianValue: 4200000, p25Value: 2100000, p75Value: 7200000, sampleSize: 7 },
     { pillar: Pillar.BUREAU, metricCode: 'BUR_INTL_EVENTS_WON', period: '2024-FY', avgValue: 5, medianValue: 5, p25Value: 2, p75Value: 8, sampleSize: 7 },
   ]
+
+  await prisma.benchmarkSnapshot.deleteMany({
+    where: {
+      period: '2024-FY',
+      metricCode: { in: benchmarkData.map(b => b.metricCode) },
+    },
+  })
 
   for (const b of benchmarkData) {
     await prisma.benchmarkSnapshot.create({ data: b })

@@ -8,8 +8,16 @@ export default async function GovtPage() {
 
   const overview = await Promise.all(
     pillars.map(async (pillar) => {
+      const coreMetrics = await prisma.metricDefinition.findMany({
+        where: { pillar, isCore: true },
+        select: { code: true },
+      })
       const snapshots = await prisma.benchmarkSnapshot.findMany({
-        where: { pillar, period: '2024-FY' },
+        where: {
+          pillar,
+          period: '2024-FY',
+          metricCode: { in: coreMetrics.map(metric => metric.code) },
+        },
         orderBy: { metricCode: 'asc' },
       })
       const orgCount = await prisma.organisation.count({ where: { pillar, isApproved: true } })

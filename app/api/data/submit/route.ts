@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const org = await prisma.organisation.findUnique({ where: { id: session.orgId } })
     if (!org || !org.isApproved) return NextResponse.json({ error: 'Organisation not approved' }, { status: 403 })
 
-    const metricDefs = await prisma.metricDefinition.findMany({ where: { pillar: org.pillar } })
+    const metricDefs = await prisma.metricDefinition.findMany({ where: { pillar: org.pillar, isCore: true } })
     const metricByCode = Object.fromEntries(metricDefs.map(m => [m.code, m]))
 
     const submission = await prisma.dataSubmission.create({

@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   const pillar = isPillar(requestedPillar) ? requestedPillar : undefined
 
   const metrics = await prisma.metricDefinition.findMany({
-    where: pillar ? { pillar } : undefined,
+    where: { ...(pillar ? { pillar } : {}), isCore: true },
     orderBy: { pillar: 'asc' },
   })
 

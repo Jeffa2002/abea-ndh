@@ -11,9 +11,17 @@ export async function GET(req: NextRequest) {
   const requestedPillar = searchParams.get('pillar') || session.pillar
   const pillar = isPillar(requestedPillar) ? requestedPillar : undefined
   const period = searchParams.get('period') || '2024-FY'
+  const coreMetrics = await prisma.metricDefinition.findMany({
+    where: { ...(pillar ? { pillar } : {}), isCore: true },
+    select: { code: true },
+  })
 
   const snapshots = await prisma.benchmarkSnapshot.findMany({
-    where: { ...(pillar ? { pillar } : {}), period },
+    where: {
+      ...(pillar ? { pillar } : {}),
+      period,
+      metricCode: { in: coreMetrics.map(metric => metric.code) },
+    },
     orderBy: { metricCode: 'asc' },
   })
 

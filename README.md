@@ -6,7 +6,7 @@ Prototype for the Australian Business Events Association National Data Hub.
 
 Aggregates standardised data across four industry pillars:
 - **Venues** — Capacity, occupancy, revenue per delegate
-- **Organisers** — Event delivery, delegate counts, budgets
+- **Organisers** — Delegate and exhibitor spend, indirect visitor spend, event and shoulder days, accompanying guests, exhibiting costs, organiser direct spend into Victoria, and national/international segmentation
 - **Suppliers** — Contracts, retention, revenue growth
 - **Bureaux** — Bids, win rates, economic impact
 

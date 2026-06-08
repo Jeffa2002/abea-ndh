@@ -73,7 +73,7 @@ export default async function DashboardPage() {
   })
 
   const benchmarkByCode = Object.fromEntries(benchmarks.map(b => [b.metricCode, b]))
-  const allPillarMetrics = await prisma.metricDefinition.findMany({ where: { pillar: org.pillar } })
+  const allPillarMetrics = await prisma.metricDefinition.findMany({ where: { pillar: org.pillar, isCore: true } })
   const submittedCodes = new Set(myMetrics.map(m => m.metric.code))
   const dataQuality = allPillarMetrics.length > 0 ? Math.round((submittedCodes.size / allPillarMetrics.length) * 100) : 0
   const qualityLabel = dataQualityLabel(dataQuality)

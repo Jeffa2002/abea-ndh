@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import StatsBar from '@/components/StatsBar'
+import { INPUT_CATEGORY_CAVEAT, UPDATED_INPUT_CATEGORIES } from '@/lib/inputCategories'
 
 const pillars = [
   {
@@ -13,7 +14,7 @@ const pillars = [
   {
     name: 'Organisers',
     label: 'ORG',
-    desc: 'Event management companies and PCOs tracking delegate volumes, budgets, retention, event mix, and growth signals.',
+    desc: 'Event management companies and PCOs tracking participant spend, event and shoulder days, exhibiting costs, organiser spend, and national/international segmentation.',
     accent: '#F99F38',
     tint: 'rgba(249,159,56,0.14)',
   },
@@ -54,7 +55,7 @@ const steps = [
 const valueProps = [
   {
     title: 'A common data language',
-    desc: 'Shared definitions across venues, organisers, suppliers, and bureaux reduce fragmented reporting and improve comparability.',
+    desc: 'Shared definitions across venues, organisers, suppliers, and bureaux reduce fragmented reporting and make new input categories easier to compare.',
   },
   {
     title: 'Benchmarks members can trust',
@@ -202,6 +203,37 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="px-6 py-16">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-10 max-w-3xl">
+            <p className="text-sm font-bold uppercase text-[var(--abea-hibiscus)]">Updated input categories</p>
+            <h2 className="mt-3 text-3xl font-bold text-[var(--abea-royalist)]">
+              Economic-impact inputs now separate participant and organiser spend.
+            </h2>
+            <p className="mt-4 leading-7 text-gray-700">
+              The Hub now reflects the latest vendor input model for delegates, exhibitors, and organisers, including national and international segmentation.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            {UPDATED_INPUT_CATEGORIES.map((category) => (
+              <div key={category.title} className="rounded-lg border border-black/5 bg-white p-7 shadow-sm">
+                <div className="mb-5 h-1.5 w-16 rounded-full" style={{ backgroundColor: category.accent }} />
+                <h3 className="text-xl font-bold text-[var(--abea-royalist)]">{category.title}</h3>
+                <ul className="mt-5 space-y-3 text-sm leading-6 text-gray-700">
+                  {category.items.map((item) => (
+                    <li key={item} className="flex gap-3">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: category.accent }} />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <p className="mt-5 text-sm italic text-gray-500">{INPUT_CATEGORY_CAVEAT}</p>
         </div>
       </section>
 
