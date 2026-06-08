@@ -48,6 +48,9 @@
 - `/admin/powerbi` loads and documents the lake feed tables.
 - `/admin/changelog` loads and explains implementation slices, intent, affected areas, and proof notes.
 - `/admin/security-audit` loads and lists role/API/export/feed access controls.
+- `/admin/review-pack` loads and links the main stakeholder-review resources.
+- `/admin/decisions` loads and lists open stakeholder decisions.
+- `/admin/walkthroughs` loads and shows guided scripts for admin, member, government, and Power BI reviewer paths.
 - Demo scenario data covers multiple periods, pillars, regions, tiers, reporting cohorts, event types, capacity bands, and import batches after `npm run demo:seed`.
 - `/api/powerbi/lake?table=metric_values` returns processed, non-excluded rows for an authenticated admin.
 - `/api/powerbi/lake?table=aggregates` returns aggregate rows for an authenticated admin.

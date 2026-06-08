@@ -10,6 +10,23 @@ export type AdminChangelogEntry = {
 
 export const ADMIN_CHANGELOG: AdminChangelogEntry[] = [
   {
+    version: 'v0.8',
+    date: '9 June 2026',
+    title: 'Stakeholder review packaging',
+    intent: 'Turn the build into a coherent review experience for ABEA, vendor, government, member, and Power BI/data analyst audiences.',
+    areas: ['Review pack', 'Open decisions', 'Walkthroughs', 'Admin navigation'],
+    changes: [
+      'Added stakeholder review pack hub linking methodology, changelog, security audit, report builder, government view, Power BI guide, data quality, decisions, and walkthroughs.',
+      'Added open decisions register covering multipliers, jurisdiction/program wording, privacy thresholds, import rollback policy, Power BI integration mode, and required core metrics.',
+      'Added guided walkthrough scripts for ABEA admin, member organisation, government viewer, and Power BI/data analyst review paths.',
+      'Added demo-account references and suggested review order for stakeholder sessions.',
+    ],
+    proof: [
+      'Local lint passed.',
+      'Local production build passed.',
+    ],
+  },
+  {
     version: 'v0.7',
     date: '9 June 2026',
     title: 'External-review readiness',

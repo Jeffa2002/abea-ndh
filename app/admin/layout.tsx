@@ -9,6 +9,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   const navItems = [
     { href: '/admin', label: 'Overview', icon: '📊' },
+    { href: '/admin/review-pack', label: 'Review Pack', icon: '🧩' },
     { href: '/admin/organisations', label: 'Organisations', icon: '🏢' },
     { href: '/admin/submissions', label: 'Submissions', icon: '📋' },
     { href: '/admin/imports', label: 'Imports', icon: '📥' },
@@ -16,6 +17,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     { href: '/admin/reports', label: 'Reports', icon: '📑' },
     { href: '/admin/powerbi', label: 'Power BI', icon: '⚡' },
     { href: '/admin/security-audit', label: 'Security Audit', icon: '🔐' },
+    { href: '/admin/decisions', label: 'Decisions', icon: '✅' },
+    { href: '/admin/walkthroughs', label: 'Walkthroughs', icon: '🧭' },
     { href: '/admin/benchmarks', label: 'Benchmarks', icon: '📈' },
     { href: '/admin/members', label: 'Members', icon: '👥' },
     { href: '/admin/changelog', label: 'Changelog', icon: '📝' },
