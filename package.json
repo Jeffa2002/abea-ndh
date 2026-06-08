@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "demo:seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/demo-scenarios.ts"
+    "demo:seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/demo-scenarios.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
