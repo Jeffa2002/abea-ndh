@@ -1,8 +1,7 @@
 import { prisma } from '@/lib/prisma'
+import { PILLAR_COLORS } from '@/lib/brand'
 
-const PILLAR_COLORS: Record<string, string> = {
-  VENUE: '#1C4DA1', ORGANISER: '#F99F38', SUPPLIER: '#EF3D55', BUREAU: '#00A7E2'
-}
+export const dynamic = 'force-dynamic'
 const STATUS_STYLES: Record<string, string> = {
   DRAFT: 'bg-gray-100 text-gray-600', SUBMITTED: 'bg-blue-100 text-blue-700',
   PROCESSING: 'bg-yellow-100 text-yellow-700', PROCESSED: 'bg-green-100 text-green-700', ERROR: 'bg-red-100 text-red-700',

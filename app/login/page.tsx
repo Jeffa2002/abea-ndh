@@ -31,7 +31,7 @@ export default function LoginPage() {
       if (role === 'ADMIN') window.location.href = '/admin'
       else if (role === 'GOVT_VIEWER') window.location.href = '/govt'
       else window.location.href = '/dashboard'
-    } catch (err) {
+    } catch {
       setError('Network error — please try again')
       setLoading(false)
     }

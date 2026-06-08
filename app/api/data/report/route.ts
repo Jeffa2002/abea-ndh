@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -36,14 +35,9 @@ function getQuartileLabel(val: number, p25: number, avg: number, p75: number): s
 
 function getQuartileColor(val: number, avg: number): string {
   const pct = ((val - avg) / avg) * 100
-  if (pct > 5) return '#10B981'
-  if (pct < -5) return '#EF4444'
-  return '#F59E0B'
-}
-
-function makeTextBar(val: number, max: number, width = 20): string {
-  const filled = Math.round((val / max) * width)
-  return '█'.repeat(Math.max(0, Math.min(filled, width))) + '░'.repeat(Math.max(0, width - filled))
+  if (pct > 5) return '#00A7E2'
+  if (pct < -5) return '#EF3D55'
+  return '#F99F38'
 }
 
 export async function GET() {
@@ -93,10 +87,10 @@ export async function GET() {
   })
 
   const NAVY = '#052460'
-  const TEAL = '#F99F38'
-  const AMBER = '#F59E0B'
-  const GREEN = '#10B981'
-  const RED = '#EF4444'
+  const SUNDAY = '#F99F38'
+  const AMBER = SUNDAY
+  const GREEN = '#00A7E2'
+  const RED = '#EF3D55'
   const LIGHT = '#EFEEEE'
 
   const styles = StyleSheet.create({
@@ -115,7 +109,7 @@ export async function GET() {
       justifyContent: 'center',
     },
     coverAccent: {
-      backgroundColor: TEAL,
+      backgroundColor: SUNDAY,
       height: 6,
       width: 60,
       marginBottom: 32,
@@ -300,7 +294,7 @@ export async function GET() {
           h(Text, { style: styles.pageHeaderTitle }, 'Executive Summary'),
           h(Text, { style: styles.pageHeaderSub }, `${org.name}  ·  ${org.pillar}  ·  ${currentYear}-FY`),
         ),
-        h(Text, { style: { fontSize: 10, color: TEAL, fontFamily: 'Helvetica-Bold' } }, 'ABEA NDH'),
+        h(Text, { style: { fontSize: 10, color: SUNDAY, fontFamily: 'Helvetica-Bold' } }, 'ABEA NDH'),
       ),
 
       h(View, { style: { marginBottom: 24 } },
@@ -367,9 +361,17 @@ export async function GET() {
       const maxVal = Math.max(myVal || 0, p75Val, avgVal) * 1.2 || 1
 
       const hasMine = myVal !== undefined && myVal !== null
-      const pctDiff = hasMine ? ((myVal - avgVal) / avgVal) * 100 : null
-      const quartile = hasMine ? getQuartileLabel(myVal, p25Val, avgVal, p75Val) : null
-      const quartileColor = hasMine ? getQuartileColor(myVal, avgVal) : '#9CA3AF'
+      const myValue = myVal ?? 0
+      const pctDiff = hasMine ? ((myValue - avgVal) / avgVal) * 100 : undefined
+      const quartile = hasMine ? getQuartileLabel(myValue, p25Val, avgVal, p75Val) : null
+      const quartileColor = hasMine ? getQuartileColor(myValue, avgVal) : '#9CA3AF'
+      const insightText = pctDiff === undefined
+        ? ''
+        : pctDiff > 5
+          ? `${org.name} is performing ${Math.abs(pctDiff).toFixed(0)}% above the industry average for this metric. You are in strong territory - maintain this advantage.`
+          : pctDiff < -5
+            ? `${org.name} is ${Math.abs(pctDiff).toFixed(0)}% below the industry average for this metric. This is an area worth reviewing to identify improvement opportunities.`
+            : `${org.name} is performing at the industry average for this metric (within +/-5%). Performance is tracking in line with peers.`
 
       return h(Page, { key: b.id, size: 'A4', style: styles.page },
         h(View, { style: styles.pageHeader },
@@ -377,7 +379,7 @@ export async function GET() {
             h(Text, { style: styles.pageHeaderTitle }, 'Metric Detail'),
             h(Text, { style: styles.pageHeaderSub }, `${org.name}  ·  ${b.pillar}  ·  ${b.period}`),
           ),
-          h(Text, { style: { fontSize: 10, color: TEAL, fontFamily: 'Helvetica-Bold' } }, `${idx + 1} / ${benchmarks.length}`),
+          h(Text, { style: { fontSize: 10, color: SUNDAY, fontFamily: 'Helvetica-Bold' } }, `${idx + 1} / ${benchmarks.length}`),
         ),
 
         // Metric name header
@@ -389,11 +391,11 @@ export async function GET() {
         h(View, { style: { flexDirection: 'row', gap: 12, marginBottom: 24 } },
           h(View, { style: [styles.statCard, { backgroundColor: hasMine ? '#EFF6FF' : LIGHT, flex: 1.5 }] },
             h(Text, { style: [styles.statNum, { fontSize: 22, color: hasMine ? NAVY : '#9CA3AF' }] },
-              hasMine ? formatValue(myVal, unit) : '—'),
+              hasMine ? formatValue(myValue, unit) : '—'),
             h(Text, { style: styles.statLabel }, 'Your Organisation'),
           ),
           h(View, { style: [styles.statCard, { backgroundColor: '#F0FDFA' }] },
-            h(Text, { style: [styles.statNum, { fontSize: 22, color: TEAL }] }, formatValue(avgVal, unit)),
+            h(Text, { style: [styles.statNum, { fontSize: 22, color: SUNDAY }] }, formatValue(avgVal, unit)),
             h(Text, { style: styles.statLabel }, 'Industry Average'),
           ),
           h(View, { style: [styles.statCard, { backgroundColor: '#FFFBEB' }] },
@@ -407,17 +409,17 @@ export async function GET() {
           hasMine && h(View, { style: styles.barRow },
             h(Text, { style: styles.barLabel }, 'Your Org'),
             h(View, { style: styles.barTrack },
-              h(View, { style: [styles.barFill, { backgroundColor: NAVY, width: `${Math.min(100, (myVal / maxVal) * 100)}%` }] }),
+              h(View, { style: [styles.barFill, { backgroundColor: NAVY, width: `${Math.min(100, (myValue / maxVal) * 100)}%` }] }),
             ),
             h(Text, { style: { fontSize: 9, color: NAVY, fontFamily: 'Helvetica-Bold', width: 50 } },
-              formatValue(myVal, unit)),
+              formatValue(myValue, unit)),
           ),
           h(View, { style: styles.barRow },
             h(Text, { style: styles.barLabel }, 'Industry Avg'),
             h(View, { style: styles.barTrack },
-              h(View, { style: [styles.barFill, { backgroundColor: TEAL, width: `${Math.min(100, (avgVal / maxVal) * 100)}%` }] }),
+              h(View, { style: [styles.barFill, { backgroundColor: SUNDAY, width: `${Math.min(100, (avgVal / maxVal) * 100)}%` }] }),
             ),
-            h(Text, { style: { fontSize: 9, color: TEAL, width: 50 } }, formatValue(avgVal, unit)),
+            h(Text, { style: { fontSize: 9, color: SUNDAY, width: 50 } }, formatValue(avgVal, unit)),
           ),
           h(View, { style: styles.barRow },
             h(Text, { style: styles.barLabel }, 'Top Quartile'),
@@ -442,11 +444,7 @@ export async function GET() {
                 h(Text, { style: { fontSize: 10, fontFamily: 'Helvetica-Bold', color: quartileColor } }, quartile),
               ),
               h(Text, { style: { fontSize: 10, color: '#4B5563', lineHeight: 1.6 } },
-                pctDiff > 5
-                  ? `${org.name} is performing ${Math.abs(pctDiff).toFixed(0)}% above the industry average for this metric. You're in strong territory — maintain this advantage.`
-                  : pctDiff < -5
-                  ? `${org.name} is ${Math.abs(pctDiff).toFixed(0)}% below the industry average for this metric. This is an area worth reviewing to identify improvement opportunities.`
-                  : `${org.name} is performing at the industry average for this metric (within ±5%). Performance is tracking in line with peers.`
+                insightText
               ),
               h(Text, { style: { fontSize: 9, color: '#9CA3AF', marginTop: 8 } },
                 `Sample size: ${b.sampleSize} organisations  ·  Period: ${b.period}`),
@@ -467,7 +465,7 @@ export async function GET() {
 
   const buffer = await renderToBuffer(doc)
 
-  return new NextResponse(buffer, {
+  return new NextResponse(new Uint8Array(buffer), {
     headers: {
       'Content-Type': 'application/pdf',
       'Content-Disposition': 'attachment; filename="abea-benchmark-report.pdf"',

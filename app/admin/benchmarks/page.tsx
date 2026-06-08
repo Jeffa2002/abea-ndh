@@ -1,9 +1,6 @@
 'use client'
-import { useEffect, useState } from 'react'
-
-const PILLAR_COLORS: Record<string, string> = {
-  VENUE: '#1C4DA1', ORGANISER: '#F99F38', SUPPLIER: '#EF3D55', BUREAU: '#00A7E2'
-}
+import { useCallback, useEffect, useState } from 'react'
+import { PILLAR_COLORS } from '@/lib/brand'
 
 interface BenchmarkSnapshot {
   id: string
@@ -29,12 +26,31 @@ export default function AdminBenchmarksPage() {
   const [calculating, setCalculating] = useState(false)
   const [calcResult, setCalcResult] = useState('')
 
-  function load() {
+  const load = useCallback(async () => {
     setLoading(true)
-    fetch('/api/admin/benchmarks').then(r => r.json()).then(setSnapshots).finally(() => setLoading(false))
-  }
+    try {
+      const res = await fetch('/api/admin/benchmarks')
+      const data = await res.json() as BenchmarkSnapshot[]
+      setSnapshots(data)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
 
-  useEffect(() => { load() }, [])
+  useEffect(() => {
+    let active = true
+    fetch('/api/admin/benchmarks')
+      .then(res => res.json() as Promise<BenchmarkSnapshot[]>)
+      .then(data => {
+        if (active) setSnapshots(data)
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+    return () => {
+      active = false
+    }
+  }, [])
 
   async function recalculate() {
     setCalculating(true)
@@ -43,14 +59,14 @@ export default function AdminBenchmarksPage() {
     const data = await res.json()
     setCalculating(false)
     setCalcResult(`Calculated ${data.calculated} benchmark snapshots`)
-    load()
+    void load()
   }
 
   const byPillar = snapshots.reduce<Record<string, BenchmarkSnapshot[]>>((acc, s) => {
     if (!acc[s.pillar]) acc[s.pillar] = []
     acc[s.pillar].push(s)
     return acc
-  }, {} as Record<string, any[]>)
+  }, {})
 
   return (
     <div className="p-8">
@@ -73,7 +89,7 @@ export default function AdminBenchmarksPage() {
           {Object.entries(byPillar).map(([pillar, snaps]) => (
             <div key={pillar} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="px-6 py-4 border-b flex items-center gap-3">
-                <span className="px-3 py-1 text-sm font-bold text-white rounded" style={{ backgroundColor: PILLAR_COLORS[pillar] }}>{pillar}</span>
+                <span className="px-3 py-1 text-sm font-bold text-white rounded" style={{ backgroundColor: PILLAR_COLORS[pillar as keyof typeof PILLAR_COLORS] }}>{pillar}</span>
                 <span className="text-sm text-gray-500">{snaps.length} metrics</span>
               </div>
               <table className="w-full">

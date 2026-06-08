@@ -1,14 +1,24 @@
-// @ts-nocheck
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { prisma } from '@/lib/prisma'
-import { Pillar, UserRole } from '@prisma/client'
+import { UserRole } from '@prisma/client'
+import { isPillar } from '@/lib/brand'
 
 export async function POST(req: NextRequest) {
   try {
-    const { orgName, pillar, region, tier, email, password } = await req.json()
+    const { orgName, pillar, region, tier, email, password } = await req.json() as {
+      orgName?: string
+      pillar?: string
+      region?: string
+      tier?: string
+      email?: string
+      password?: string
+    }
     if (!orgName || !pillar || !email || !password) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+    }
+    if (!isPillar(pillar)) {
+      return NextResponse.json({ error: 'Invalid pillar' }, { status: 400 })
     }
 
     const existing = await prisma.user.findUnique({ where: { email } })
@@ -17,7 +27,7 @@ export async function POST(req: NextRequest) {
     const slug = orgName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '-' + Date.now().toString(36)
 
     const org = await prisma.organisation.create({
-      data: { name: orgName, slug, pillar: pillar as Pillar, region, tier, isApproved: false },
+      data: { name: orgName, slug, pillar, region, tier, isApproved: false },
     })
 
     const hash = await bcrypt.hash(password, 10)

@@ -1,17 +1,11 @@
-// @ts-nocheck
 'use client'
 
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, Legend, ResponsiveContainer, Cell,
 } from 'recharts'
-
-const PILLAR_COLORS: Record<string, string> = {
-  VENUE: '#1C4DA1',
-  ORGANISER: '#F99F38',
-  SUPPLIER: '#EF3D55',
-  BUREAU: '#00A7E2',
-}
+import { PILLAR_COLORS } from '@/lib/brand'
+import type { Pillar } from '@prisma/client'
 
 function formatValue(value: number, code: string): string {
   if (value == null || isNaN(value)) return '—'
@@ -32,7 +26,7 @@ function formatValue(value: number, code: string): string {
 
 type Snapshot = {
   id: string
-  pillar: string
+  pillar: Pillar
   metricCode: string
   period: string
   avgValue: number
@@ -42,7 +36,7 @@ type Snapshot = {
 }
 
 type PillarData = {
-  pillar: string
+  pillar: Pillar
   orgCount: number
   snapshots: Snapshot[]
 }

@@ -1,11 +1,9 @@
-// @ts-nocheck
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { PILLAR_COLORS } from '@/lib/brand'
 import { redirect } from 'next/navigation'
 
-const PILLAR_COLORS: Record<string, string> = {
-  VENUE: '#1C4DA1', ORGANISER: '#F99F38', SUPPLIER: '#EF3D55', BUREAU: '#00A7E2'
-}
+export const dynamic = 'force-dynamic'
 
 function formatValue(value: number, unit: string) {
   if (unit === 'AUD') return `$${value >= 1000000 ? (value / 1000000).toFixed(1) + 'M' : value >= 1000 ? (value / 1000).toFixed(0) + 'K' : value.toFixed(0)}`
@@ -194,7 +192,7 @@ export default async function DashboardPage() {
               </div>
               <div>
                 <div className="font-semibold text-sm text-gray-700">Account approved</div>
-                <div className="text-xs text-gray-400 mt-0.5">You're in — your organisation is verified.</div>
+                <div className="text-xs text-gray-400 mt-0.5">You&apos;re in — your organisation is verified.</div>
               </div>
             </div>
             {/* Connector */}
@@ -206,7 +204,7 @@ export default async function DashboardPage() {
               </div>
               <div className="flex-1">
                 <div className="font-semibold text-sm text-gray-800">Submit your first dataset</div>
-                <div className="text-xs text-gray-400 mt-0.5 mb-3">Enter your organisation's metrics for the current period.</div>
+                <div className="text-xs text-gray-400 mt-0.5 mb-3">Enter your organisation&apos;s metrics for the current period.</div>
                 <a
                   href="/dashboard/submit"
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-white text-sm transition-opacity hover:opacity-90"
@@ -228,7 +226,7 @@ export default async function DashboardPage() {
               </div>
               <div>
                 <div className="font-semibold text-sm text-gray-500">📊 View your benchmarks</div>
-                <div className="text-xs text-gray-400 mt-0.5">See how you stack up against the industry — available after your first submission.</div>
+                <div className="text-xs text-gray-400 mt-0.5">See how you stack up against the industry - available after your first submission.</div>
               </div>
             </div>
           </div>

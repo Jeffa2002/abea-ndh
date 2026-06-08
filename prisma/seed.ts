@@ -1,4 +1,4 @@
-import { PrismaClient, Pillar, UserRole, SubmissionStatus } from '@prisma/client'
+import { Prisma, PrismaClient, Pillar, UserRole, SubmissionStatus } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
@@ -79,7 +79,7 @@ async function main() {
     { name: 'Business Events Melbourne', slug: 'be-melbourne', pillar: Pillar.BUREAU, region: 'VIC', tier: 'Large' },
   ]
 
-  const createdOrgs: Record<string, any> = {}
+  const createdOrgs: Record<string, Awaited<ReturnType<typeof prisma.organisation.upsert>>> = {}
   for (const o of orgs) {
     const org = await prisma.organisation.upsert({
       where: { slug: o.slug },
@@ -153,8 +153,8 @@ async function main() {
         pillar: org.pillar,
         period: '2024-FY',
         status: SubmissionStatus.PROCESSED,
-        rawData: data as any,
-        mappedData: data as any,
+        rawData: data as Prisma.JsonObject,
+        mappedData: data as Prisma.JsonObject,
         processedAt: new Date(),
       },
     })

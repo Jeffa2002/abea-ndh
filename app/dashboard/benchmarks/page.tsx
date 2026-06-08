@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -41,28 +40,54 @@ function metricLabel(code: string): string {
   return code.split('_').slice(1).map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ')
 }
 
+type Benchmark = {
+  id: string
+  pillar: string
+  metricCode: string
+  period: string
+  avgValue: number
+  p25Value: number | null
+  p75Value: number | null
+  sampleSize: number
+}
+
+type SubmittedMetric = {
+  value: number
+  metric?: {
+    code?: string
+    label: string
+    unit: string
+  }
+}
+
+type Submission = {
+  status: string
+  createdAt: string
+  metrics?: SubmittedMetric[]
+}
+
+type MyMetric = {
+  value: number
+  label: string
+  unit: string
+}
+
 export default function BenchmarksPage() {
   const [activePillar, setActivePillar] = useState('ALL')
-  const [benchmarks, setBenchmarks] = useState([])
-  const [myValueByCode, setMyValueByCode] = useState({})
+  const [benchmarks, setBenchmarks] = useState<Benchmark[]>([])
+  const [myValueByCode, setMyValueByCode] = useState<Record<string, MyMetric>>({})
   const [loading, setLoading] = useState(true)
   const [downloading, setDownloading] = useState(false)
 
   useEffect(() => {
     const pillars = ['VENUE', 'ORGANISER', 'SUPPLIER', 'BUREAU']
     Promise.all([
-      // Fetch benchmarks for all pillars
-      ...pillars.map(p =>
-        fetch(`/api/data/benchmarks?pillar=${p}`).then(r => r.json())
-      ),
-      fetch('/api/data/submissions').then(r => r.json()),
-    ]).then(([venueB, orgB, supB, burB, subs]) => {
-      const all = [
-        ...(Array.isArray(venueB) ? venueB : []),
-        ...(Array.isArray(orgB) ? orgB : []),
-        ...(Array.isArray(supB) ? supB : []),
-        ...(Array.isArray(burB) ? burB : []),
-      ]
+      Promise.all(pillars.map(p =>
+        fetch(`/api/data/benchmarks?pillar=${p}`).then(r => r.json() as Promise<Benchmark[]>)
+      )),
+      fetch('/api/data/submissions').then(r => r.json() as Promise<Submission[]>),
+    ]).then(([benchmarkGroups, subs]) => {
+      const all = benchmarkGroups.flat()
       setBenchmarks(all)
 
       // Build my value map from processed submissions
@@ -73,7 +98,7 @@ export default function BenchmarksPage() {
       for (const sub of processed) {
         for (const mv of sub.metrics || []) {
           const code = mv.metric?.code
-          if (code && !(code in map)) {
+          if (code && mv.metric && !(code in map)) {
             map[code] = {
               value: mv.value,
               label: mv.metric.label,
@@ -103,7 +128,7 @@ export default function BenchmarksPage() {
       a.download = 'abea-benchmark-report.pdf'
       a.click()
       URL.revokeObjectURL(url)
-    } catch (e) {
+    } catch {
       alert('Failed to generate report. Please try again.')
     }
     setDownloading(false)
@@ -191,15 +216,15 @@ export default function BenchmarksPage() {
             if (myVal !== undefined && b.avgValue) {
               const pct = ((myVal - b.avgValue) / b.avgValue) * 100
               if (pct > 1) {
-                insightText = `You're ${Math.abs(pct).toFixed(0)}% above industry average`
+                insightText = `You are ${Math.abs(pct).toFixed(0)}% above industry average`
                 insightColor = '#10B981'
                 insightArrow = '↑'
               } else if (pct < -1) {
-                insightText = `You're ${Math.abs(pct).toFixed(0)}% below industry average`
+                insightText = `You are ${Math.abs(pct).toFixed(0)}% below industry average`
                 insightColor = '#EF4444'
                 insightArrow = '↓'
               } else {
-                insightText = `You're at the industry average`
+                insightText = 'You are at the industry average'
                 insightColor = '#6B7280'
                 insightArrow = '→'
               }
@@ -230,7 +255,7 @@ export default function BenchmarksPage() {
                       width={60}
                     />
                     <Tooltip
-                      formatter={(value: number, name: string) => [formatValue(value, unit), name]}
+                      formatter={(value, name) => [formatValue(Number(value ?? 0), unit), String(name)]}
                       contentStyle={{
                         borderRadius: 8,
                         border: '1px solid #E5E7EB',

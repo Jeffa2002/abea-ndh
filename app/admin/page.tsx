@@ -1,9 +1,10 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
+import { PILLAR_COLORS } from '@/lib/brand'
+import type { Pillar } from '@prisma/client'
 
-const PILLAR_COLORS: Record<string, string> = {
-  VENUE: '#1C4DA1', ORGANISER: '#F99F38', SUPPLIER: '#EF3D55', BUREAU: '#00A7E2'
-}
+export const dynamic = 'force-dynamic'
+const PILLARS: Pillar[] = ['VENUE', 'ORGANISER', 'SUPPLIER', 'BUREAU']
 
 export default async function AdminPage() {
   const [totalOrgs, byPillar, totalSubmissions, pendingApprovals, totalSnapshots, recentSubmissions] = await Promise.all([
@@ -35,7 +36,7 @@ export default async function AdminPage() {
 
       {/* Pillar cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {['VENUE', 'ORGANISER', 'SUPPLIER', 'BUREAU'].map(pillar => (
+        {PILLARS.map(pillar => (
           <div key={pillar} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <div className="text-xs font-bold mb-2 px-2 py-1 rounded-full inline-block text-white" style={{ backgroundColor: PILLAR_COLORS[pillar] }}>{pillar}</div>
             <div className="text-3xl font-black mt-2" style={{ color: '#052460' }}>{pillarMap[pillar] || 0}</div>

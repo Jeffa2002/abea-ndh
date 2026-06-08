@@ -1,14 +1,21 @@
-// @ts-nocheck
 'use client'
 import { useState, useEffect } from 'react'
+import type { CSSProperties, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 
 const PERIODS = ['2024-FY', '2024-H1', '2024-H2', '2024-Q1', '2024-Q2', '2024-Q3', '2024-Q4', '2025-FY']
 
+type MetricDefinition = {
+  code: string
+  label: string
+  unit: string
+  description: string | null
+}
+
 export default function SubmitPage() {
   const router = useRouter()
   const [period, setPeriod] = useState('2024-FY')
-  const [metrics, setMetrics] = useState<any[]>([])
+  const [metrics, setMetrics] = useState<MetricDefinition[]>([])
   const [values, setValues] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -20,13 +27,13 @@ export default function SubmitPage() {
       if (Array.isArray(data)) {
         setMetrics(data)
         const init: Record<string, string> = {}
-        data.forEach((m: any) => { init[m.code] = '' })
+        data.forEach((m: MetricDefinition) => { init[m.code] = '' })
         setValues(init)
       }
     })
   }, [])
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError('')
@@ -41,14 +48,14 @@ export default function SubmitPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ period, metrics: numericValues }),
     })
-    const data = await res.json()
+    const data = await res.json() as { error?: string; submissionId?: string }
     setLoading(false)
     if (!res.ok) { setError(data.error || 'Submission failed'); return }
     const count = Object.keys(numericValues).length
     router.push(`/dashboard/submit/confirmation?id=${data.submissionId}&metrics=${count}&period=${encodeURIComponent(period)}`)
   }
 
-  async function handleCSVUpload(e: React.FormEvent) {
+  async function handleCSVUpload(e: FormEvent) {
     e.preventDefault()
     if (!csvFile) return
     setLoading(true)
@@ -57,7 +64,7 @@ export default function SubmitPage() {
     fd.append('file', csvFile)
     fd.append('period', period)
     const res = await fetch('/api/data/upload', { method: 'POST', body: fd })
-    const data = await res.json()
+    const data = await res.json() as { error?: string; submissionId?: string; recordsProcessed?: number }
     setLoading(false)
     if (!res.ok) { setError(data.error || 'Upload failed'); return }
     router.push(`/dashboard/submit/confirmation?id=${data.submissionId || 'csv'}&metrics=${data.recordsProcessed || 0}&period=${encodeURIComponent(period)}`)
@@ -154,7 +161,7 @@ export default function SubmitPage() {
             </div>
             <input type="file" accept=".csv" onChange={e => setCsvFile(e.target.files?.[0] || null)}
               className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:font-semibold file:text-white"
-              style={{ '--file-bg': '#052460' } as any} />
+              style={{ '--file-bg': '#052460' } as CSSProperties} />
           </div>
           <button type="submit" disabled={loading || !csvFile}
             className="px-8 py-3 rounded-xl font-bold text-white disabled:opacity-60"

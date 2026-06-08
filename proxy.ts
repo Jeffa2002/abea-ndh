@@ -4,7 +4,7 @@ import { jwtVerify } from 'jose'
 const COOKIE_NAME = 'abea_token'
 const PROTECTED = ['/dashboard', '/admin', '/govt', '/api/data', '/api/admin']
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
   const isProtected = PROTECTED.some(p => pathname.startsWith(p))
   if (!isProtected) return NextResponse.next()

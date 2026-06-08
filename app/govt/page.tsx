@@ -1,6 +1,7 @@
-// @ts-nocheck
 import { prisma } from '@/lib/prisma'
 import { PillarCharts } from './PillarCharts'
+
+export const dynamic = 'force-dynamic'
 
 export default async function GovtPage() {
   const pillars = ['VENUE', 'ORGANISER', 'SUPPLIER', 'BUREAU'] as const

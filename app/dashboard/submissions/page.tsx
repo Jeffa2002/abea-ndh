@@ -1,5 +1,4 @@
 'use client'
-// @ts-nocheck
 import { useEffect, useState } from 'react'
 
 const STATUS_STYLES: Record<string, string> = {

@@ -1,12 +1,24 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { PILLAR_COLORS } from '@/lib/brand'
+import type { Pillar } from '@prisma/client'
 
-const PILLAR_COLORS: Record<string, string> = {
-  VENUE: '#1C4DA1', ORGANISER: '#F99F38', SUPPLIER: '#EF3D55', BUREAU: '#00A7E2'
+type AdminOrganisation = {
+  id: string
+  name: string
+  slug: string
+  pillar: Pillar
+  region: string | null
+  tier: string | null
+  isApproved: boolean
+  _count: {
+    users: number
+    submissions: number
+  }
 }
 
 export default function AdminOrgsPage() {
-  const [orgs, setOrgs] = useState<any[]>([])
+  const [orgs, setOrgs] = useState<AdminOrganisation[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {

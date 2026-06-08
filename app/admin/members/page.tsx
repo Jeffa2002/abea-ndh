@@ -1,44 +1,68 @@
-// @ts-nocheck
 'use client'
-import { useState, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-const STATUS_COLORS = {
+type ApprovalStatus = 'PENDING' | 'APPROVED' | 'REJECTED'
+type UserRole = 'ADMIN' | 'MEMBER' | 'GOVT_VIEWER'
+
+type Member = {
+  id: string
+  email: string
+  role: UserRole
+  approvalStatus: ApprovalStatus
+  approvalNote: string | null
+  createdAt: string
+  org: {
+    name: string
+    pillar: string
+    region: string | null
+  } | null
+}
+
+const STATUS_COLORS: Record<ApprovalStatus, { bg: string; text: string; label: string }> = {
   PENDING: { bg: 'bg-yellow-100', text: 'text-yellow-800', label: 'Pending' },
   APPROVED: { bg: 'bg-green-100', text: 'text-green-700', label: 'Approved' },
   REJECTED: { bg: 'bg-red-100', text: 'text-red-700', label: 'Rejected' },
 }
 
-const ROLE_COLORS = {
+const ROLE_COLORS: Record<UserRole, string> = {
   ADMIN: 'bg-red-100 text-red-800',
   MEMBER: 'bg-blue-100 text-blue-800',
   GOVT_VIEWER: 'bg-gray-100 text-gray-700',
 }
 
 export default function MembersPage() {
-  const [users, setUsers] = useState([])
+  const [users, setUsers] = useState<Member[]>([])
   const [loading, setLoading] = useState(true)
-  const [actionLoading, setActionLoading] = useState(null)
-  const [rejectNote, setRejectNote] = useState({})
-  const [rejectOpen, setRejectOpen] = useState(null)
+  const [actionLoading, setActionLoading] = useState<string | null>(null)
+  const [rejectNote, setRejectNote] = useState<Record<string, string>>({})
+  const [rejectOpen, setRejectOpen] = useState<string | null>(null)
 
-  async function load() {
+  const load = useCallback(async () => {
     setLoading(true)
-    const res = await fetch('/api/admin/members')
-    const data = await res.json()
-    setUsers(data.users || [])
-    setLoading(false)
-  }
+    try {
+      const res = await fetch('/api/admin/members')
+      const data = await res.json() as { users?: Member[] }
+      setUsers(data.users || [])
+    } finally {
+      setLoading(false)
+    }
+  }, [])
 
-  useEffect(() => { load() }, [])
+  useEffect(() => {
+    fetch('/api/admin/members')
+      .then(res => res.json() as Promise<{ users?: Member[] }>)
+      .then(data => setUsers(data.users || []))
+      .finally(() => setLoading(false))
+  }, [])
 
-  async function approve(id) {
+  async function approve(id: string) {
     setActionLoading(id + '-approve')
     await fetch(`/api/admin/members/${id}/approve`, { method: 'POST' })
     setActionLoading(null)
-    load()
+    void load()
   }
 
-  async function reject(id) {
+  async function reject(id: string) {
     setActionLoading(id + '-reject')
     await fetch(`/api/admin/members/${id}/reject`, {
       method: 'POST',
@@ -48,11 +72,11 @@ export default function MembersPage() {
     setActionLoading(null)
     setRejectOpen(null)
     setRejectNote(n => ({ ...n, [id]: '' }))
-    load()
+    void load()
   }
 
   const sorted = [...users].sort((a, b) => {
-    const order = { PENDING: 0, APPROVED: 1, REJECTED: 2 }
+    const order: Record<ApprovalStatus, number> = { PENDING: 0, APPROVED: 1, REJECTED: 2 }
     return (order[a.approvalStatus] ?? 3) - (order[b.approvalStatus] ?? 3)
   })
 

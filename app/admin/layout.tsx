@@ -2,8 +2,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getSession } from '@/lib/auth'
 import { redirect } from 'next/navigation'
-import { cookies } from 'next/headers'
-import { COOKIE_NAME } from '@/lib/auth'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession()

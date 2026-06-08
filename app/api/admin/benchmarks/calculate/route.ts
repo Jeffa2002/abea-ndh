@@ -17,7 +17,7 @@ export async function POST() {
   if (!session || session.role !== 'ADMIN') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const pillars = Object.values(Pillar)
-  const results: any[] = []
+  const results: Array<{ pillar: Pillar; metricCode: string; period: string; sampleSize: number }> = []
 
   for (const pillar of pillars) {
     const metricDefs = await prisma.metricDefinition.findMany({ where: { pillar } })

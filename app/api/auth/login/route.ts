@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { prisma } from '@/lib/prisma'
@@ -6,7 +5,7 @@ import { signToken, COOKIE_NAME } from '@/lib/auth'
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, password } = await req.json()
+    const { email, password } = await req.json() as { email?: string; password?: string }
     if (!email || !password) {
       return NextResponse.json({ error: 'Email and password required' }, { status: 400 })
     }
