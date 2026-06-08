@@ -10,6 +10,25 @@ export type AdminChangelogEntry = {
 
 export const ADMIN_CHANGELOG: AdminChangelogEntry[] = [
   {
+    version: 'v0.7',
+    date: '9 June 2026',
+    title: 'External-review readiness',
+    intent: 'Make the platform easier to demonstrate and safer to show to external reviewers before real onboarding.',
+    areas: ['Demo data', 'Security audit', 'Admin changelog', 'Benchmarks', 'Reports'],
+    changes: [
+      'Added deterministic demo scenario seeding across multiple periods, pillars, regions, tiers, cohorts, event types, capacity bands, and government programs.',
+      'Demo scenario seed creates import batches and processed submissions so import governance, report builder, government reporting, and Power BI feeds have richer walkthrough data.',
+      'Demo scenario seed recalculates benchmarks across the demo reporting periods.',
+      'Added admin security access audit page covering role boundaries, admin APIs, government views, member reports, rejected data, excluded imports, exports, and Power BI feed access.',
+      'Added QA checklist coverage for demo scenario data and security audit review.',
+    ],
+    proof: [
+      'Local lint passed.',
+      'Local production build passed.',
+      'Demo seed script added as npm run demo:seed.',
+    ],
+  },
+  {
     version: 'v0.6',
     date: '9 June 2026',
     title: 'Dimension governance, import controls, and Power BI feed',

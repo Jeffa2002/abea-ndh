@@ -47,6 +47,8 @@
 - Aggregate report CSV export downloads from `/api/admin/reports/export`.
 - `/admin/powerbi` loads and documents the lake feed tables.
 - `/admin/changelog` loads and explains implementation slices, intent, affected areas, and proof notes.
+- `/admin/security-audit` loads and lists role/API/export/feed access controls.
+- Demo scenario data covers multiple periods, pillars, regions, tiers, reporting cohorts, event types, capacity bands, and import batches after `npm run demo:seed`.
 - `/api/powerbi/lake?table=metric_values` returns processed, non-excluded rows for an authenticated admin.
 - `/api/powerbi/lake?table=aggregates` returns aggregate rows for an authenticated admin.
 - Benchmarks page calculates without including legacy non-core organiser metrics.

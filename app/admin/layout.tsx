@@ -15,6 +15,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     { href: '/admin/data-quality', label: 'Data Quality', icon: '🧭' },
     { href: '/admin/reports', label: 'Reports', icon: '📑' },
     { href: '/admin/powerbi', label: 'Power BI', icon: '⚡' },
+    { href: '/admin/security-audit', label: 'Security Audit', icon: '🔐' },
     { href: '/admin/benchmarks', label: 'Benchmarks', icon: '📈' },
     { href: '/admin/members', label: 'Members', icon: '👥' },
     { href: '/admin/changelog', label: 'Changelog', icon: '📝' },

@@ -31,6 +31,8 @@ This pack summarises the current review slice for ABEA, vendor, and government s
 - Report builder, government reporting, benchmark recalculation, and Power BI feeds exclude batches marked as excluded from reporting.
 - Power BI feed added at `/api/powerbi/lake`, with table selectors for metric values, aggregates, submissions, organisations, and import batches.
 - Power BI admin guide added at `/admin/powerbi`, including suggested fact/dimension modelling and bearer-token deployment note.
+- Demo scenario seed added for multi-period, multi-pillar, multi-dimension walkthrough data with linked import batches and recalculated benchmarks.
+- Security access audit added at `/admin/security-audit` to document role boundaries, export/feed controls, rejected data handling, and import exclusion behaviour.
 - Benchmark recalculation now uses a selected period and minimum sample threshold.
 
 ## Review Questions
@@ -56,7 +58,8 @@ This pack summarises the current review slice for ABEA, vendor, and government s
 10. Open `/admin/organisations` and update reporting dimensions through the controlled lists.
 11. Open `/admin/reports`, filter the aggregate extract, and download the aggregate CSV.
 12. Open `/admin/powerbi` and inspect the available Power BI feed tables.
-13. Sign in as a government viewer and review `/govt`, including report basis, trends, and economic input tables.
+13. Open `/admin/security-audit` and review access-control expectations.
+14. Sign in as a government viewer and review `/govt`, including report basis, trends, and economic input tables.
 
 ## Open Decisions
 
