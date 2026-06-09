@@ -8,10 +8,14 @@ const UNSAFE_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE'])
 function hasSameOrigin(req: NextRequest) {
   const origin = req.headers.get('origin')
   const referer = req.headers.get('referer')
-  const expectedHost = req.nextUrl.host
+  const expectedHosts = new Set([
+    req.nextUrl.host,
+    req.headers.get('host'),
+    req.headers.get('x-forwarded-host'),
+  ].filter(Boolean))
   try {
-    if (origin) return new URL(origin).host === expectedHost
-    if (referer) return new URL(referer).host === expectedHost
+    if (origin) return expectedHosts.has(new URL(origin).host)
+    if (referer) return expectedHosts.has(new URL(referer).host)
   } catch {
     return false
   }
