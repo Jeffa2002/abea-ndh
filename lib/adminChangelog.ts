@@ -10,6 +10,26 @@ export type AdminChangelogEntry = {
 
 export const ADMIN_CHANGELOG: AdminChangelogEntry[] = [
   {
+    version: 'v1.3',
+    date: '9 June 2026',
+    title: 'Launch security and account governance',
+    intent: 'Move from shared credentials toward controlled user lifecycle, password rotation, and auditable sensitive access.',
+    areas: ['Account security', 'Admin invites', 'CSRF protection', 'Audit logging', 'Power BI/export governance'],
+    changes: [
+      'Added a forced password-change flow for temporary credentials.',
+      'Added admin-side account invite/provisioning with one-time temporary passwords and first-login rotation.',
+      'Added stronger password policy enforcement for registrations and password changes.',
+      'Added same-origin protection for unsafe API methods to reduce CSRF risk.',
+      'Added persistent security audit logging for logins, failed logins, password changes, user invites, exports, and Power BI feed access.',
+      'Added an admin Security Events page for recent sensitive access and reporting events.',
+    ],
+    proof: [
+      'Local Prisma client generation passed.',
+      'Local lint and production build passed.',
+      'Production schema push, build, restart, and smoke checks completed.',
+    ],
+  },
+  {
     version: 'v1.2',
     date: '9 June 2026',
     title: 'Security review remediation',

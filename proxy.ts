@@ -2,10 +2,28 @@ import { NextRequest, NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
 
 const COOKIE_NAME = 'abea_token'
-const PROTECTED = ['/dashboard', '/admin', '/govt', '/api/data', '/api/admin']
+const PROTECTED = ['/dashboard', '/admin', '/govt', '/account', '/api/data', '/api/admin', '/api/account']
+const UNSAFE_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE'])
+
+function hasSameOrigin(req: NextRequest) {
+  const origin = req.headers.get('origin')
+  const referer = req.headers.get('referer')
+  const expectedHost = req.nextUrl.host
+  try {
+    if (origin) return new URL(origin).host === expectedHost
+    if (referer) return new URL(referer).host === expectedHost
+  } catch {
+    return false
+  }
+  return false
+}
 
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
+  if (pathname.startsWith('/api/') && UNSAFE_METHODS.has(req.method) && !hasSameOrigin(req)) {
+    return NextResponse.json({ error: 'Cross-origin request blocked' }, { status: 403 })
+  }
+
   const isProtected = PROTECTED.some(p => pathname.startsWith(p))
   if (!isProtected) return NextResponse.next()
 
@@ -38,5 +56,5 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/admin/:path*', '/govt/:path*', '/api/data/:path*', '/api/admin/:path*'],
+  matcher: ['/dashboard/:path*', '/admin/:path*', '/govt/:path*', '/account/:path*', '/api/:path*'],
 }

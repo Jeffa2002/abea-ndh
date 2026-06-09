@@ -10,6 +10,7 @@ export interface JWTPayload {
   role: string
   orgId?: string
   pillar?: string
+  mustChangePassword?: boolean
 }
 
 function getSecret() {
@@ -52,6 +53,7 @@ export async function getSession(): Promise<JWTPayload | null> {
     role: user.role,
     orgId: user.orgId ?? undefined,
     pillar: user.org?.pillar ?? undefined,
+    mustChangePassword: user.mustChangePassword,
   }
 }
 

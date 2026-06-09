@@ -12,6 +12,7 @@ type Member = {
   approvalNote: string | null
   createdAt: string
   org: {
+    id: string
     name: string
     pillar: string
     region: string | null
@@ -36,6 +37,11 @@ export default function MembersPage() {
   const [actionLoading, setActionLoading] = useState<string | null>(null)
   const [rejectNote, setRejectNote] = useState<Record<string, string>>({})
   const [rejectOpen, setRejectOpen] = useState<string | null>(null)
+  const [inviteEmail, setInviteEmail] = useState('')
+  const [inviteRole, setInviteRole] = useState<UserRole>('MEMBER')
+  const [inviteOrgId, setInviteOrgId] = useState('')
+  const [inviteResult, setInviteResult] = useState<{ email: string; password: string } | null>(null)
+  const [inviteError, setInviteError] = useState('')
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -75,15 +81,76 @@ export default function MembersPage() {
     void load()
   }
 
+  async function invite(e: React.FormEvent) {
+    e.preventDefault()
+    setActionLoading('invite')
+    setInviteError('')
+    setInviteResult(null)
+    const res = await fetch('/api/admin/members', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: inviteEmail,
+        role: inviteRole,
+        orgId: inviteRole === 'MEMBER' ? inviteOrgId : undefined,
+      }),
+    })
+    const data = await res.json()
+    setActionLoading(null)
+    if (!res.ok) {
+      setInviteError(data.error || 'Invite failed')
+      return
+    }
+    setInviteResult({ email: data.user.email, password: data.temporaryPassword })
+    setInviteEmail('')
+    setInviteOrgId('')
+    void load()
+  }
+
   const sorted = [...users].sort((a, b) => {
     const order: Record<ApprovalStatus, number> = { PENDING: 0, APPROVED: 1, REJECTED: 2 }
     return (order[a.approvalStatus] ?? 3) - (order[b.approvalStatus] ?? 3)
   })
+  const organisations = Array.from(
+    new Map(users.filter(user => user.org).map(user => [user.org!.id, user.org!])).values()
+  ).sort((a, b) => a.name.localeCompare(b.name))
 
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-2" style={{ color: '#052460' }}>Member Management</h1>
       <p className="text-gray-500 text-sm mb-8">Review and approve member registrations</p>
+
+      <form onSubmit={invite} className="mb-8 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+        <div className="mb-4 flex items-center justify-between gap-4">
+          <div>
+            <h2 className="font-bold text-gray-900">Invite Account</h2>
+            <p className="text-xs text-gray-500">Creates a temporary password and forces password change on first login.</p>
+          </div>
+          <button disabled={actionLoading === 'invite'} className="rounded-lg px-4 py-2 text-sm font-bold text-white disabled:opacity-50" style={{ backgroundColor: '#052460' }}>
+            {actionLoading === 'invite' ? 'Creating...' : 'Create Invite'}
+          </button>
+        </div>
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
+          <input value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} type="email" required placeholder="email@organisation.com.au" className="rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900 focus:outline-none" />
+          <select value={inviteRole} onChange={e => setInviteRole(e.target.value as UserRole)} className="rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900 focus:outline-none">
+            <option value="MEMBER">Member</option>
+            <option value="GOVT_VIEWER">Government viewer</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+          <select value={inviteOrgId} onChange={e => setInviteOrgId(e.target.value)} disabled={inviteRole !== 'MEMBER'} required={inviteRole === 'MEMBER'} className="rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900 disabled:bg-gray-50 disabled:text-gray-400 focus:outline-none md:col-span-2">
+            <option value="">Select organisation for member account</option>
+            {organisations.map(org => (
+              <option key={org.id} value={org.id}>{org.name} ({org.pillar})</option>
+            ))}
+          </select>
+        </div>
+        {inviteError && <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">{inviteError}</div>}
+        {inviteResult && (
+          <div className="mt-4 rounded-lg border border-yellow-200 bg-yellow-50 p-3 text-sm text-yellow-900">
+            Temporary credentials for <span className="font-semibold">{inviteResult.email}</span>: <span className="font-mono">{inviteResult.password}</span>
+          </div>
+        )}
+      </form>
 
       {loading ? (
         <div className="text-center py-12 text-gray-400">Loading members...</div>

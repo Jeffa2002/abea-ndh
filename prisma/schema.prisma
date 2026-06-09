@@ -36,6 +36,23 @@ model User {
   approvalNote   String?
   approvedAt     DateTime?
   approvedById   String?
+  mustChangePassword Boolean    @default(false)
+  passwordChangedAt DateTime?
+  lastLoginAt    DateTime?
+}
+
+model SecurityAuditLog {
+  id         String   @id @default(uuid())
+  eventType  String
+  actorId    String?
+  actorEmail String?
+  route      String?
+  method     String?
+  target     String?
+  ipAddress  String?
+  userAgent  String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
 }
 
 model DataSubmission {

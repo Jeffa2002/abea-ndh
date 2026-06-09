@@ -30,7 +30,8 @@ export default function LoginPage() {
       }
       // Hard redirect so browser picks up the cookie before navigating
       const role = data.user.role
-      if (role === 'ADMIN') window.location.href = '/admin'
+      if (data.user.mustChangePassword) window.location.href = '/account/password'
+      else if (role === 'ADMIN') window.location.href = '/admin'
       else if (role === 'GOVT_VIEWER') window.location.href = '/govt'
       else window.location.href = '/dashboard'
     } catch {

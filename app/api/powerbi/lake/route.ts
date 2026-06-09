@@ -3,17 +3,18 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { aggregateMetricRows } from '@/lib/reporting'
 import { REPORTING_MIN_SAMPLE_SIZE, isSuppressed } from '@/lib/privacy'
+import { logSecurityEvent } from '@/lib/securityLog'
 
 export const dynamic = 'force-dynamic'
 
 async function isAuthorized(req: NextRequest) {
   const feedToken = process.env.POWERBI_FEED_TOKEN
   const auth = req.headers.get('authorization')
-  if (feedToken && auth === `Bearer ${feedToken}`) return { authorized: true, mode: 'feed' as const }
+  if (feedToken && auth === `Bearer ${feedToken}`) return { authorized: true, mode: 'feed' as const, session: null }
 
   const session = await getSession()
-  if (session?.role === 'ADMIN') return { authorized: true, mode: 'admin' as const }
-  return { authorized: false, mode: null }
+  if (session?.role === 'ADMIN') return { authorized: true, mode: 'admin' as const, session }
+  return { authorized: false, mode: null, session: null }
 }
 
 export async function GET(req: NextRequest) {
@@ -22,6 +23,13 @@ export async function GET(req: NextRequest) {
 
   const table = req.nextUrl.searchParams.get('table') || 'aggregates'
   const period = req.nextUrl.searchParams.get('period') || undefined
+  await logSecurityEvent({
+    eventType: 'POWERBI_FEED_ACCESSED',
+    req,
+    session: auth.session,
+    target: table,
+    metadata: { period, mode: auth.mode },
+  })
   if (auth.mode === 'feed' && table !== 'aggregates') {
     return NextResponse.json(
       { error: 'Bearer-token Power BI access is limited to privacy-suppressed aggregate rows.' },

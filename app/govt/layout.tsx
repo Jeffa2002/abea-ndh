@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation'
 export default async function GovtLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession()
   if (!session || !['ADMIN', 'GOVT_VIEWER'].includes(session.role)) redirect('/login')
+  if (session.mustChangePassword) redirect('/account/password')
 
   return (
     <div className="min-h-screen flex" style={{ backgroundColor: '#EFEEEE' }}>

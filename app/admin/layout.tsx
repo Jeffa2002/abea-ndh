@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation'
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession()
   if (!session || session.role !== 'ADMIN') redirect('/login')
+  if (session.mustChangePassword) redirect('/account/password')
 
   const navItems = [
     { href: '/admin', label: 'Overview', icon: '📊' },
@@ -19,6 +20,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     { href: '/admin/report-packs', label: 'Report Packs', icon: '📦' },
     { href: '/admin/powerbi', label: 'Power BI', icon: '⚡' },
     { href: '/admin/security-audit', label: 'Security Audit', icon: '🔐' },
+    { href: '/admin/security-events', label: 'Security Events', icon: '🧾' },
     { href: '/admin/decisions', label: 'Decisions', icon: '✅' },
     { href: '/admin/walkthroughs', label: 'Walkthroughs', icon: '🧭' },
     { href: '/admin/benchmarks', label: 'Benchmarks', icon: '📈' },

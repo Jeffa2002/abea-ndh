@@ -6,6 +6,7 @@ import { aggregateMetricRows, formatReportValue } from '@/lib/reporting'
 import { INPUT_CATEGORY_CAVEAT, METHODOLOGY_UPDATED_AT, METHODOLOGY_VERSION } from '@/lib/inputCategories'
 import { OPEN_DECISIONS } from '@/lib/openDecisions'
 import { REPORTING_MIN_SAMPLE_SIZE, displaySampleValue } from '@/lib/privacy'
+import { logSecurityEvent } from '@/lib/securityLog'
 
 export const runtime = 'nodejs'
 
@@ -18,6 +19,7 @@ export async function GET(req: NextRequest) {
 
   const period = req.nextUrl.searchParams.get('period') || '2025-H1'
   const audience = req.nextUrl.searchParams.get('audience') || 'board'
+  await logSecurityEvent({ eventType: 'REPORT_PACK_EXPORTED', req, session, target: `${audience}:${period}` })
   const generatedAt = new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })
 
   const submissionWhere = {

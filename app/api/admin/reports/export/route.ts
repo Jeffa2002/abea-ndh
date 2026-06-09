@@ -5,6 +5,7 @@ import { toCsv } from '@/lib/csv'
 import { aggregateMetricRows } from '@/lib/reporting'
 import { REPORTING_MIN_SAMPLE_SIZE, isSuppressed } from '@/lib/privacy'
 import type { Pillar } from '@prisma/client'
+import { logSecurityEvent } from '@/lib/securityLog'
 
 const PILLARS: Pillar[] = ['VENUE', 'ORGANISER', 'SUPPLIER', 'BUREAU']
 
@@ -19,6 +20,13 @@ export async function GET(req: NextRequest) {
   const region = params.get('region') || undefined
   const tier = params.get('tier') || undefined
   const metric = params.get('metric') || undefined
+  await logSecurityEvent({
+    eventType: 'AGGREGATE_REPORT_EXPORTED',
+    req,
+    session,
+    target: period || 'all-periods',
+    metadata: { pillar, region, tier, metric },
+  })
 
   const metricValues = await prisma.metricValue.findMany({
     where: {

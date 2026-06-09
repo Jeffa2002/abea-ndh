@@ -8,6 +8,7 @@ import { COOKIE_NAME } from '@/lib/auth'
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession()
   if (!session) redirect('/login')
+  if (session.mustChangePassword) redirect('/account/password')
 
   const navItems = [
     { href: '/dashboard', label: 'Overview', icon: '📊' },

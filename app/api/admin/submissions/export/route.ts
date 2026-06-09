@@ -1,13 +1,15 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { toCsv } from '@/lib/csv'
+import { logSecurityEvent } from '@/lib/securityLog'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const session = await getSession()
   if (!session || session.role !== 'ADMIN') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  await logSecurityEvent({ eventType: 'SUBMISSIONS_EXPORTED', req, session, target: 'reviewed-submissions' })
 
   const submissions = await prisma.dataSubmission.findMany({
     where: { status: { in: ['PROCESSED', 'REJECTED', 'ERROR'] } },

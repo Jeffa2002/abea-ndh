@@ -3,6 +3,8 @@ import bcrypt from 'bcryptjs'
 import { prisma } from '@/lib/prisma'
 import { UserRole } from '@prisma/client'
 import { isPillar } from '@/lib/brand'
+import { validatePassword } from '@/lib/passwordPolicy'
+import { logSecurityEvent } from '@/lib/securityLog'
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,6 +21,10 @@ export async function POST(req: NextRequest) {
     }
     if (!isPillar(pillar)) {
       return NextResponse.json({ error: 'Invalid pillar' }, { status: 400 })
+    }
+    const policy = validatePassword(password, { email })
+    if (!policy.valid) {
+      return NextResponse.json({ error: 'Password does not meet policy', details: policy.failures }, { status: 400 })
     }
 
     const existing = await prisma.user.findUnique({ where: { email } })
@@ -40,6 +46,7 @@ export async function POST(req: NextRequest) {
         approvalStatus: 'PENDING',
       },
     })
+    await logSecurityEvent({ eventType: 'REGISTER_PENDING', req, target: email.toLowerCase(), metadata: { pillar, orgName } })
 
     return NextResponse.json({
       userId: user.id,
