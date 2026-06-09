@@ -38,6 +38,15 @@ export async function proxy(req: NextRequest) {
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET!)
     const { payload } = await jwtVerify(token, secret)
+    const passwordChangeAllowed = pathname.startsWith('/account/password') ||
+      pathname.startsWith('/api/account/password') ||
+      pathname.startsWith('/api/auth/logout')
+    if (payload.mustChangePassword === true && !passwordChangeAllowed) {
+      if (pathname.startsWith('/api/')) {
+        return NextResponse.json({ error: 'Password change required' }, { status: 403 })
+      }
+      return NextResponse.redirect(new URL('/account/password', req.url))
+    }
 
     // Role-based access
     if (pathname.startsWith('/admin') && payload.role !== 'ADMIN') {
