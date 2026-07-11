@@ -10,31 +10,32 @@
     "demo:seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/demo-scenarios.ts"
   },
   "dependencies": {
-    "@prisma/client": "^6.19.3",
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
     "@react-pdf/renderer": "^4.5.1",
-    "@types/bcryptjs": "^2.4.6",
+    "@types/bcryptjs": "^3.0.0",
     "@types/jsonwebtoken": "^9.0.10",
     "bcryptjs": "^3.0.3",
-    "csv-parse": "^6.2.1",
+    "csv-parse": "^7.0.1",
     "dotenv": "^17.4.2",
-    "jose": "^6.2.2",
+    "jose": "^6.2.3",
     "jsonwebtoken": "^9.0.3",
-    "next": "16.2.7",
-    "prisma": "^6.19.3",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "recharts": "^3.8.1",
+    "next": "16.2.10",
+    "prisma": "^7.8.0",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "recharts": "^3.9.2",
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^26",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.4",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.2.10",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5.9.3"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -42,6 +43,7 @@
   "overrides": {
     "next": {
       "postcss": "8.5.15"
-    }
+    },
+    "@hono/node-server": "1.19.13"
   }
 }
