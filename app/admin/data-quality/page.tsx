@@ -1,22 +1,39 @@
 import { prisma } from '@/lib/prisma'
 import { PILLAR_COLORS } from '@/lib/brand'
-import type { Prisma } from '@prisma/client'
 
 export const dynamic = 'force-dynamic'
 
-type SubmissionWithOrgAndMetricCount = Prisma.DataSubmissionGetPayload<{
-  include: { org: true; _count: { select: { metrics: true } } }
-}>
+type PillarName = keyof typeof PILLAR_COLORS
 
-type ApprovedOrgWithLatestSubmission = Prisma.OrganisationGetPayload<{
-  include: {
-    submissions: {
-      include: { _count: { select: { metrics: true } } }
-    }
-  }
-}>
+type SubmissionWithOrgAndMetricCount = {
+  id: string
+  org: { name: string }
+  period: string
+  status: string
+  pillar: PillarName
+  _count: { metrics: number }
+}
 
-type CoreMetricPillar = Prisma.MetricDefinitionGetPayload<{ select: { pillar: true } }>
+type ApprovedOrgWithLatestSubmission = {
+  id: string
+  name: string
+  pillar: PillarName
+  submissions: { period: string; createdAt: Date | null }[]
+}
+
+type CoreMetricPillar = { pillar: PillarName }
+
+type ImportBatchSummary = {
+  id: string
+  filename: string
+  status: string
+  period: string | null
+  rowCount: number
+  acceptedRows: number
+  rejectedRows: number
+  excludeFromReporting: boolean
+  createdAt: Date
+}
 
 function formatNumber(value: number) {
   return new Intl.NumberFormat('en-AU').format(value)
@@ -52,7 +69,7 @@ export default async function DataQualityPage() {
     CoreMetricPillar[],
     number,
     number,
-    Prisma.ImportBatchGetPayload<Record<string, never>>[],
+    ImportBatchSummary[],
   ]
 
   const periods = [...new Set(submissions.map(submission => submission.period))].sort().reverse()
