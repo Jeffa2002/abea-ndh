@@ -10,6 +10,27 @@ export type AdminChangelogEntry = {
 
 export const ADMIN_CHANGELOG: AdminChangelogEntry[] = [
   {
+    version: 'v1.4',
+    date: '17 July 2026',
+    title: 'Event Intelligence and Forward Calendar',
+    intent: 'Turn the supplied ABEA workshop pack into governed, source-aware digital reporting without overstating synthetic or incomplete data.',
+    areas: ['Intelligence Hub', 'Forward Calendar', 'Event commercials', 'Bid pipeline', 'Lineage', 'Reconciliation'],
+    changes: [
+      'Added a dataset register with source filename/hash, scenario status, confidentiality, row counts, methodology and reconciliation metadata.',
+      'Added versioned Forward Calendar summaries for won, lost and pending events across July 2024 International, January 2025 International, and July 2025 National snapshots.',
+      'Added live Forward Calendar reason analysis with response bases and fractional-reason caveats.',
+      'Added an Event Commercial Explorer for eight-show margin/cost mix and three-event registration-origin/revenue/cost scenarios.',
+      'Added a clearly labelled dummy Bid Pipeline preview with a failed-model gate and no ABEA-NDH-generated probability.',
+      'Kept scenario intelligence isolated from official member submissions and benchmark snapshots.',
+    ],
+    proof: [
+      'Prisma client generation and TypeScript passed.',
+      'ESLint passed.',
+      'Production build generated 39 routes.',
+      'Source workbook/PDF reconciliation findings are visible in the product rather than hidden.',
+    ],
+  },
+  {
     version: 'v1.3',
     date: '9 June 2026',
     title: 'Launch security and account governance',

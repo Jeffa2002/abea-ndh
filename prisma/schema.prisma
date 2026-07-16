@@ -142,6 +142,119 @@ model BenchmarkSnapshot {
   createdAt   DateTime @default(now())
 }
 
+model IntelligenceDataset {
+  id                 String   @id
+  name               String
+  domain             String
+  market             String?
+  asOfLabel          String?
+  sourceFilename     String
+  sourceHash         String?
+  status             String   @default("REVIEWED")
+  confidentiality    String   @default("DEIDENTIFIED_INTERNAL")
+  isScenario         Boolean  @default(true)
+  methodologyVersion String?
+  rowCount           Int      @default(0)
+  validationSummary  Json?
+  createdAt          DateTime @default(now())
+  approvedAt         DateTime?
+
+  forwardSummaries ForwardCalendarSummary[]
+  reasons          ForwardCalendarReason[]
+  commercialEvents CommercialEvent[]
+  bidRecords       BidRecord[]
+}
+
+model ForwardCalendarSummary {
+  id                     String              @id @default(uuid())
+  datasetId              String
+  dataset                IntelligenceDataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  bidStatus              String
+  eventCount             Int
+  eventDays              Int
+  internationalDelegates Int
+  domesticDelegates      Int
+  totalDelegates         Int
+  internationalDays      Int
+  domesticDays           Int
+  totalDays              Int
+  internationalSpend     Float
+  domesticSpend          Float
+  totalSpend             Float
+
+  @@unique([datasetId, bidStatus])
+  @@index([datasetId])
+}
+
+model ForwardCalendarReason {
+  id            String              @id @default(uuid())
+  datasetId     String
+  dataset       IntelligenceDataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  bidStatus     String
+  reason        String
+  share         Float
+  weightedCount Float
+  responseBase  Int
+
+  @@unique([datasetId, bidStatus, reason])
+  @@index([datasetId])
+}
+
+model CommercialEvent {
+  id                    String              @id
+  datasetId             String
+  dataset               IntelligenceDataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  label                 String
+  sector                String?
+  eventType             String?
+  audience              String?
+  marketPositioning     String?
+  industry              String?
+  registrations         Int?
+  localRegistrations    Int?
+  interstateRegistrations Int?
+  internationalRegistrations Int?
+  totalRevenue          Float?
+  venueSpend            Float?
+  cateringSpend         Float?
+  conferenceSpend       Float?
+  operationsSpend       Float?
+  marketingSpend        Float?
+  generalShowSpend      Float?
+  sponsorshipRevenue    Float?
+  exhibitionRevenue     Float?
+  directExpenses        Float?
+  grossProfit           Float?
+
+  @@index([datasetId])
+}
+
+model BidRecord {
+  id                String              @id
+  datasetId         String
+  dataset           IntelligenceDataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  leadId            String
+  status            String
+  venue             String?
+  delegates         Int?
+  economicValue     Float?
+  existingWinPct    Float?
+  eventYear         Int?
+  fundOffer         String?
+  economicSector    String?
+  country           String?
+  prioritySector    String?
+  eventType         String?
+  leadTimeMonths    Int?
+  localHostStrength String?
+  bidResources      String?
+  competitorCount   Int?
+  strategicValue    String?
+
+  @@unique([datasetId, leadId])
+  @@index([datasetId, status])
+}
+
 enum Pillar {
   VENUE
   ORGANISER

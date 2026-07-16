@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "postinstall": "prisma generate",
-    "demo:seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/demo-scenarios.ts"
+    "demo:seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/demo-scenarios.ts",
+    "intelligence:seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/intelligence-scenarios.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",
