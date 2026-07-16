@@ -10,6 +10,42 @@ export type OpenDecision = {
 
 export const OPEN_DECISIONS: OpenDecision[] = [
   {
+    id: 'D-010',
+    title: 'Event and bid observation grain',
+    owner: 'Joint',
+    priority: 'High',
+    status: 'Ready for review',
+    context: 'The supplied files mix event editions, recurring event series, bureau snapshots and organisation-period aggregates.',
+    recommendation: 'Adopt stable opaque event-series, event-occurrence and bid-opportunity identifiers before onboarding live data.',
+  },
+  {
+    id: 'D-009',
+    title: 'Predictive bid-model evidence gate',
+    owner: 'ABEA',
+    priority: 'High',
+    status: 'Draft recommendation',
+    context: 'The supplied bid pilot is synthetic, has 70 outcomes, post-outcome fields and an existing score that is not directionally reliable.',
+    recommendation: 'Keep the bid area descriptive until authentic longitudinal outcomes pass leakage, calibration, drift and governance review.',
+  },
+  {
+    id: 'D-008',
+    title: 'Forward Calendar source of truth',
+    owner: 'ABEA',
+    priority: 'High',
+    status: 'Open',
+    context: 'Some supplied workbook and published PDF headline totals do not reconcile, potentially because the files are different versions.',
+    recommendation: 'Require immutable snapshot IDs, as-at dates, transformation/rate versions and automated reconciliation before report publication.',
+  },
+  {
+    id: 'D-007',
+    title: 'Event benchmark denominator and weighting',
+    owner: 'Joint',
+    priority: 'High',
+    status: 'Open',
+    context: 'Event-average, contributor-average and registration-weighted statistics answer different questions and can materially diverge.',
+    recommendation: 'Define and label the denominator/weighting for every event benchmark before it is exposed to members or government.',
+  },
+  {
     id: 'D-001',
     title: 'Economic-impact multiplier rules',
     owner: 'Government',

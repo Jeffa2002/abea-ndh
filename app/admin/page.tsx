@@ -74,6 +74,11 @@ export default async function AdminPage() {
       </div>
 
       <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Link href="/admin/intelligence" className="rounded-2xl border border-orange-200 bg-orange-50 p-6 shadow-sm transition-colors hover:border-orange-400 md:col-span-2">
+          <div className="text-sm font-semibold text-orange-700">New · Event Intelligence</div>
+          <div className="mt-2 text-xl font-black" style={{ color: '#052460' }}>Forward Calendar, commercials and bid pipeline →</div>
+          <div className="mt-2 text-xs leading-5 text-gray-500">Versioned source snapshots, reconciliation status, live market reporting and clearly labelled scenario analytics.</div>
+        </Link>
         <Link href="/admin/reports" className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-colors hover:border-orange-300">
           <div className="text-sm font-semibold text-gray-500">Report Builder</div>
           <div className="mt-2 text-xl font-black" style={{ color: '#052460' }}>Build aggregate extracts →</div>
